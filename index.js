@@ -1,7 +1,11 @@
 //jshint esversion:6
 const addon = require('./GwentAddon');
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+
+app.use(bodyParser.json()); // <--- Here
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
@@ -28,18 +32,28 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/', function (req, res) {
-  const game = addon.createGame();
-  res.send(game);
-});
-
+let game = null;
+let gameId = null;
 app.get('/startGame', function (req, res) {
-  const game = addon.createGame();
+  game = addon.createGame();
+  gameId = 1;
+  res.send({ GameId: 1 });
+});
+
+app.get('/getGameState', function (req, res) {
+  console.log();
   res.send(game);
 });
 
-app.get('/takeAction', function (req, res) {
-  res.sendFile(__dirname + '/index.html');
+app.post('/takeAction', function (req, res) {
+  let action = JSON.stringify(req.body);
+  let gameStr = JSON.stringify(JSON.parse(game));
+  let newGameState = null;
+  newGameState = addon.takeAction(gameStr, JSON.stringify(req.body));
+  if (newGameState) {
+    game = JSON.parse(newGameState);
+    res.send(game);
+  }
 });
 
 app.listen(3001, '127.0.0.1', function () {
