@@ -35,21 +35,22 @@ app.use(function (req, res, next) {
 let game = null;
 let gameId = null;
 app.get('/startGame', function (req, res) {
-  game = addon.createGame();
+  game = JSON.parse(addon.createGame());
   gameId = 1;
   res.send({ GameId: 1 });
 });
 
 app.get('/getGameState', function (req, res) {
-  console.log();
   res.send(game);
 });
 
 app.post('/takeAction', function (req, res) {
+  console.log(req.body);
+  console.log(JSON.stringify(game));
   let action = JSON.stringify(req.body);
-  let gameStr = JSON.stringify(JSON.parse(game));
+  let gameStr = JSON.stringify(game);
   let newGameState = null;
-  newGameState = addon.takeAction(gameStr, JSON.stringify(req.body));
+  newGameState = addon.takeAction(gameStr, action);
   if (newGameState) {
     game = JSON.parse(newGameState);
     res.send(game);
