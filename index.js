@@ -45,16 +45,18 @@ app.get('/getGameState', function (req, res) {
 });
 
 app.post('/takeAction', function (req, res) {
-  console.log(req.body);
-  console.log(JSON.stringify(game));
-  let action = JSON.stringify(req.body);
+  let action = JSON.stringify(req.body.Action);
   let gameStr = JSON.stringify(game);
   let newGameState = null;
   newGameState = addon.takeAction(gameStr, action);
-  if (newGameState) {
-    game = JSON.parse(newGameState);
-    res.send(game);
+  newGameStateObj = JSON.parse(newGameState);
+  if ('Error' in newGameStateObj) {
+    res.status(500, newGameStateObj.Error);
+    res.send(newGameStateObj);
+    return;
   }
+  game = newGameStateObj;
+  res.send(game);
 });
 
 app.listen(3001, '127.0.0.1', function () {
