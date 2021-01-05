@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   // res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
 
   // Request methods you wish to allow
@@ -59,6 +59,6 @@ app.post('/takeAction', function (req, res) {
   res.send(game);
 });
 
-app.listen(3001, '127.0.0.1', function () {
+app.listen(3001, '0.0.0.0', function () {
   console.log('Listening on port 3001');
 });
