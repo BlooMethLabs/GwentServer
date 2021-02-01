@@ -1,5 +1,5 @@
 //jshint esversion:6
-const addon = require('./GwentAddon');
+const addon = require('./NodeAddon/build/Debug/GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
