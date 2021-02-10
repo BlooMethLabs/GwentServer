@@ -1,5 +1,6 @@
 //jshint esversion:6
-const addon = require('./NodeAddon/build/Debug/GwentAddon');
+// const addon = require('./NodeAddon/build/Debug/GwentAddon');
+const addon = require('./GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -45,12 +46,14 @@ app.get('/getGameState', function (req, res) {
 });
 
 app.post('/takeAction', function (req, res) {
+  console.log('Action req: ', req.body.Action);
   let action = JSON.stringify(req.body.Action);
   let gameStr = JSON.stringify(game);
   let newGameState = null;
   newGameState = addon.takeAction(gameStr, action);
   newGameStateObj = JSON.parse(newGameState);
   if ('Error' in newGameStateObj) {
+    console.log('New game: ', newGameStateObj);
     res.status(500, newGameStateObj.Error);
     res.send(newGameStateObj);
     return;
