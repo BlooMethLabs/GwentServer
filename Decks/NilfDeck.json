@@ -1,0 +1,269 @@
+{
+  "Cards": [
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Spy"],
+      "Base Strength": 7,
+      "Faction": "Nilfgaard",
+      "Hero": false,
+      "Name": "Shilard_Fitz_Oesterlen",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Commander's Horn"],
+      "Base Strength": 2,
+      "Faction": "Neutral",
+      "Hero": false,
+      "Name": "Dandelion",
+      "Range": "Close",
+      "Type": "Unit"
+    }
+  ],
+  "Faction": "Nilfgaard",
+  "Leader": {
+    "Ability": "Cancel Opponent's Leader Ability",
+    "Faction": "Nilfgaard",
+    "Name": "Emhyr_var_Emreis_the_White_Flame",
+    "Type": "Leader"
+  }
+}

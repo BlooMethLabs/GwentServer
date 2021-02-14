@@ -4,6 +4,7 @@ const addon = require('./GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const fs = require('fs');
 
 app.use(bodyParser.json()); // <--- Here
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,7 +37,16 @@ app.use(function (req, res, next) {
 let game = null;
 let gameId = null;
 app.get('/startGame', function (req, res) {
-  game = JSON.parse(addon.createGame());
+  let deck = JSON.parse(fs.readFileSync('Decks/NilfDeck.json'));
+  console.log(JSON.stringify(deck));
+  let redDeck = JSON.stringify(deck);
+  let blueDeck = JSON.stringify(deck);
+
+  let newGameState = null;
+  newGameState = addon.createGameWithDecks(blueDeck, redDeck);
+  // newGameState = addon.createGame('Deck', 'Deck');
+  newGameStateObj = JSON.parse(newGameState);
+  game = newGameStateObj;
   gameId = 1;
   res.send({ GameId: 1 });
 });
@@ -49,6 +59,7 @@ app.post('/takeAction', function (req, res) {
   console.log('Action req: ', req.body.Action);
   let action = JSON.stringify(req.body.Action);
   let gameStr = JSON.stringify(game);
+
   let newGameState = null;
   newGameState = addon.takeAction(gameStr, action);
   newGameStateObj = JSON.parse(newGameState);
