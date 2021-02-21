@@ -1,10 +1,12 @@
 //jshint esversion:6
-// const addon = require('./NodeAddon/build/Debug/GwentAddon');
+import {removeOtherPlayer} from './Game/Utils'
 const addon = require('./GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const fs = require('fs');
+const _ = require('lodash');
+
 
 app.use(bodyParser.json()); // <--- Here
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,14 +47,22 @@ app.get('/startGame', function (req, res) {
   let newGameState = null;
   newGameState = addon.createGameWithDecks(blueDeckStr, redDeckStr);
   // newGameState = addon.createGame();
-  newGameStateObj = JSON.parse(newGameState);
+  let newGameStateObj = JSON.parse(newGameState);
   game = newGameStateObj;
   gameId = 1;
   res.send({ GameId: 1 });
 });
 
 app.get('/getGameState', function (req, res) {
-  res.send(game);
+  let request = JSON.parse(req.query.req);
+  let side = request.Side;
+  console.log(req.query);
+  console.log(side);
+  let g = _.cloneDeep(game);
+  if (side) {
+    g = removeOtherPlayer(g, side);
+  }
+  res.send(g);
 });
 
 app.post('/takeAction', function (req, res) {
@@ -62,7 +72,7 @@ app.post('/takeAction', function (req, res) {
 
   let newGameState = null;
   newGameState = addon.takeAction(gameStr, action);
-  newGameStateObj = JSON.parse(newGameState);
+  let newGameStateObj = JSON.parse(newGameState);
   if ('Error' in newGameStateObj) {
     console.log('New game: ', newGameStateObj);
     res.status(500, newGameStateObj.Error);
