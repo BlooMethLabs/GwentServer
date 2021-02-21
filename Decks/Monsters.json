@@ -1,0 +1,356 @@
+{
+  "Cards": [
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Vampire_Bruxa_0",
+      "Name": "Vampire_Bruxa",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Vampire",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Scorch"],
+      "Base Strength": 7,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Toad_0",
+      "Name": "Toad",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 6,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Crone_Weavess_0",
+      "Name": "Crone_Weavess",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Crone",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Arachas_2_0",
+      "Name": "Arachas_2",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Arachas",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_1",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_1",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Arachas_1_0",
+      "Name": "Arachas_1",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Arachas",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_0",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_5",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_5",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_7",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_4",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_2",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_9",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Botchling_0",
+      "Name": "Botchling",
+      "Range": "Close",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_4",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_9",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Vampire_Garkain_0",
+      "Name": "Vampire_Garkain",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Vampire",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_2",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_3",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Vampire_Ekimmara_0",
+      "Name": "Vampire_Ekimmara",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Vampire",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_6",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 6,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Arachas_Behemoth_0",
+      "Name": "Arachas_Behemoth",
+      "Range": "Siege",
+      "Side": "Red",
+      "Tight Bond Muster ID": "(Arachas)(.*)",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 6,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Crone_Brewess_0",
+      "Name": "Crone_Brewess",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Crone",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_8",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_6",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_3",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 6,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Crone_Whispess_0",
+      "Name": "Crone_Whispess",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Crone",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_7",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_0",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Arachas_0_0",
+      "Name": "Arachas_0",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Arachas",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_10",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "ID": "Red_Cockatrice_8",
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Side": "Red",
+      "Type": "Unit"
+    }
+  ],
+  "Faction": "Monsters",
+  "Leader": {
+    "Ability": "Discard 2 cards and draw 1",
+    "Faction": "Monsters",
+    "ID": "Red_leader_0",
+    "Name": "leader",
+    "Side": "Red",
+    "Type": "Leader"
+  }
+}

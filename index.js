@@ -37,14 +37,14 @@ app.use(function (req, res, next) {
 let game = null;
 let gameId = null;
 app.get('/startGame', function (req, res) {
-  let deck = JSON.parse(fs.readFileSync('Decks/NilfDeck.json'));
-  console.log(JSON.stringify(deck));
-  let redDeck = JSON.stringify(deck);
-  let blueDeck = JSON.stringify(deck);
+  let blueDeck = JSON.parse(fs.readFileSync('Decks/Scoiatael.json'));
+  let redDeck = JSON.parse(fs.readFileSync('Decks/NorRealms.json'));
+  let redDeckStr = JSON.stringify(redDeck);
+  let blueDeckStr = JSON.stringify(blueDeck);
 
   let newGameState = null;
-  newGameState = addon.createGameWithDecks(blueDeck, redDeck);
-  // newGameState = addon.createGame('Deck', 'Deck');
+  newGameState = addon.createGameWithDecks(blueDeckStr, redDeckStr);
+  // newGameState = addon.createGame();
   newGameStateObj = JSON.parse(newGameState);
   game = newGameStateObj;
   gameId = 1;
