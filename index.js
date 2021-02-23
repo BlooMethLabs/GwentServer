@@ -1,12 +1,11 @@
 //jshint esversion:6
-import {removeOtherPlayer} from './Game/Utils'
+import { removeOtherPlayer } from './Game/Utils';
 const addon = require('./GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const fs = require('fs');
 const _ = require('lodash');
-
 
 app.use(bodyParser.json()); // <--- Here
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -73,6 +72,8 @@ app.post('/takeAction', function (req, res) {
   let newGameState = null;
   newGameState = addon.takeAction(gameStr, action);
   let newGameStateObj = JSON.parse(newGameState);
+  let g = _.cloneDeep(newGameStateObj);
+  g = removeOtherPlayer(g, req.body.Action.Side);
   if ('Error' in newGameStateObj) {
     console.log('New game: ', newGameStateObj);
     res.status(500, newGameStateObj.Error);
@@ -80,7 +81,7 @@ app.post('/takeAction', function (req, res) {
     return;
   }
   game = newGameStateObj;
-  res.send(game);
+  res.send(g);
 });
 
 app.listen(3001, '0.0.0.0', function () {
