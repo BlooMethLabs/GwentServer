@@ -1,5 +1,5 @@
 //jshint esversion:6
-import { removeOtherPlayer } from './Game/Utils';
+import { removeOtherPlayer, getDeckName } from './Game/Utils';
 const addon = require('./GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -37,9 +37,12 @@ app.use(function (req, res, next) {
 
 let game = null;
 let gameId = null;
-app.get('/startGame', function (req, res) {
-  let blueDeck = JSON.parse(fs.readFileSync('Decks/Scoiatael.json'));
-  let redDeck = JSON.parse(fs.readFileSync('Decks/NorRealms.json'));
+app.post('/startGame', function (req, res) {
+  console.log('Deck IDs: ', req.body.RedDeckId, req.body.BlueDeckId);
+  let redDeckName = getDeckName(req.body.RedDeckId);
+  let blueDeckName = getDeckName(req.body.BlueDeckId);
+  let redDeck = JSON.parse(fs.readFileSync(redDeckName));
+  let blueDeck = JSON.parse(fs.readFileSync(blueDeckName));
   let redDeckStr = JSON.stringify(redDeck);
   let blueDeckStr = JSON.stringify(blueDeck);
 
