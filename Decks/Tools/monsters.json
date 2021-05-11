@@ -1,0 +1,332 @@
+[
+    {
+        "Faction": "Monsters", 
+        "Name": "Eredin Br\u00e9acc Glas: The Treacherous\n", 
+        "Type": "Leader"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Name": "Eredin: Bringer of Death\n", 
+        "Type": "Leader"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Name": "Eredin: Commander of the Red Riders\n", 
+        "Type": "Leader"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Name": "Eredin: Destroyer of Worlds\n", 
+        "Type": "Leader"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Name": "Eredin: King of the Wild Hunt\n", 
+        "Type": "Leader"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Arachas\n", 
+        "Range": "Close", 
+        "Strength": 4, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Arachas Behemoth\n", 
+        "Range": "Siege", 
+        "Strength": 6, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Botchling\n", 
+        "Range": "Close", 
+        "Strength": 4, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Celaeno Harpy\n", 
+        "Range": "Agile", 
+        "Strength": 2, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Cockatrice\n", 
+        "Range": "Ranged", 
+        "Strength": 2, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Crone: Brewess\n", 
+        "Range": "Close", 
+        "Strength": 6, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Crone: Weavess\n", 
+        "Range": "Close", 
+        "Strength": 6, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Crone: Whispess\n", 
+        "Range": "Close", 
+        "Strength": 6, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": true, 
+        "Name": "Draug\n", 
+        "Range": "Close", 
+        "Strength": 10
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Earth Elemental\n", 
+        "Range": "Siege", 
+        "Strength": 6, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Endrega\n", 
+        "Range": "Ranged", 
+        "Strength": 2, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Fiend\n", 
+        "Range": "Close", 
+        "Strength": 6, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Fire Elemental\n", 
+        "Range": "Siege", 
+        "Strength": 6, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Foglet\n", 
+        "Range": "Close", 
+        "Strength": 2, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Forktail\n", 
+        "Range": "Close", 
+        "Strength": 5, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Frightener\n", 
+        "Range": "Close", 
+        "Strength": 5, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Gargoyle\n", 
+        "Range": "Ranged", 
+        "Strength": 2, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Ghoul\n", 
+        "Range": "Close", 
+        "Strength": 1, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Grave Hag\n", 
+        "Range": "Ranged", 
+        "Strength": 5, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Griffin\n", 
+        "Range": "Close", 
+        "Strength": 5, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Harpy\n", 
+        "Range": "Agile", 
+        "Strength": 2, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Ice Giant\n", 
+        "Range": "Siege", 
+        "Strength": 5, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": true, 
+        "Name": "Imlerith\n", 
+        "Range": "Close", 
+        "Strength": 10
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": true, 
+        "Name": "Kayran\n", 
+        "Range": "Agile", 
+        "Strength": 8
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": true, 
+        "Name": "Leshen\n", 
+        "Strength": 10
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Nekker\n", 
+        "Range": "Close", 
+        "Strength": 2, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Plague Maiden\n", 
+        "Range": "Close", 
+        "Strength": 5, 
+        "Type": "Unit"
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Toad\n", 
+        "Strength": 7, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Scorch"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Vampire: Bruxa\n", 
+        "Range": "Close", 
+        "Strength": 4, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Vampire: Ekimmara\n", 
+        "Range": "Close", 
+        "Strength": 4, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Vampire: Fleder\n", 
+        "Range": "Close", 
+        "Strength": 4, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Vampire: Garkain\n", 
+        "Range": "Close", 
+        "Strength": 4, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Vampire: Katakan\n", 
+        "Range": "Close", 
+        "Strength": 5, 
+        "Type": "Unit", 
+        "UnitAbilities": [
+            "Muster"
+        ]
+    }, 
+    {
+        "Faction": "Monsters", 
+        "Hero": false, 
+        "Name": "Werewolf\n", 
+        "Range": "Close", 
+        "Strength": 5, 
+        "Type": "Unit"
+    }
+]
