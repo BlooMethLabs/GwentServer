@@ -285,17 +285,6 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Vampire: Bruxa\n",
-    "Range": "Close",
-    "Strength": 4,
-    "Type": "Unit",
-    "Abilities": ["Muster"],
-    "Tight Bond Muster ID": "Vampire",
-    "Max Number": 1
-  },
-  {
-    "Faction": "Monsters",
-    "Hero": false,
     "Name": "Vampire: Ekimmara\n",
     "Range": "Close",
     "Strength": 4,
@@ -329,20 +318,18 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Vampire: Katakan\n",
+    "Name": "Werewolf\n",
     "Range": "Close",
     "Strength": 5,
     "Type": "Unit",
-    "Abilities": ["Muster"],
-    "Tight Bond Muster ID": "Vampire",
     "Max Number": 1
   },
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Werewolf\n",
-    "Range": "Close",
-    "Strength": 5,
+    "Name": "Wyvern",
+    "Range": "Ranged",
+    "Strength": 2,
     "Type": "Unit",
     "Max Number": 1
   }
