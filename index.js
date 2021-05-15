@@ -1,5 +1,5 @@
 //jshint esversion:6
-import { removeOtherPlayer, getDeckName } from './Game/Utils';
+import { removeOtherPlayer, getDeckName, getFactionCards } from './Game/Utils';
 const addon = require('./GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -37,6 +37,7 @@ app.use(function (req, res, next) {
 
 let game = null;
 let gameId = null;
+
 app.post('/startGame', function (req, res) {
   console.log('Deck IDs: ', req.body.RedDeckId, req.body.BlueDeckId);
   let redDeckName = getDeckName(req.body.RedDeckId);
@@ -85,6 +86,14 @@ app.post('/takeAction', function (req, res) {
   }
   game = newGameStateObj;
   res.send(g);
+});
+
+app.get('/getFactionCards', function (req, res) {
+  let request = JSON.parse(req.query.req);
+  let faction = parseInt(request.Faction);
+  console.log(faction);
+  let cards = getFactionCards(faction);
+  res.send({Cards: cards});
 });
 
 app.listen(3001, '0.0.0.0', function () {

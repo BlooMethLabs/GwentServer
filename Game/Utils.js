@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const fs = require('fs');
 const deckNames = {
   1: 'Decks/Monsters.json',
   2: 'Decks/Scoiatael.json',
@@ -23,4 +24,17 @@ function getDeckName(id) {
   return deckNames[id];
 }
 
-export { removeOtherPlayer, getDeckName };
+function getFactionCards(faction) {
+  switch(faction) {
+    case 1:
+      console.log("mon");
+      return JSON.parse(fs.readFileSync("Decks/Creation/Monsters.json"));
+    // case 2:
+    //   console.log("sco");
+    //   return JSON.parse(fs.readFileSync("../Decks/Creation/Monsters.json"));
+    default:
+      return {error: "No collection with that ID."};
+  }
+}
+
+export { removeOtherPlayer, getDeckName, getFactionCards };
