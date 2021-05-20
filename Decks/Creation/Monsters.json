@@ -267,7 +267,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Plague Maiden\n",
+    "Name": "Plague_Maiden\n",
     "Range": "Close",
     "Strength": 5,
     "Type": "Unit",
@@ -285,7 +285,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Vampire: Ekimmara\n",
+    "Name": "Vampire_Ekimmara\n",
     "Range": "Close",
     "Strength": 4,
     "Type": "Unit",
@@ -296,7 +296,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Vampire: Fleder\n",
+    "Name": "Vampire_Fleder\n",
     "Range": "Close",
     "Strength": 4,
     "Type": "Unit",
@@ -307,7 +307,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Vampire: Garkain\n",
+    "Name": "Vampire_Garkain\n",
     "Range": "Close",
     "Strength": 4,
     "Type": "Unit",
