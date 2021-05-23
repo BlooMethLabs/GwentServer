@@ -1,32 +1,32 @@
 [
   {
     "Faction": "Monsters",
-    "Name": "Eredin: Bringer of Death\n",
+    "Name": "Eredin_Bringer_of_Death",
     "Type": "Leader",
     "Ability": "Resurect a card from your graveyard"
   },
   {
     "Faction": "Monsters",
-    "Name": "Eredin: Commander of the Red Riders\n",
+    "Name": "Eredin_Commander_of_the_Red_Riders",
     "Type": "Leader",
     "Ability": "Double the strength of your close row"
   },
   {
     "Faction": "Monsters",
-    "Name": "Eredin: Destroyer of Worlds\n",
+    "Name": "Eredin_Destroyer_of_Worlds",
     "Type": "Leader",
     "Ability": "Discard 2 cards and draw 1"
   },
   {
     "Faction": "Monsters",
-    "Name": "Eredin: King of the Wild Hunt\n",
+    "Name": "Eredin_King_of_the_Wild_Hunt",
     "Type": "Leader",
     "Ability": "Play a weather card from your deck"
   },
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Arachas\n",
+    "Name": "Arachas",
     "Range": "Close",
     "Strength": 4,
     "Type": "Unit",
@@ -37,7 +37,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Arachas Behemoth\n",
+    "Name": "Arachas_Behemoth",
     "Range": "Siege",
     "Strength": 6,
     "Type": "Unit",
@@ -48,7 +48,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Botchling\n",
+    "Name": "Botchling",
     "Range": "Close",
     "Strength": 4,
     "Type": "Unit",
@@ -57,7 +57,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Celaeno Harpy\n",
+    "Name": "Celaeno_Harpy",
     "Range": "Agile",
     "Strength": 2,
     "Type": "Unit",
@@ -66,7 +66,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Cockatrice\n",
+    "Name": "Cockatrice",
     "Range": "Ranged",
     "Strength": 2,
     "Type": "Unit",
@@ -75,7 +75,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Crone: Brewess\n",
+    "Name": "Crone_Brewess",
     "Range": "Close",
     "Strength": 6,
     "Type": "Unit",
@@ -86,7 +86,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Crone: Weavess\n",
+    "Name": "Crone_Weavess",
     "Range": "Close",
     "Strength": 6,
     "Type": "Unit",
@@ -97,7 +97,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Crone: Whispess\n",
+    "Name": "Crone_Whispess",
     "Range": "Close",
     "Strength": 6,
     "Type": "Unit",
@@ -108,7 +108,7 @@
   {
     "Faction": "Monsters",
     "Hero": true,
-    "Name": "Draug\n",
+    "Name": "Draug",
     "Range": "Close",
     "Strength": 10,
     "Max Number": 1
@@ -116,7 +116,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Earth Elemental\n",
+    "Name": "Earth_Elemental",
     "Range": "Siege",
     "Strength": 6,
     "Type": "Unit",
@@ -125,7 +125,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Endrega\n",
+    "Name": "Endrega",
     "Range": "Ranged",
     "Strength": 2,
     "Type": "Unit",
@@ -134,7 +134,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Fiend\n",
+    "Name": "Fiend",
     "Range": "Close",
     "Strength": 6,
     "Type": "Unit",
@@ -143,7 +143,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Fire Elemental\n",
+    "Name": "Fire_Elemental",
     "Range": "Siege",
     "Strength": 6,
     "Type": "Unit",
@@ -152,7 +152,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Foglet\n",
+    "Name": "Foglet",
     "Range": "Close",
     "Strength": 2,
     "Type": "Unit",
@@ -161,7 +161,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Forktail\n",
+    "Name": "Forktail",
     "Range": "Close",
     "Strength": 5,
     "Type": "Unit",
@@ -170,7 +170,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Frightener\n",
+    "Name": "Frightener",
     "Range": "Close",
     "Strength": 5,
     "Type": "Unit",
@@ -179,7 +179,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Gargoyle\n",
+    "Name": "Gargoyle",
     "Range": "Ranged",
     "Strength": 2,
     "Type": "Unit",
@@ -188,17 +188,18 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Ghoul\n",
+    "Name": "Ghoul",
     "Range": "Close",
     "Strength": 1,
     "Type": "Unit",
     "Abilities": ["Muster"],
+    "Tight Bond Muster ID": "Ghoul",
     "Max Number": 3
   },
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Grave Hag\n",
+    "Name": "Grave_Hag",
     "Range": "Ranged",
     "Strength": 5,
     "Type": "Unit",
@@ -207,7 +208,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Griffin\n",
+    "Name": "Griffin",
     "Range": "Close",
     "Strength": 5,
     "Type": "Unit",
@@ -216,7 +217,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Harpy\n",
+    "Name": "Harpy",
     "Range": "Agile",
     "Strength": 2,
     "Type": "Unit",
@@ -225,7 +226,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Ice Giant\n",
+    "Name": "Ice_Giant",
     "Range": "Siege",
     "Strength": 5,
     "Type": "Unit",
@@ -234,7 +235,7 @@
   {
     "Faction": "Monsters",
     "Hero": true,
-    "Name": "Imlerith\n",
+    "Name": "Imlerith",
     "Range": "Close",
     "Strength": 10,
     "Max Number": 1
@@ -242,32 +243,35 @@
   {
     "Faction": "Monsters",
     "Hero": true,
-    "Name": "Kayran\n",
+    "Name": "Kayran",
     "Range": "Agile",
     "Strength": 8,
+    "Abilities": ["Morale Boost"],
     "Max Number": 1
   },
   {
     "Faction": "Monsters",
     "Hero": true,
-    "Name": "Leshen\n",
+    "Name": "Leshen",
+    "Range": "Ranged",
     "Strength": 10,
     "Max Number": 1
   },
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Nekker\n",
+    "Name": "Nekker",
     "Range": "Close",
     "Strength": 2,
     "Type": "Unit",
     "Abilities": ["Muster"],
+    "Tight Bond Muster ID": "Nekker",
     "Max Number": 3
   },
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Plague_Maiden\n",
+    "Name": "Plague_Maiden",
     "Range": "Close",
     "Strength": 5,
     "Type": "Unit",
@@ -276,7 +280,8 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Toad\n",
+    "Name": "Toad",
+    "Range": "Ranged",
     "Strength": 7,
     "Type": "Unit",
     "Abilities": ["Scorch"],
@@ -285,7 +290,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Vampire_Ekimmara\n",
+    "Name": "Vampire_Ekimmara",
     "Range": "Close",
     "Strength": 4,
     "Type": "Unit",
@@ -296,7 +301,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Vampire_Fleder\n",
+    "Name": "Vampire_Bruxa",
     "Range": "Close",
     "Strength": 4,
     "Type": "Unit",
@@ -307,7 +312,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Vampire_Garkain\n",
+    "Name": "Vampire_Garkain",
     "Range": "Close",
     "Strength": 4,
     "Type": "Unit",
@@ -318,7 +323,7 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Werewolf\n",
+    "Name": "Werewolf",
     "Range": "Close",
     "Strength": 5,
     "Type": "Unit",
