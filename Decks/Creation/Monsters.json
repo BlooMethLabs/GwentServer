@@ -26,13 +26,35 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Arachas",
+    "Name": "Arachas_0",
     "Range": "Close",
     "Strength": 4,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Arachas",
-    "Max Number": 3
+    "Max Number": 1
+  },
+  {
+    "Faction": "Monsters",
+    "Hero": false,
+    "Name": "Arachas_1",
+    "Range": "Close",
+    "Strength": 4,
+    "Type": "Unit",
+    "Abilities": ["Muster"],
+    "Tight Bond Muster ID": "Arachas",
+    "Max Number": 1
+  },
+  {
+    "Faction": "Monsters",
+    "Hero": false,
+    "Name": "Arachas_2",
+    "Range": "Close",
+    "Strength": 4,
+    "Type": "Unit",
+    "Abilities": ["Muster"],
+    "Tight Bond Muster ID": "Arachas",
+    "Max Number": 1
   },
   {
     "Faction": "Monsters",
@@ -188,13 +210,35 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Ghoul",
+    "Name": "Ghoul_0",
     "Range": "Close",
     "Strength": 1,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Ghoul",
-    "Max Number": 3
+    "Max Number": 1
+  },
+  {
+    "Faction": "Monsters",
+    "Hero": false,
+    "Name": "Ghoul_1",
+    "Range": "Close",
+    "Strength": 1,
+    "Type": "Unit",
+    "Abilities": ["Muster"],
+    "Tight Bond Muster ID": "Ghoul",
+    "Max Number": 1
+  },
+  {
+    "Faction": "Monsters",
+    "Hero": false,
+    "Name": "Ghoul_2",
+    "Range": "Close",
+    "Strength": 1,
+    "Type": "Unit",
+    "Abilities": ["Muster"],
+    "Tight Bond Muster ID": "Ghoul",
+    "Max Number": 1
   },
   {
     "Faction": "Monsters",
@@ -260,13 +304,35 @@
   {
     "Faction": "Monsters",
     "Hero": false,
-    "Name": "Nekker",
+    "Name": "Nekker_0",
     "Range": "Close",
     "Strength": 2,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Nekker",
-    "Max Number": 3
+    "Max Number": 1
+  },
+  {
+    "Faction": "Monsters",
+    "Hero": false,
+    "Name": "Nekker_1",
+    "Range": "Close",
+    "Strength": 2,
+    "Type": "Unit",
+    "Abilities": ["Muster"],
+    "Tight Bond Muster ID": "Nekker",
+    "Max Number": 1
+  },
+  {
+    "Faction": "Monsters",
+    "Hero": false,
+    "Name": "Nekker_2",
+    "Range": "Close",
+    "Strength": 2,
+    "Type": "Unit",
+    "Abilities": ["Muster"],
+    "Tight Bond Muster ID": "Nekker",
+    "Max Number": 1
   },
   {
     "Faction": "Monsters",

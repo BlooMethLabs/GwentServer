@@ -99,3 +99,7 @@ app.get('/getFactionCards', function (req, res) {
 app.listen(3001, '0.0.0.0', function () {
   console.log('Listening on port 3001');
 });
+
+app.get('/test', function(req, res){
+  res.send({"Test": "Test"});
+});
