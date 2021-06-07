@@ -96,10 +96,14 @@ app.get('/getFactionCards', function (req, res) {
   res.send({Cards: cards});
 });
 
-app.listen(3001, '0.0.0.0', function () {
-  console.log('Listening on port 3001');
-});
-
 app.get('/test', function(req, res){
   res.send({"Test": "Test"});
+});
+
+app.post('/saveDeck', function (req, res) {
+  console.log('Name: ' + req.body.Name + ' Deck: ' + JSON.stringify(req.body.Deck));
+})
+
+app.listen(3001, '0.0.0.0', function () {
+  console.log('Listening on port 3001');
 });
