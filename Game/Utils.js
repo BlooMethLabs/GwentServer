@@ -36,4 +36,8 @@ function getFactionCards(faction) {
   }
 }
 
-export { removeOtherPlayer, getDeckName, getFactionCards };
+function isDeckValid(deck) {
+  return true;
+}
+
+export { removeOtherPlayer, getDeckName, getFactionCards, isDeckValid };

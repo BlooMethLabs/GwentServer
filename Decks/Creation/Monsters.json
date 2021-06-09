@@ -28,7 +28,7 @@
     "Hero": false,
     "Name": "Arachas_0",
     "Range": "Close",
-    "Strength": 4,
+    "Base Strength": 4,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Arachas",
@@ -39,7 +39,7 @@
     "Hero": false,
     "Name": "Arachas_1",
     "Range": "Close",
-    "Strength": 4,
+    "Base Strength": 4,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Arachas",
@@ -50,7 +50,7 @@
     "Hero": false,
     "Name": "Arachas_2",
     "Range": "Close",
-    "Strength": 4,
+    "Base Strength": 4,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Arachas",
@@ -61,7 +61,7 @@
     "Hero": false,
     "Name": "Arachas_Behemoth",
     "Range": "Siege",
-    "Strength": 6,
+    "Base Strength": 6,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "(Arachas)(.*)",
@@ -72,8 +72,9 @@
     "Hero": false,
     "Name": "Botchling",
     "Range": "Close",
-    "Strength": 4,
+    "Base Strength": 4,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -81,8 +82,9 @@
     "Hero": false,
     "Name": "Celaeno_Harpy",
     "Range": "Agile",
-    "Strength": 2,
+    "Base Strength": 2,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -90,8 +92,9 @@
     "Hero": false,
     "Name": "Cockatrice",
     "Range": "Ranged",
-    "Strength": 2,
+    "Base Strength": 2,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -99,7 +102,7 @@
     "Hero": false,
     "Name": "Crone_Brewess",
     "Range": "Close",
-    "Strength": 6,
+    "Base Strength": 6,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Crone",
@@ -110,7 +113,7 @@
     "Hero": false,
     "Name": "Crone_Weavess",
     "Range": "Close",
-    "Strength": 6,
+    "Base Strength": 6,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Crone",
@@ -121,7 +124,7 @@
     "Hero": false,
     "Name": "Crone_Whispess",
     "Range": "Close",
-    "Strength": 6,
+    "Base Strength": 6,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Crone",
@@ -132,7 +135,9 @@
     "Hero": true,
     "Name": "Draug",
     "Range": "Close",
-    "Strength": 10,
+    "Base Strength": 10,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -140,8 +145,9 @@
     "Hero": false,
     "Name": "Earth_Elemental",
     "Range": "Siege",
-    "Strength": 6,
+    "Base Strength": 6,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -149,8 +155,9 @@
     "Hero": false,
     "Name": "Endrega",
     "Range": "Ranged",
-    "Strength": 2,
+    "Base Strength": 2,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -158,8 +165,9 @@
     "Hero": false,
     "Name": "Fiend",
     "Range": "Close",
-    "Strength": 6,
+    "Base Strength": 6,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -167,8 +175,9 @@
     "Hero": false,
     "Name": "Fire_Elemental",
     "Range": "Siege",
-    "Strength": 6,
+    "Base Strength": 6,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -176,8 +185,9 @@
     "Hero": false,
     "Name": "Foglet",
     "Range": "Close",
-    "Strength": 2,
+    "Base Strength": 2,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -185,8 +195,9 @@
     "Hero": false,
     "Name": "Forktail",
     "Range": "Close",
-    "Strength": 5,
+    "Base Strength": 5,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -194,8 +205,9 @@
     "Hero": false,
     "Name": "Frightener",
     "Range": "Close",
-    "Strength": 5,
+    "Base Strength": 5,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -203,8 +215,9 @@
     "Hero": false,
     "Name": "Gargoyle",
     "Range": "Ranged",
-    "Strength": 2,
+    "Base Strength": 2,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -212,7 +225,7 @@
     "Hero": false,
     "Name": "Ghoul_0",
     "Range": "Close",
-    "Strength": 1,
+    "Base Strength": 1,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Ghoul",
@@ -223,7 +236,7 @@
     "Hero": false,
     "Name": "Ghoul_1",
     "Range": "Close",
-    "Strength": 1,
+    "Base Strength": 1,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Ghoul",
@@ -234,7 +247,7 @@
     "Hero": false,
     "Name": "Ghoul_2",
     "Range": "Close",
-    "Strength": 1,
+    "Base Strength": 1,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Ghoul",
@@ -245,8 +258,9 @@
     "Hero": false,
     "Name": "Grave_Hag",
     "Range": "Ranged",
-    "Strength": 5,
+    "Base Strength": 5,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -254,8 +268,9 @@
     "Hero": false,
     "Name": "Griffin",
     "Range": "Close",
-    "Strength": 5,
+    "Base Strength": 5,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -263,8 +278,9 @@
     "Hero": false,
     "Name": "Harpy",
     "Range": "Agile",
-    "Strength": 2,
+    "Base Strength": 2,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -272,8 +288,9 @@
     "Hero": false,
     "Name": "Ice_Giant",
     "Range": "Siege",
-    "Strength": 5,
+    "Base Strength": 5,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -281,7 +298,9 @@
     "Hero": true,
     "Name": "Imlerith",
     "Range": "Close",
-    "Strength": 10,
+    "Base Strength": 10,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -289,7 +308,8 @@
     "Hero": true,
     "Name": "Kayran",
     "Range": "Agile",
-    "Strength": 8,
+    "Base Strength": 8,
+    "Type": "Unit",
     "Abilities": ["Morale Boost"],
     "Max Number": 1
   },
@@ -298,7 +318,9 @@
     "Hero": true,
     "Name": "Leshen",
     "Range": "Ranged",
-    "Strength": 10,
+    "Base Strength": 10,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -306,7 +328,7 @@
     "Hero": false,
     "Name": "Nekker_0",
     "Range": "Close",
-    "Strength": 2,
+    "Base Strength": 2,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Nekker",
@@ -317,7 +339,7 @@
     "Hero": false,
     "Name": "Nekker_1",
     "Range": "Close",
-    "Strength": 2,
+    "Base Strength": 2,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Nekker",
@@ -328,7 +350,7 @@
     "Hero": false,
     "Name": "Nekker_2",
     "Range": "Close",
-    "Strength": 2,
+    "Base Strength": 2,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Nekker",
@@ -339,8 +361,9 @@
     "Hero": false,
     "Name": "Plague_Maiden",
     "Range": "Close",
-    "Strength": 5,
+    "Base Strength": 5,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -348,7 +371,7 @@
     "Hero": false,
     "Name": "Toad",
     "Range": "Ranged",
-    "Strength": 7,
+    "Base Strength": 7,
     "Type": "Unit",
     "Abilities": ["Scorch"],
     "Max Number": 1
@@ -358,7 +381,7 @@
     "Hero": false,
     "Name": "Vampire_Ekimmara",
     "Range": "Close",
-    "Strength": 4,
+    "Base Strength": 4,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Vampire",
@@ -369,7 +392,7 @@
     "Hero": false,
     "Name": "Vampire_Bruxa",
     "Range": "Close",
-    "Strength": 4,
+    "Base Strength": 4,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Vampire",
@@ -380,7 +403,7 @@
     "Hero": false,
     "Name": "Vampire_Garkain",
     "Range": "Close",
-    "Strength": 4,
+    "Base Strength": 4,
     "Type": "Unit",
     "Abilities": ["Muster"],
     "Tight Bond Muster ID": "Vampire",
@@ -391,8 +414,9 @@
     "Hero": false,
     "Name": "Werewolf",
     "Range": "Close",
-    "Strength": 5,
+    "Base Strength": 5,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   },
   {
@@ -400,8 +424,9 @@
     "Hero": false,
     "Name": "Wyvern",
     "Range": "Ranged",
-    "Strength": 2,
+    "Base Strength": 2,
     "Type": "Unit",
+    "Abilities": ["No ability"],
     "Max Number": 1
   }
 ]

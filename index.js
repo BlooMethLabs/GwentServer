@@ -1,5 +1,5 @@
 //jshint esversion:6
-import { removeOtherPlayer, getDeckName, getFactionCards } from './Game/Utils';
+import { removeOtherPlayer, getDeckName, getFactionCards, isDeckValid } from './Game/Utils';
 const addon = require('./GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -102,6 +102,9 @@ app.get('/test', function(req, res){
 
 app.post('/saveDeck', function (req, res) {
   console.log('Name: ' + req.body.Name + ' Deck: ' + JSON.stringify(req.body.Deck));
+  let deck = JSON.stringify(req.body.Deck);
+  let valid = addon.isDeckValid(deck);
+  console.log('Deck: ' + valid);
 })
 
 app.listen(3001, '0.0.0.0', function () {
