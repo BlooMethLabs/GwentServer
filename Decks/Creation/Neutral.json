@@ -1,0 +1,125 @@
+[
+  {
+    "Ability": "Frost",
+    "Faction": "Neutral",
+    "Name": "Biting_Frost",
+    "Type": "Special"
+  },
+  {
+    "Ability": "Fog",
+    "Faction": "Neutral",
+    "Name": "Impenetrable_Fog",
+    "Type": "Special"
+  },
+  {
+    "Ability": "Rain",
+    "Faction": "Neutral",
+    "Name": "Torrential_Rain",
+    "Type": "Special"
+  },
+  {
+    "Ability": "Clear",
+    "Faction": "Neutral",
+    "Name": "Clear_Weather",
+    "Type": "Special"
+  },
+  {
+    "Ability": "ComHorn",
+    "Faction": "Neutral",
+    "Name": "Commanders_Horn",
+    "Type": "Special"
+  },
+  {
+    "Ability": "Decoy",
+    "Faction": "Neutral",
+    "Name": "Decoy",
+    "Type": "Special"
+  },
+  {
+    "Ability": "Scorch",
+    "Faction": "Neutral",
+    "Name": "Scorch",
+    "Type": "Special"
+  },
+  {
+    "Faction": "Neutral",
+    "Hero": true,
+    "Name": "Cirilla_Fiona_Elen_Riannon",
+    "Range": "Close",
+    "Base Strength": 15,
+    "Type": "Unit",
+    "Abilities": [""]
+  },
+  {
+    "Faction": "Neutral",
+    "Hero": true,
+    "Name": "Geralt_of_Rivia",
+    "Range": "Close",
+    "Base Strength": 15,
+    "Type": "Unit",
+    "Abilities": [""]
+  },
+  {
+    "Faction": "Neutral",
+    "Hero": false,
+    "Name": "Dandelion",
+    "Range": "Close",
+    "Base Strength": 2,
+    "Type": "Unit",
+    "Abilities": ["ComHorn"]
+  },
+  {
+    "Faction": "Neutral",
+    "Hero": true,
+    "Name": "Avallach",
+    "Range": "Close",
+    "Base Strength": 0,
+    "Type": "Unit",
+    "Abilities": ["Spy"]
+  },
+  {
+    "Faction": "Neutral",
+    "Hero": true,
+    "Name": "Triss_Merigold",
+    "Range": "Close",
+    "Base Strength": 7,
+    "Type": "Unit",
+    "Abilities": [""]
+  },
+  {
+    "Faction": "Neutral",
+    "Hero": false,
+    "Name": "Vesemir",
+    "Range": "Close",
+    "Base Strength": 6,
+    "Type": "Unit",
+    "Abilities": [""]
+  },
+  {
+    "Faction": "Neutral",
+    "Hero": false,
+    "Name": "Villentretenmerth",
+    "Range": "Close",
+    "Base Strength": 7,
+    "Type": "Unit",
+    "Abilities": ["Scorch"]
+  },
+  {
+    "Faction": "Neutral",
+    "Hero": true,
+    "Name": "Yennefer_of_Vengerberg",
+    "Range": "Ranged",
+    "Base Strength": 7,
+    "Type": "Unit",
+    "Abilities": ["Scorch"]
+  },
+  {
+    "Faction": "Neutral",
+    "Hero": false,
+    "Name": "Zoltan_Chivay",
+    "Range": "Close",
+    "Base Strength": 5,
+    "Type": "Unit",
+    "Abilities": [""]
+  }
+]

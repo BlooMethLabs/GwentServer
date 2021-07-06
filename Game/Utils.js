@@ -27,7 +27,9 @@ function getDeckName(id) {
 function getFactionCards(faction) {
   switch(faction) {
     case 1:
-      return JSON.parse(fs.readFileSync("Decks/Creation/Monsters.json"));
+      let monsterCards = JSON.parse(fs.readFileSync("Decks/Creation/Monsters.json"));
+      let neutralCards = JSON.parse(fs.readFileSync("Decks/Creation/Neutral.json"));
+      return [...monsterCards, ...neutralCards];
     // case 2:
     //   console.log("sco");
     //   return JSON.parse(fs.readFileSync("../Decks/Creation/Monsters.json"));
