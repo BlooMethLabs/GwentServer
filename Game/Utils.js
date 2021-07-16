@@ -42,4 +42,11 @@ function isDeckValid(deck) {
   return true;
 }
 
-export { removeOtherPlayer, getDeckName, getFactionCards, isDeckValid };
+function convertDeckToDbFormat(name, deck) {
+  let convertedDeck = {name: name, faction: deck.Faction, leader: deck.Leader.Name};
+  let cards = deck.Cards.map(card => card.Name);
+  convertedDeck.cards = cards;
+  return convertedDeck;
+}
+
+export { removeOtherPlayer, getDeckName, getFactionCards, isDeckValid, convertDeckToDbFormat};

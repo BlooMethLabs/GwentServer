@@ -1,11 +1,40 @@
 //jshint esversion:6
-import { removeOtherPlayer, getDeckName, getFactionCards, isDeckValid } from './Game/Utils';
+import { SSL_OP_EPHEMERAL_RSA } from 'constants';
+import { removeOtherPlayer, getDeckName, getFactionCards, isDeckValid, convertDeckToDbFormat } from './Game/Utils';
 const addon = require('./GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const fs = require('fs');
 const _ = require('lodash');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/gwentDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false
+});
+
+const deckSchema = new mongoose.Schema({
+  name: String,
+  faction: String,
+  leader: String,
+  cards: [String]
+});
+
+const playerSchema = new mongoose.Schema({
+  name: String,
+  decks: [deckSchema]
+});
+
+const Deck = mongoose.model("Deck", deckSchema);
+const Player = mongoose.model("Player", playerSchema);
+
+const deck = new Deck({name: "Test", faction: "Monster", leader: "Test", cards: ["1", "2"]})
+const player = new Player({name: "Tester", decks: [deck]});
+console.log("ID: ", player._id);
+const playerId = player._id;
+
+player.save();
 
 app.use(bodyParser.json()); // <--- Here
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -105,7 +134,23 @@ app.post('/saveDeck', function (req, res) {
   let deck = JSON.stringify(req.body.Deck);
   let valid = addon.isDeckValid(deck);
   console.log('Deck: ' + valid);
-})
+  let convertedDeck = convertDeckToDbFormat(req.body.Name, req.body.Deck);
+  let convertedDeckObject = new Deck(convertedDeck);
+
+  Player.findByIdAndUpdate(
+    playerId,
+    {
+      $push: { decks: convertedDeckObject },
+    },
+    function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Updated');
+      }
+    },
+  );
+});
 
 app.listen(3001, '0.0.0.0', function () {
   console.log('Listening on port 3001');
