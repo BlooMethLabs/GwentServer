@@ -1,6 +1,12 @@
 //jshint esversion:6
 import { SSL_OP_EPHEMERAL_RSA } from 'constants';
-import { removeOtherPlayer, getDeckName, getFactionCards, isDeckValid, convertDeckToDbFormat } from './Game/Utils';
+import {
+  removeOtherPlayer,
+  getDeckName,
+  getFactionCards,
+  isDeckValid,
+  convertDeckToDbFormat,
+} from './Game/Utils';
 const addon = require('./GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -11,30 +17,42 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/gwentDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false
+  useFindAndModify: false,
 });
 
 const deckSchema = new mongoose.Schema({
   name: String,
   faction: String,
   leader: String,
-  cards: [String]
+  cards: [String],
 });
 
 const playerSchema = new mongoose.Schema({
   name: String,
-  decks: [deckSchema]
+  decks: [deckSchema],
 });
 
-const Deck = mongoose.model("Deck", deckSchema);
-const Player = mongoose.model("Player", playerSchema);
+const Deck = mongoose.model('Deck', deckSchema);
+const Player = mongoose.model('Player', playerSchema);
 
-const deck = new Deck({name: "Test", faction: "Monster", leader: "Test", cards: ["1", "2"]})
-const player = new Player({name: "Tester", decks: [deck]});
-console.log("ID: ", player._id);
-const playerId = player._id;
-
-player.save();
+// const deck = new Deck({name: "Test", faction: "Monster", leader: "Test", cards: ["1", "2"]})
+// const player = new Player({name: "Tester", decks: [deck]});
+var player = null;
+var playerId = null;
+Player.findOne({ name: 'Tester' }, (err, p) => {
+  if (err || !p) {
+    console.log(err);
+    console.log('Creating tester user');
+    player = new Player({ name: 'Tester' });
+    player.save();
+  } else {
+    console.log('p: ', p);
+    player = p;
+  }
+  console.log('player: ', player);
+  playerId = player._id;
+  console.log('ID: ', playerId);
+});
 
 app.use(bodyParser.json()); // <--- Here
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -122,15 +140,17 @@ app.get('/getFactionCards', function (req, res) {
   let faction = parseInt(request.Faction);
   console.log(faction);
   let cards = getFactionCards(faction);
-  res.send({Cards: cards});
+  res.send({ Cards: cards });
 });
 
-app.get('/test', function(req, res){
-  res.send({"Test": "Test"});
+app.get('/test', function (req, res) {
+  res.send({ Test: 'Test' });
 });
 
 app.post('/saveDeck', function (req, res) {
-  console.log('Name: ' + req.body.Name + ' Deck: ' + JSON.stringify(req.body.Deck));
+  console.log(
+    'Name: ' + req.body.Name + ' Deck: ' + JSON.stringify(req.body.Deck),
+  );
   let deck = JSON.stringify(req.body.Deck);
   let valid = addon.isDeckValid(deck);
   console.log('Deck: ' + valid);
@@ -150,6 +170,7 @@ app.post('/saveDeck', function (req, res) {
       }
     },
   );
+  res.send({ Updated: 'True' });
 });
 
 app.listen(3001, '0.0.0.0', function () {
