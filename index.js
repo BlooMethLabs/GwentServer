@@ -6,6 +6,7 @@ import {
   getFactionCards,
   isDeckValid,
   convertDeckToDbFormat,
+  convertDeckFromDbFormat,
 } from './Game/Utils';
 const addon = require('./GwentAddon');
 const express = require('express');
@@ -143,8 +144,51 @@ app.get('/getFactionCards', function (req, res) {
   res.send({ Cards: cards });
 });
 
-app.get('/test', function (req, res) {
-  res.send({ Test: 'Test' });
+app.get('/getUserDecks', function (req, res) {
+  let request = JSON.parse(req.query.req);
+  console.log(request);
+  // todo: get id from request and find decks from DB. Plus validation.
+  Player.findById(playerId, (err, p) => {
+    if (err) {
+      console.log(err);
+      res.send({ error: { message: 'Failed to get decks from DB.' } });
+    } else {
+      if (p) {
+        let decks = p.decks.map((d) => {
+          return { id: d._id, name: d.name };
+        });
+        res.send({ Decks: decks });
+      } else {
+        console.log('Error');
+        res.send({ error: { message: 'No user with ID ${playerId} found' } });
+      }
+    }
+  });
+});
+
+app.get('/getUserDeck', function (req, res) {
+  let request = JSON.parse(req.query.req);
+  console.log(request);
+  // todo: get id from request and find deck from DB. Plus validation.
+  Player.findById(playerId, (err, p) => {
+    if (err) {
+      console.log(err);
+      res.send({ error: { message: 'Failed to get deck from DB.' } });
+    } else {
+      if (p) {
+        let deck = p.decks.find((d) => {
+          console.log('Player deck ID: ', d._id);
+          return d._id == request.deckId;
+        });
+        console.log('Deck: ', deck);
+        let convertedDeck = convertDeckFromDbFormat(deck);
+        res.send({ Deck: convertedDeck });
+      } else {
+        console.log('Error');
+        res.send({ error: { message: 'No user with ID ${playerId} found' } });
+      }
+    }
+  });
 });
 
 app.post('/saveDeck', function (req, res) {
@@ -171,6 +215,10 @@ app.post('/saveDeck', function (req, res) {
     },
   );
   res.send({ Updated: 'True' });
+});
+
+app.get('/test', function (req, res) {
+  res.send({ Test: 'Test' });
 });
 
 app.listen(3001, '0.0.0.0', function () {

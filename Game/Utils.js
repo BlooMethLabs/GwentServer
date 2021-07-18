@@ -25,16 +25,20 @@ function getDeckName(id) {
 }
 
 function getFactionCards(faction) {
-  switch(faction) {
+  switch (faction) {
     case 1:
-      let monsterCards = JSON.parse(fs.readFileSync("Decks/Creation/Monsters.json"));
-      let neutralCards = JSON.parse(fs.readFileSync("Decks/Creation/Neutral.json"));
+      let monsterCards = JSON.parse(
+        fs.readFileSync('Decks/Creation/Monsters.json'),
+      );
+      let neutralCards = JSON.parse(
+        fs.readFileSync('Decks/Creation/Neutral.json'),
+      );
       return [...monsterCards, ...neutralCards];
     // case 2:
     //   console.log("sco");
     //   return JSON.parse(fs.readFileSync("../Decks/Creation/Monsters.json"));
     default:
-      return {error: "No collection with that ID."};
+      return { error: 'No collection with that ID.' };
   }
 }
 
@@ -43,10 +47,43 @@ function isDeckValid(deck) {
 }
 
 function convertDeckToDbFormat(name, deck) {
-  let convertedDeck = {name: name, faction: deck.Faction, leader: deck.Leader.Name};
-  let cards = deck.Cards.map(card => card.Name);
+  let convertedDeck = {
+    name: name,
+    faction: deck.Faction,
+    leader: deck.Leader.Name,
+  };
+  let cards = deck.Cards.map((card) => card.Name);
   convertedDeck.cards = cards;
   return convertedDeck;
 }
 
-export { removeOtherPlayer, getDeckName, getFactionCards, isDeckValid, convertDeckToDbFormat};
+function convertDeckFromDbFormat(deck) {
+  // let convertedDeck = {name: name, faction: deck.Faction, leader: deck.Leader.Name};
+  // let cards = deck.Cards.map(card => card.Name);
+  let neutralCards = JSON.parse(fs.readFileSync('Decks/Creation/Neutral.json'));
+  console.log(neutralCards);
+  let factionCards = null;
+  console.log(deck.faction);
+  if (deck.faction === 'Monsters') {
+    factionCards = JSON.parse(fs.readFileSync('Decks/Creation/Monsters.json'));
+    console.log(factionCards);
+  }
+  let availableCards = [...factionCards, ...neutralCards];
+  let convertedDeck = { Faction: deck.faction };
+  convertedDeck.Cards = deck.cards.map((card) =>
+    availableCards.find((c) => c.Name === card),
+  );
+  convertedDeck.Leader = availableCards.find((c) => c.Name === deck.leader);
+
+  // todo: other factions
+  return convertedDeck;
+}
+
+export {
+  removeOtherPlayer,
+  getDeckName,
+  getFactionCards,
+  isDeckValid,
+  convertDeckToDbFormat,
+  convertDeckFromDbFormat,
+};
