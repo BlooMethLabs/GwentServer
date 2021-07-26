@@ -15,6 +15,7 @@ const app = express();
 const fs = require('fs');
 const _ = require('lodash');
 const mongoose = require('mongoose');
+const encrypt = require('mongoose-encryption');
 mongoose.connect('mongodb://localhost:27017/gwentDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -30,21 +31,28 @@ const deckSchema = new mongoose.Schema({
 
 const playerSchema = new mongoose.Schema({
   name: String,
+  email: String,
+  password: String,
   decks: [deckSchema],
 });
+
+const secret = 'Thisisourlittlesecret.';
+
+playerSchema.plugin(encrypt, {secret: secret, encryptedFields: ['password']});
 
 const Deck = mongoose.model('Deck', deckSchema);
 const Player = mongoose.model('Player', playerSchema);
 
-// const deck = new Deck({name: "Test", faction: "Monster", leader: "Test", cards: ["1", "2"]})
-// const player = new Player({name: "Tester", decks: [deck]});
 var player = null;
 var playerId = null;
 Player.findOne({ name: 'Tester' }, (err, p) => {
   if (err || !p) {
-    console.log(err);
     console.log('Creating tester user');
-    player = new Player({ name: 'Tester' });
+    player = new Player({
+      name: 'Tester',
+      email: 'test@test.com',
+      password: 'test',
+    });
     player.save();
   } else {
     console.log('p: ', p);
@@ -85,6 +93,56 @@ app.use(function (req, res, next) {
 
 let game = null;
 let gameId = null;
+
+app.post('/register', function(req, res, next){
+  const name = req.body.Name;
+  const email = req.body.Email;
+  const password = req.body.Password;
+  Player.findOne({ email: email }, (err, p) => {
+    if (err) {
+      console.log(err);
+      next(err);
+    } else if (p) {
+      console.log('p: ', p);
+      next({message: 'User with that email already exists.'});
+    } else {
+      const newPlayer = new Player({
+        name: name,
+        email: email,
+        password: password,
+      });
+      newPlayer.save(function (err) {
+        if (err) {
+          next(err);
+        } else {
+          res.send('OK');
+        }
+      });
+    }
+  });
+});
+
+app.post('/login', function(req, res, next){
+  const email = req.body.Email;
+  const password = req.body.Password;
+
+  Player.findOne({ email: email }, (err, p) => {
+    if (err || !p) {
+      if (err) {
+        console.log(err);
+        next(err);
+      } else {
+        next({message: 'No user with that email registered'})
+      }
+    } else {
+      if (p.password === password) {
+        res.send('OK');
+      } else {
+        next({message: 'Wrong email or password.'});
+      }
+    }
+  })
+});
 
 app.post('/startGame', function (req, res) {
   console.log('Deck IDs: ', req.body.RedDeckId, req.body.BlueDeckId);
@@ -219,6 +277,12 @@ app.post('/saveDeck', function (req, res) {
 
 app.get('/test', function (req, res) {
   res.send({ Test: 'Test' });
+});
+
+app.use(function(err, req, res, next) {
+  console.log("Here");
+  console.error(err);
+  res.status(500).send(err);
 });
 
 app.listen(3001, '0.0.0.0', function () {
