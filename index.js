@@ -1,4 +1,5 @@
 //jshint esversion:6
+require('dotenv').config();
 import { SSL_OP_EPHEMERAL_RSA } from 'constants';
 import {
   removeOtherPlayer,
@@ -8,14 +9,20 @@ import {
   convertDeckToDbFormat,
   convertDeckFromDbFormat,
 } from './Game/Utils';
+
 const addon = require('./GwentAddon');
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express();
 const fs = require('fs');
 const _ = require('lodash');
 const mongoose = require('mongoose');
-const encrypt = require('mongoose-encryption');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const secret = process.env.SECRET;
+
+const app = express();
+
 mongoose.connect('mongodb://localhost:27017/gwentDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -29,38 +36,59 @@ const deckSchema = new mongoose.Schema({
   cards: [String],
 });
 
-const playerSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: String,
-  email: String,
-  password: String,
+  email: {type: String, required: true, unique: true},
+  password: {type: String, required: true},
   decks: [deckSchema],
 });
 
-const secret = 'Thisisourlittlesecret.';
+userSchema.pre('save', function(next){
+  // Check if document is new or a new password has been set
+  if (this.isNew || this.isModified('password')) {
+    // Saving reference to this because of changing scopes
+    const document = this;
+    bcrypt.hash(document.password, saltRounds, function (err, hashedPassword) {
+      if (err) {
+        next(err);
+      } else {
+        document.password = hashedPassword;
+        next();
+      }
+    });
+  } else {
+    next();
+  }
+})
 
-playerSchema.plugin(encrypt, {secret: secret, encryptedFields: ['password']});
+userSchema.methods.isCorrectPassword = function(password, callback) {
+  bcrypt.compare(password, this.password, function(err, same) {
+    if (err) {
+      callback(err);
+    } else {
+      callback(err, same);
+    }
+  });
+}
 
 const Deck = mongoose.model('Deck', deckSchema);
-const Player = mongoose.model('Player', playerSchema);
+const User = mongoose.model('User', userSchema);
 
-var player = null;
-var playerId = null;
-Player.findOne({ name: 'Tester' }, (err, p) => {
-  if (err || !p) {
+var user = null;
+var userId = null;
+User.findOne({ email: 'Tester@test.com' }, (err, u) => {
+  if (err || !u) {
     console.log('Creating tester user');
-    player = new Player({
+    user = new User({
       name: 'Tester',
-      email: 'test@test.com',
+      email: 'Tester@test.com',
       password: 'test',
     });
-    player.save();
+    user.save();
   } else {
-    console.log('p: ', p);
-    player = p;
+    user = u;
   }
-  console.log('player: ', player);
-  playerId = player._id;
-  console.log('ID: ', playerId);
+  userId = user._id;
 });
 
 app.use(bodyParser.json()); // <--- Here
@@ -94,54 +122,63 @@ app.use(function (req, res, next) {
 let game = null;
 let gameId = null;
 
-app.post('/register', function(req, res, next){
-  const name = req.body.Name;
-  const email = req.body.Email;
-  const password = req.body.Password;
-  Player.findOne({ email: email }, (err, p) => {
+app.get('/home', function(req, res) {
+  res.send('Welcome!');
+});
+
+app.get('/secret', function(req, res) {
+  res.send('The password is potato');
+});
+
+app.post('/login', function(req, res) {
+  const email = req.body.email;
+  const password = req.body.password;
+  User.findOne({ email }, function(err, user) {
     if (err) {
-      console.log(err);
-      next(err);
-    } else if (p) {
-      console.log('p: ', p);
-      next({message: 'User with that email already exists.'});
-    } else {
-      const newPlayer = new Player({
-        name: name,
-        email: email,
-        password: password,
+      console.error(err);
+      next({message: 'Internal error'});
+    } else if (!user) {
+      res.status(401).json({
+        message: 'Incorrect email or password',
       });
-      newPlayer.save(function (err) {
+    } else {
+      user.isCorrectPassword(password, function(err, same) {
         if (err) {
-          next(err);
+            next({message: 'Internal error please try again'})
+        } else if (!same) {
+          res.status(401).json({
+            message: 'Incorrect email or password',
+          });
         } else {
-          res.send('OK');
+          // Issue token
+          const payload = { email };
+          const token = jwt.sign(payload, secret, {
+            expiresIn: '1h'
+          });
+          console.log('Logged in ', email);
+          res.cookie('token', token, { httpOnly: true }).sendStatus(200);
         }
       });
     }
   });
 });
 
-app.post('/login', function(req, res, next){
-  const email = req.body.Email;
-  const password = req.body.Password;
-
-  Player.findOne({ email: email }, (err, p) => {
-    if (err || !p) {
-      if (err) {
-        console.log(err);
-        next(err);
-      } else {
-        next({message: 'No user with that email registered'})
-      }
+app.post('/register', function(req, res, next){
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
+  const newUser = new User({
+    name: name,
+    email: email,
+    password: password,
+  });
+  newUser.save(function (err) {
+    if (err) {
+      next(err);
     } else {
-      if (p.password === password) {
-        res.send('OK');
-      } else {
-        next({message: 'Wrong email or password.'});
-      }
+      res.send('OK');
     }
-  })
+  });
 });
 
 app.post('/startGame', function (req, res) {
@@ -206,7 +243,7 @@ app.get('/getUserDecks', function (req, res) {
   let request = JSON.parse(req.query.req);
   console.log(request);
   // todo: get id from request and find decks from DB. Plus validation.
-  Player.findById(playerId, (err, p) => {
+  User.findById(userId, (err, p) => {
     if (err) {
       console.log(err);
       res.send({ error: { message: 'Failed to get decks from DB.' } });
@@ -218,7 +255,7 @@ app.get('/getUserDecks', function (req, res) {
         res.send({ Decks: decks });
       } else {
         console.log('Error');
-        res.send({ error: { message: 'No user with ID ${playerId} found' } });
+        res.send({ error: { message: 'No user with ID ${userId} found' } });
       }
     }
   });
@@ -228,14 +265,14 @@ app.get('/getUserDeck', function (req, res) {
   let request = JSON.parse(req.query.req);
   console.log(request);
   // todo: get id from request and find deck from DB. Plus validation.
-  Player.findById(playerId, (err, p) => {
+  User.findById(userId, (err, p) => {
     if (err) {
       console.log(err);
       res.send({ error: { message: 'Failed to get deck from DB.' } });
     } else {
       if (p) {
         let deck = p.decks.find((d) => {
-          console.log('Player deck ID: ', d._id);
+          console.log('User deck ID: ', d._id);
           return d._id == request.deckId;
         });
         console.log('Deck: ', deck);
@@ -243,7 +280,7 @@ app.get('/getUserDeck', function (req, res) {
         res.send({ Deck: convertedDeck });
       } else {
         console.log('Error');
-        res.send({ error: { message: 'No user with ID ${playerId} found' } });
+        res.send({ error: { message: 'No user with ID ${userId} found' } });
       }
     }
   });
@@ -259,8 +296,8 @@ app.post('/saveDeck', function (req, res) {
   let convertedDeck = convertDeckToDbFormat(req.body.Name, req.body.Deck);
   let convertedDeckObject = new Deck(convertedDeck);
 
-  Player.findByIdAndUpdate(
-    playerId,
+  User.findByIdAndUpdate(
+    userId,
     {
       $push: { decks: convertedDeckObject },
     },
