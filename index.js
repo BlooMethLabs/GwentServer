@@ -17,16 +17,17 @@ const fs = require('fs');
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const secret = process.env.SECRET;
+const withAuth = require('./middleware');
 
 const app = express();
 
 mongoose.connect('mongodb://localhost:27017/gwentDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false,
 });
 
 const deckSchema = new mongoose.Schema({
@@ -50,7 +51,7 @@ userSchema.pre('save', function(next){
     const document = this;
     bcrypt.hash(document.password, saltRounds, function (err, hashedPassword) {
       if (err) {
-        next(err);
+        next({status: 500, error: err});
       } else {
         document.password = hashedPassword;
         next();
@@ -91,8 +92,9 @@ User.findOne({ email: 'Tester@test.com' }, (err, u) => {
   userId = user._id;
 });
 
-app.use(bodyParser.json()); // <--- Here
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
@@ -122,51 +124,53 @@ app.use(function (req, res, next) {
 let game = null;
 let gameId = null;
 
-app.get('/home', function(req, res) {
+app.get('/api/home', function(req, res) {
   res.send('Welcome!');
 });
 
-app.get('/secret', function(req, res) {
+app.get('/api/secret', withAuth, function(req, res) {
+  console.log('secret');
   res.send('The password is potato');
 });
 
-app.post('/login', function(req, res) {
+app.get('/api/checkToken', withAuth, function(req, res) {
+  res.sendStatus(200);
+})
+
+app.post('/api/authenticate', function(req, res, next) {
   const email = req.body.email;
   const password = req.body.password;
   User.findOne({ email }, function(err, user) {
     if (err) {
       console.error(err);
-      next({message: 'Internal error'});
+      next({status: 500, error: 'Internal error'});
     } else if (!user) {
-      res.status(401).json({
-        message: 'Incorrect email or password',
-      });
+      next({status: 401, error: 'Incorrect email or password'})
     } else {
       user.isCorrectPassword(password, function(err, same) {
         if (err) {
-            next({message: 'Internal error please try again'})
+            next({status: 500, error: 'Internal error please try again'})
         } else if (!same) {
-          res.status(401).json({
-            message: 'Incorrect email or password',
-          });
+          next({status: 401, error: 'Incorrect email or password'})
         } else {
           // Issue token
           const payload = { email };
           const token = jwt.sign(payload, secret, {
-            expiresIn: '1h'
+            expiresIn: '1d'
           });
           console.log('Logged in ', email);
-          res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+          res.cookie('token', token, { httpOnly: true }).send({email: email, name: user.name});
         }
       });
     }
   });
 });
 
-app.post('/register', function(req, res, next){
+app.post('/api/register', function(req, res, next){
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
+  console.log("Registering ", email);
   const newUser = new User({
     name: name,
     email: email,
@@ -174,32 +178,40 @@ app.post('/register', function(req, res, next){
   });
   newUser.save(function (err) {
     if (err) {
-      next(err);
+      if (err.code === 11000){
+        next({status: 500, error: 'A user with that email already exists.'});
+      } else {
+        next({status: 500, error: err.message});
+      }
     } else {
-      res.send('OK');
+      res.send(JSON.stringify({message: "Successfully created user."}));
     }
   });
 });
 
-app.post('/startGame', function (req, res) {
-  console.log('Deck IDs: ', req.body.RedDeckId, req.body.BlueDeckId);
-  let redDeckName = getDeckName(req.body.RedDeckId);
-  let blueDeckName = getDeckName(req.body.BlueDeckId);
-  let redDeck = JSON.parse(fs.readFileSync(redDeckName));
-  let blueDeck = JSON.parse(fs.readFileSync(blueDeckName));
-  let redDeckStr = JSON.stringify(redDeck);
-  let blueDeckStr = JSON.stringify(blueDeck);
+app.post('/api/startGame', function (req, res) {
+  try {
+    console.log('Deck IDs: ', req.body.RedDeckId, req.body.BlueDeckId);
+    let redDeckName = getDeckName(req.body.RedDeckId);
+    let blueDeckName = getDeckName(req.body.BlueDeckId);
+    let redDeck = JSON.parse(fs.readFileSync(redDeckName));
+    let blueDeck = JSON.parse(fs.readFileSync(blueDeckName));
+    let redDeckStr = JSON.stringify(redDeck);
+    let blueDeckStr = JSON.stringify(blueDeck);
 
-  let newGameState = null;
-  newGameState = addon.createGameWithDecks(blueDeckStr, redDeckStr);
-  // newGameState = addon.createGame();
-  let newGameStateObj = JSON.parse(newGameState);
-  game = newGameStateObj;
-  gameId = 1;
-  res.send({ GameId: 1 });
+    let newGameState = null;
+    newGameState = addon.createGameWithDecks(blueDeckStr, redDeckStr);
+    // newGameState = addon.createGame();
+    let newGameStateObj = JSON.parse(newGameState);
+    game = newGameStateObj;
+    gameId = 1;
+    res.send({ GameId: 1 });
+  } catch(err) {
+    next({status: 500, error: err});
+  }
 });
 
-app.get('/getGameState', function (req, res) {
+app.get('/api/getGameState', function (req, res) {
   let request = JSON.parse(req.query.req);
   let side = request.Side;
   console.log(req.query);
@@ -211,7 +223,7 @@ app.get('/getGameState', function (req, res) {
   res.send(g);
 });
 
-app.post('/takeAction', function (req, res) {
+app.post('/api/takeAction', function (req, res) {
   console.log('Action req: ', req.body.Action);
   let action = JSON.stringify(req.body.Action);
   let gameStr = JSON.stringify(game);
@@ -231,7 +243,7 @@ app.post('/takeAction', function (req, res) {
   res.send(g);
 });
 
-app.get('/getFactionCards', function (req, res) {
+app.get('/api/getFactionCards', function (req, res) {
   let request = JSON.parse(req.query.req);
   let faction = parseInt(request.Faction);
   console.log(faction);
@@ -239,14 +251,14 @@ app.get('/getFactionCards', function (req, res) {
   res.send({ Cards: cards });
 });
 
-app.get('/getUserDecks', function (req, res) {
+app.get('/api/getUserDecks', function (req, res) {
   let request = JSON.parse(req.query.req);
   console.log(request);
   // todo: get id from request and find decks from DB. Plus validation.
   User.findById(userId, (err, p) => {
     if (err) {
       console.log(err);
-      res.send({ error: { message: 'Failed to get decks from DB.' } });
+      res.send({ error: 'Failed to get decks from DB.' });
     } else {
       if (p) {
         let decks = p.decks.map((d) => {
@@ -255,20 +267,20 @@ app.get('/getUserDecks', function (req, res) {
         res.send({ Decks: decks });
       } else {
         console.log('Error');
-        res.send({ error: { message: 'No user with ID ${userId} found' } });
+        res.send({ error: `No user with ID ${userId} found` });
       }
     }
   });
 });
 
-app.get('/getUserDeck', function (req, res) {
+app.get('/api/getUserDeck', function (req, res) {
   let request = JSON.parse(req.query.req);
   console.log(request);
   // todo: get id from request and find deck from DB. Plus validation.
   User.findById(userId, (err, p) => {
     if (err) {
       console.log(err);
-      res.send({ error: { message: 'Failed to get deck from DB.' } });
+      res.send({ error: 'Failed to get deck from DB.' });
     } else {
       if (p) {
         let deck = p.decks.find((d) => {
@@ -280,13 +292,13 @@ app.get('/getUserDeck', function (req, res) {
         res.send({ Deck: convertedDeck });
       } else {
         console.log('Error');
-        res.send({ error: { message: 'No user with ID ${userId} found' } });
+        res.send({ error: `No user with ID ${userId} found` });
       }
     }
   });
 });
 
-app.post('/saveDeck', function (req, res) {
+app.post('/api/saveDeck', function (req, res) {
   console.log(
     'Name: ' + req.body.Name + ' Deck: ' + JSON.stringify(req.body.Deck),
   );
@@ -312,16 +324,14 @@ app.post('/saveDeck', function (req, res) {
   res.send({ Updated: 'True' });
 });
 
-app.get('/test', function (req, res) {
+app.get('/api/test', function (req, res) {
   res.send({ Test: 'Test' });
 });
 
 app.use(function(err, req, res, next) {
-  console.log("Here");
-  console.error(err);
-  res.status(500).send(err);
+  res.status(err.status).send({error: err.error});
 });
 
-app.listen(3001, '0.0.0.0', function () {
-  console.log('Listening on port 3001');
+app.listen(8080, function () {
+  console.log('Listening on port 8080');
 });
