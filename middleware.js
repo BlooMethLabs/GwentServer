@@ -4,7 +4,6 @@ const secret = process.env.SECRET;
 
 const withAuth = function(req, res, next) {
   const token = req.cookies.token;
-  console.log(token);
   if (!token) {
     res.status(401).send({message: 'Unauthorized: No token provided'});
   } else {
@@ -12,8 +11,8 @@ const withAuth = function(req, res, next) {
       if (err) {
         res.status(401).send({message: 'Unauthorized: Invalid token'});
       } else {
-        console.log()
-        req.email = decoded.email;
+        console.log(decoded);
+        req.username = decoded.username;
         next();
       }
     });

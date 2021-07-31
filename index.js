@@ -38,8 +38,7 @@ const deckSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  name: String,
-  email: {type: String, required: true, unique: true},
+  username: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   decks: [deckSchema],
 });
@@ -77,12 +76,11 @@ const User = mongoose.model('User', userSchema);
 
 var user = null;
 var userId = null;
-User.findOne({ email: 'Tester@test.com' }, (err, u) => {
+User.findOne({ username: 'Tester@test.com' }, (err, u) => {
   if (err || !u) {
     console.log('Creating tester user');
     user = new User({
-      name: 'Tester',
-      email: 'Tester@test.com',
+      username: 'Tester@test.com',
       password: 'test',
     });
     user.save();
@@ -138,29 +136,29 @@ app.get('/api/checkToken', withAuth, function(req, res) {
 })
 
 app.post('/api/authenticate', function(req, res, next) {
-  const email = req.body.email;
+  const username = req.body.username;
   const password = req.body.password;
-  User.findOne({ email }, function(err, user) {
+  User.findOne({ username }, function(err, user) {
     if (err) {
       console.error(err);
       next({status: 500, error: 'Internal error'});
     } else if (!user) {
-      next({status: 401, error: 'Incorrect email or password'})
+      next({status: 401, error: 'Incorrect username or password'})
     } else {
       user.isCorrectPassword(password, function(err, same) {
         if (err) {
           console.log(err);
           next({status: 500, error: 'Internal error please try again'})
         } else if (!same) {
-          next({status: 401, error: 'Incorrect email or password'})
+          next({status: 401, error: 'Incorrect username or password'})
         } else {
           // Issue token
-          const payload = { email };
+          const payload = { username };
           const token = jwt.sign(payload, secret, {
             expiresIn: '1d'
           });
-          console.log('Logged in ', email);
-          res.cookie('token', token, { httpOnly: true }).send({email: email, name: user.name});
+          console.log('Logged in ', username);
+          res.cookie('token', token, { httpOnly: true }).send({username: username, name: user.name});
         }
       });
     }
@@ -168,19 +166,17 @@ app.post('/api/authenticate', function(req, res, next) {
 });
 
 app.post('/api/register', function(req, res, next){
-  const name = req.body.name;
-  const email = req.body.email;
+  const username = req.body.username;
   const password = req.body.password;
-  console.log("Registering ", email);
+  console.log("Registering ", username);
   const newUser = new User({
-    name: name,
-    email: email,
+    username: username,
     password: password,
   });
   newUser.save(function (err) {
     if (err) {
       if (err.code === 11000){
-        next({status: 500, error: 'A user with that email already exists.'});
+        next({status: 500, error: 'A user with that username already exists.'});
       } else {
         next({status: 500, error: err.message});
       }
@@ -256,19 +252,22 @@ app.get('/api/getUserDecks', withAuth, function (req, res) {
   // let request = JSON.parse(req.query.req);
   // console.log(request);
   // todo: get id from request and find decks from DB. Plus validation.
-  console.log(userId);
-  User.findById(userId, (err, p) => {
+  User.find({username: req.username}, (err, p) => {
     if (err) {
       console.log(err);
       next({ status: 500, error: 'Failed to get decks from DB.' });
     } else {
       if (p) {
-        if(p.decks) {
+        console.log(p);
+        if(p.decks !== null) {
           let decks = p.decks.map((d) => {
+            console.log(d);
             return { id: d._id, name: d.name };
           });
+          console.log(decks);
           res.send({ Decks: decks });
         } else {
+          console.log("sending empty");
           res.send({Decks: []});
         }
       } else {
@@ -304,9 +303,9 @@ app.get('/api/getUserDeck', function (req, res) {
   });
 });
 
-app.post('/api/saveDeck', function (req, res) {
+app.post('/api/saveDeck', withAuth, function (req, res) {
   console.log(
-    'Name: ' + req.body.Name + ' Deck: ' + JSON.stringify(req.body.Deck),
+    'Username: ' + req.username + ' Name: ' + req.body.Name + ' Deck: ' + JSON.stringify(req.body.Deck),
   );
   let deck = JSON.stringify(req.body.Deck);
   let valid = addon.isDeckValid(deck);
@@ -314,20 +313,21 @@ app.post('/api/saveDeck', function (req, res) {
   let convertedDeck = convertDeckToDbFormat(req.body.Name, req.body.Deck);
   let convertedDeckObject = new Deck(convertedDeck);
 
-  User.findByIdAndUpdate(
-    userId,
+  User.findOneAndUpdate(
+    {username: req.username},
     {
       $push: { decks: convertedDeckObject },
     },
     function (err) {
       if (err) {
         console.log(err);
+        next({status: 500, error: 'Failed to update decks'});
       } else {
         console.log('Updated');
+        res.send({ Updated: 'True' });
       }
     },
   );
-  res.send({ Updated: 'True' });
 });
 
 app.get('/api/test', function (req, res) {
