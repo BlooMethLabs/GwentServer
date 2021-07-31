@@ -149,7 +149,8 @@ app.post('/api/authenticate', function(req, res, next) {
     } else {
       user.isCorrectPassword(password, function(err, same) {
         if (err) {
-            next({status: 500, error: 'Internal error please try again'})
+          console.log(err);
+          next({status: 500, error: 'Internal error please try again'})
         } else if (!same) {
           next({status: 401, error: 'Incorrect email or password'})
         } else {
@@ -251,20 +252,25 @@ app.get('/api/getFactionCards', function (req, res) {
   res.send({ Cards: cards });
 });
 
-app.get('/api/getUserDecks', function (req, res) {
-  let request = JSON.parse(req.query.req);
-  console.log(request);
+app.get('/api/getUserDecks', withAuth, function (req, res) {
+  // let request = JSON.parse(req.query.req);
+  // console.log(request);
   // todo: get id from request and find decks from DB. Plus validation.
+  console.log(userId);
   User.findById(userId, (err, p) => {
     if (err) {
       console.log(err);
-      res.send({ error: 'Failed to get decks from DB.' });
+      next({ status: 500, error: 'Failed to get decks from DB.' });
     } else {
       if (p) {
-        let decks = p.decks.map((d) => {
-          return { id: d._id, name: d.name };
-        });
-        res.send({ Decks: decks });
+        if(p.decks) {
+          let decks = p.decks.map((d) => {
+            return { id: d._id, name: d.name };
+          });
+          res.send({ Decks: decks });
+        } else {
+          res.send({Decks: []});
+        }
       } else {
         console.log('Error');
         res.send({ error: `No user with ID ${userId} found` });
