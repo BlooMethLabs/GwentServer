@@ -18,11 +18,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^5.13.2",
-    "mongoose-encryption": "^2.1.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.12.17",
-    "@babel/node": "^7.12.17",
-    "@babel/preset-env": "^7.12.17"
+    "mongoose-encryption": "^2.1.0",
+    "nodemon": "^2.0.12"
   }
 }

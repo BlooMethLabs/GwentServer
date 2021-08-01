@@ -1,14 +1,15 @@
 //jshint esversion:6
 require('dotenv').config();
-import { SSL_OP_EPHEMERAL_RSA } from 'constants';
-import {
+const SSL_OP_EPHEMERAL_RSA = require('constants');
+const {
   removeOtherPlayer,
   getDeckName,
   getFactionCards,
   isDeckValid,
   convertDeckToDbFormat,
   convertDeckFromDbFormat,
-} from './Game/Utils';
+} = require('./Game/Utils');
+// const removeOtherPlayer = require("./Game/Utils");
 
 const addon = require('./GwentAddon');
 const express = require('express');
@@ -38,19 +39,19 @@ const deckSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  username: {type: String, required: true, unique: true},
-  password: {type: String, required: true},
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   decks: [deckSchema],
 });
 
-userSchema.pre('save', function(next){
+userSchema.pre('save', function (next) {
   // Check if document is new or a new password has been set
   if (this.isNew || this.isModified('password')) {
     // Saving reference to this because of changing scopes
     const document = this;
     bcrypt.hash(document.password, saltRounds, function (err, hashedPassword) {
       if (err) {
-        next({status: 500, error: err});
+        next({ status: 500, error: err });
       } else {
         document.password = hashedPassword;
         next();
@@ -59,17 +60,17 @@ userSchema.pre('save', function(next){
   } else {
     next();
   }
-})
+});
 
-userSchema.methods.isCorrectPassword = function(password, callback) {
-  bcrypt.compare(password, this.password, function(err, same) {
+userSchema.methods.isCorrectPassword = function (password, callback) {
+  bcrypt.compare(password, this.password, function (err, same) {
     if (err) {
       callback(err);
     } else {
       callback(err, same);
     }
   });
-}
+};
 
 const Deck = mongoose.model('Deck', deckSchema);
 const User = mongoose.model('User', userSchema);
@@ -122,71 +123,76 @@ app.use(function (req, res, next) {
 let game = null;
 let gameId = null;
 
-app.get('/api/home', function(req, res) {
+app.get('/api/home', function (req, res) {
   res.send('Welcome!');
 });
 
-app.get('/api/secret', withAuth, function(req, res) {
+app.get('/api/secret', withAuth, function (req, res) {
   console.log('secret');
   res.send('The password is potato');
 });
 
-app.get('/api/checkToken', withAuth, function(req, res) {
+app.get('/api/checkToken', withAuth, function (req, res) {
   res.sendStatus(200);
-})
+});
 
-app.post('/api/authenticate', function(req, res, next) {
+app.post('/api/authenticate', function (req, res, next) {
   const username = req.body.username;
   const password = req.body.password;
-  User.findOne({ username }, function(err, user) {
+  User.findOne({ username }, function (err, user) {
     if (err) {
       console.error(err);
-      next({status: 500, error: 'Internal error'});
+      next({ status: 500, error: 'Internal error' });
     } else if (!user) {
-      next({status: 401, error: 'Incorrect username or password'})
+      next({ status: 401, error: 'Incorrect username or password' });
     } else {
-      user.isCorrectPassword(password, function(err, same) {
+      user.isCorrectPassword(password, function (err, same) {
         if (err) {
           console.log(err);
-          next({status: 500, error: 'Internal error please try again'})
+          next({ status: 500, error: 'Internal error please try again' });
         } else if (!same) {
-          next({status: 401, error: 'Incorrect username or password'})
+          next({ status: 401, error: 'Incorrect username or password' });
         } else {
           // Issue token
           const payload = { username };
           const token = jwt.sign(payload, secret, {
-            expiresIn: '1d'
+            expiresIn: '1d',
           });
           console.log('Logged in ', username);
-          res.cookie('token', token, { httpOnly: true }).send({username: username, name: user.name});
+          res
+            .cookie('token', token, { httpOnly: true })
+            .send({ username: username, name: user.name });
         }
       });
     }
   });
 });
 
-app.post('/api/register', function(req, res, next){
+app.post('/api/register', function (req, res, next) {
   const username = req.body.username;
   const password = req.body.password;
-  console.log("Registering ", username);
+  console.log('Registering ', username);
   const newUser = new User({
     username: username,
     password: password,
   });
   newUser.save(function (err) {
     if (err) {
-      if (err.code === 11000){
-        next({status: 500, error: 'A user with that username already exists.'});
+      if (err.code === 11000) {
+        next({
+          status: 500,
+          error: 'A user with that username already exists.',
+        });
       } else {
-        next({status: 500, error: err.message});
+        next({ status: 500, error: err.message });
       }
     } else {
-      res.send(JSON.stringify({message: "Successfully created user."}));
+      res.send(JSON.stringify({ message: 'Successfully created user.' }));
     }
   });
 });
 
-app.post('/api/startGame', function (req, res) {
+app.post('/api/startGame', function (req, res, next) {
   try {
     console.log('Deck IDs: ', req.body.RedDeckId, req.body.BlueDeckId);
     let redDeckName = getDeckName(req.body.RedDeckId);
@@ -203,8 +209,8 @@ app.post('/api/startGame', function (req, res) {
     game = newGameStateObj;
     gameId = 1;
     res.send({ GameId: 1 });
-  } catch(err) {
-    next({status: 500, error: err});
+  } catch (err) {
+    next({ status: 500, error: err });
   }
 });
 
@@ -248,18 +254,18 @@ app.get('/api/getFactionCards', function (req, res) {
   res.send({ Cards: cards });
 });
 
-app.get('/api/getUserDecks', withAuth, function (req, res) {
+app.get('/api/getUserDecks', withAuth, function (req, res, next) {
   // let request = JSON.parse(req.query.req);
   // console.log(request);
   // todo: get id from request and find decks from DB. Plus validation.
-  User.find({username: req.username}, (err, p) => {
+  User.findOne({ username: req.username }, (err, p) => {
     if (err) {
       console.log(err);
       next({ status: 500, error: 'Failed to get decks from DB.' });
     } else {
       if (p) {
         console.log(p);
-        if(p.decks !== null) {
+        if (p.decks !== null) {
           let decks = p.decks.map((d) => {
             console.log(d);
             return { id: d._id, name: d.name };
@@ -267,8 +273,8 @@ app.get('/api/getUserDecks', withAuth, function (req, res) {
           console.log(decks);
           res.send({ Decks: decks });
         } else {
-          console.log("sending empty");
-          res.send({Decks: []});
+          console.log('sending empty');
+          res.send({ Decks: [] });
         }
       } else {
         console.log('Error');
@@ -278,26 +284,24 @@ app.get('/api/getUserDecks', withAuth, function (req, res) {
   });
 });
 
-app.get('/api/getUserDeck', function (req, res) {
+app.get('/api/getUserDeck', withAuth, function (req, res, next) {
   let request = JSON.parse(req.query.req);
-  console.log(request);
-  // todo: get id from request and find deck from DB. Plus validation.
-  User.findById(userId, (err, p) => {
+  User.findOne({ username: req.username }, (err, p) => {
     if (err) {
-      console.log(err);
-      res.send({ error: 'Failed to get deck from DB.' });
+      next({ status: 500, error: 'Failed to get decks from DB.' });
     } else {
       if (p) {
         let deck = p.decks.find((d) => {
-          console.log('User deck ID: ', d._id);
           return d._id == request.deckId;
         });
-        console.log('Deck: ', deck);
-        let convertedDeck = convertDeckFromDbFormat(deck);
-        res.send({ Deck: convertedDeck });
+        try {
+          let convertedDeck = convertDeckFromDbFormat(deck);
+          res.send({ Deck: convertedDeck });
+        } catch (err) {
+          next({ status: 500, error: err });
+        }
       } else {
-        console.log('Error');
-        res.send({ error: `No user with ID ${userId} found` });
+        next({ status: 500, error: `No user found with username ${username}` });
       }
     }
   });
@@ -305,7 +309,12 @@ app.get('/api/getUserDeck', function (req, res) {
 
 app.post('/api/saveDeck', withAuth, function (req, res) {
   console.log(
-    'Username: ' + req.username + ' Name: ' + req.body.Name + ' Deck: ' + JSON.stringify(req.body.Deck),
+    'Username: ' +
+      req.username +
+      ' Name: ' +
+      req.body.Name +
+      ' Deck: ' +
+      JSON.stringify(req.body.Deck),
   );
   let deck = JSON.stringify(req.body.Deck);
   let valid = addon.isDeckValid(deck);
@@ -314,14 +323,14 @@ app.post('/api/saveDeck', withAuth, function (req, res) {
   let convertedDeckObject = new Deck(convertedDeck);
 
   User.findOneAndUpdate(
-    {username: req.username},
+    { username: req.username },
     {
       $push: { decks: convertedDeckObject },
     },
     function (err) {
       if (err) {
         console.log(err);
-        next({status: 500, error: 'Failed to update decks'});
+        next({ status: 500, error: 'Failed to update decks' });
       } else {
         console.log('Updated');
         res.send({ Updated: 'True' });
@@ -334,8 +343,8 @@ app.get('/api/test', function (req, res) {
   res.send({ Test: 'Test' });
 });
 
-app.use(function(err, req, res, next) {
-  res.status(err.status).send({error: err.error});
+app.use(function (err, req, res, next) {
+  res.status(err.status).send({ error: err.error });
 });
 
 app.listen(8080, function () {
