@@ -285,14 +285,18 @@ app.get('/api/getUserDecks', withAuth, function (req, res, next) {
 });
 
 app.get('/api/getUserDeck', withAuth, function (req, res, next) {
-  let request = JSON.parse(req.query.req);
+  if(!req.query.deckId) {
+    next({status: 400, error: 'No deck ID in query.'});
+  }
+  let deckId = req.query.deckId;
+  // let request = JSON.parse(req.query.req);
   User.findOne({ username: req.username }, (err, p) => {
     if (err) {
       next({ status: 500, error: 'Failed to get decks from DB.' });
     } else {
       if (p) {
         let deck = p.decks.find((d) => {
-          return d._id == request.deckId;
+          return d._id == deckId;
         });
         try {
           let convertedDeck = convertDeckFromDbFormat(deck);
@@ -308,22 +312,31 @@ app.get('/api/getUserDeck', withAuth, function (req, res, next) {
 });
 
 app.post('/api/saveDeck', withAuth, function (req, res) {
+  if (!req.username || !req.body.name || !req.body.deck) {
+    next({status: 400, error: 'Incomplete request, requires username, deck name and deck'});
+  }
   console.log(
     'Username: ' +
       req.username +
       ' Name: ' +
-      req.body.Name +
+      req.body.name +
       ' Deck: ' +
-      JSON.stringify(req.body.Deck),
+      JSON.stringify(req.body.deck),
   );
-  let deck = JSON.stringify(req.body.Deck);
+  let username = req.username;
+  let deckId = req.body.deckId;
+  let deck = JSON.stringify(req.body.deck);
   let valid = addon.isDeckValid(deck);
   console.log('Deck: ' + valid);
-  let convertedDeck = convertDeckToDbFormat(req.body.Name, req.body.Deck);
+  if (!valid) {
+    next({status: 400, error: 'Deck not valid'});
+  }
+  let convertedDeck = convertDeckToDbFormat(req.body.name, req.body.deck);
   let convertedDeckObject = new Deck(convertedDeck);
+  console.log("Converted deck: " + convertedDeckObject);
 
   User.findOneAndUpdate(
-    { username: req.username },
+    { username: username },
     {
       $push: { decks: convertedDeckObject },
     },
@@ -331,12 +344,53 @@ app.post('/api/saveDeck', withAuth, function (req, res) {
       if (err) {
         console.log(err);
         next({ status: 500, error: 'Failed to update decks' });
-      } else {
-        console.log('Updated');
-        res.send({ Updated: 'True' });
+      }
+      console.log('Updated');
+      if (deckId) {
+        User.findOneAndUpdate(
+          {username: username},
+          {
+            $pull: { decks: { _id: deckId } }
+          },
+          function (err) {
+            if (err) {
+              console.log(err);
+              next({ status: 500, error: 'Failed to remove old deck' });
+            }
+            console.log('Removed old');
+            res.send({ Saved: 'True' });
+          }
+        )
       }
     },
   );
+  // } else {
+  //   console.log(deckId);
+  //   // User.findOne({ username: username }, function (err, user) {
+  //   //   if (err) {
+  //   //     console.log(err);
+  //   //     next({ status: 500, error: 'Failed to find user.' });
+  //   //   } else {
+  //   //     user.decks.find(d => d.id === deckId);
+  //   //     res.send({ Updated: 'True' });
+  //   //   }
+  //   // });
+  //   Deck.findById(deckId, function(err, d){
+  //     if (err) {
+  //       next({status: 500, error: 'Failed to find deck'});
+  //     }
+  //     d.faction = deck.faction;
+  //     d.name = deck.name;
+  //     d.cards = deck.cards;
+  //     d.leader = deck.leader;
+  //     d.save(err => {
+  //       if (err) {
+  //         next({status: 500, error: 'Failed to save deck'});
+  //       }
+  //       res.send({Updated: 'True'});
+  //     });
+  //   });
+  // }
 });
 
 app.get('/api/test', function (req, res) {
