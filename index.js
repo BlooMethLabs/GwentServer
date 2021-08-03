@@ -358,39 +358,14 @@ app.post('/api/saveDeck', withAuth, function (req, res) {
               next({ status: 500, error: 'Failed to remove old deck' });
             }
             console.log('Removed old');
-            res.send({ Saved: 'True' });
+            res.send({ deckId: convertedDeckObject.id });
           }
         )
+      } else {
+        res.send({ deckId: convertedDeckObject.id});
       }
     },
   );
-  // } else {
-  //   console.log(deckId);
-  //   // User.findOne({ username: username }, function (err, user) {
-  //   //   if (err) {
-  //   //     console.log(err);
-  //   //     next({ status: 500, error: 'Failed to find user.' });
-  //   //   } else {
-  //   //     user.decks.find(d => d.id === deckId);
-  //   //     res.send({ Updated: 'True' });
-  //   //   }
-  //   // });
-  //   Deck.findById(deckId, function(err, d){
-  //     if (err) {
-  //       next({status: 500, error: 'Failed to find deck'});
-  //     }
-  //     d.faction = deck.faction;
-  //     d.name = deck.name;
-  //     d.cards = deck.cards;
-  //     d.leader = deck.leader;
-  //     d.save(err => {
-  //       if (err) {
-  //         next({status: 500, error: 'Failed to save deck'});
-  //       }
-  //       res.send({Updated: 'True'});
-  //     });
-  //   });
-  // }
 });
 
 app.get('/api/test', function (req, res) {
