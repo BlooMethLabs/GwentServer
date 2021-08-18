@@ -21,6 +21,8 @@ function removeOtherPlayer(game, side) {
 }
 
 function getDeckName(id) {
+  if (!(id > 0 && id < 5))
+    return null;
   return deckNames[id];
 }
 

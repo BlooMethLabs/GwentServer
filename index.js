@@ -192,26 +192,68 @@ app.post('/api/register', function (req, res, next) {
   });
 });
 
-app.post('/api/startGame', function (req, res, next) {
-  try {
-    console.log('Deck IDs: ', req.body.RedDeckId, req.body.BlueDeckId);
-    let redDeckName = getDeckName(req.body.RedDeckId);
-    let blueDeckName = getDeckName(req.body.BlueDeckId);
-    let redDeck = JSON.parse(fs.readFileSync(redDeckName));
-    let blueDeck = JSON.parse(fs.readFileSync(blueDeckName));
-    let redDeckStr = JSON.stringify(redDeck);
-    let blueDeckStr = JSON.stringify(blueDeck);
+function getDeckFromUser(deckId, user) {
+  let deck = user.decks.find((d) => {
+    console.log(d._id);
+    return d._id == deckId;
+  });
+  return JSON.stringify(convertDeckFromDbFormat(deck));
+}
 
-    let newGameState = null;
-    newGameState = addon.createGameWithDecks(blueDeckStr, redDeckStr);
-    // newGameState = addon.createGame();
-    let newGameStateObj = JSON.parse(newGameState);
-    game = newGameStateObj;
-    gameId = 1;
-    res.send({ GameId: 1 });
+function createNewGame(redDeck, blueDeck) {
+  let newGameState = addon.createGameWithDecks(blueDeck, redDeck);
+  let newGameStateObj = JSON.parse(newGameState);
+  console.log(newGameStateObj);
+  game = newGameStateObj;
+  gameId = 1;
+  return 1;
+}
+
+app.post('/api/startGame', withAuth, function (req, res, next) {
+  let redDeck = null;
+  let blueDeck = null;
+  let redDeckId = req.body.RedDeckId
+  let blueDeckId = req.body.BlueDeckId
+  try {
+    let redDeckName = getDeckName(redDeckId);
+    let blueDeckName = getDeckName(blueDeckId);
+
+    if (redDeckName) {
+      redDeck = JSON.stringify(JSON.parse(fs.readFileSync(redDeckName)));
+    }
+    if (blueDeckName) {
+      blueDeck = JSON.stringify(JSON.parse(fs.readFileSync(blueDeckName)));
+    }
+
+    if (redDeck && blueDeck) {
+      let newGameId = createNewGame(redDeck, blueDeck);
+      res.send({ GameId: newGameId });
+      return;
+    }
   } catch (err) {
     next({ status: 500, error: err });
   }
+
+  User.findOne({ username: req.username }, (err, user) => {
+    try {
+      if (err) {
+        next({ status: 500, error: 'Failed to get decks from DB.' });
+      }
+      if (!user) {
+        next({ status: 500, error: `No user found with username ${username}` });
+      }
+      if (!redDeck) {
+        redDeck = getDeckFromUser(redDeckId, user);
+      }
+      if (!blueDeck) {
+        blueDeck = getDeckFromUser(blueDeckId, user);
+      }
+      let newGameId = createNewGame(redDeck, blueDeck);
+      res.send({ GameId: newGameId });
+    } catch (err) {
+      next({ status: 500, error: err });
+    }
+  });
 });
 
 app.get('/api/getGameState', function (req, res) {
