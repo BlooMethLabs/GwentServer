@@ -201,6 +201,7 @@ function getDeckFromUser(deckId, user) {
 }
 
 function createNewGame(redDeck, blueDeck) {
+  // TODO: Handle errors
   let newGameState = addon.createGameWithDecks(blueDeck, redDeck);
   let newGameStateObj = JSON.parse(newGameState);
   console.log(newGameStateObj);

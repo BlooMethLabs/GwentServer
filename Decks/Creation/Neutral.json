@@ -48,7 +48,7 @@
     "Range": "Close",
     "Base Strength": 15,
     "Type": "Unit",
-    "Abilities": [""]
+    "Abilities": ["No ability"]
   },
   {
     "Faction": "Neutral",
@@ -57,7 +57,7 @@
     "Range": "Close",
     "Base Strength": 15,
     "Type": "Unit",
-    "Abilities": [""]
+    "Abilities": ["No ability"]
   },
   {
     "Faction": "Neutral",
@@ -84,7 +84,7 @@
     "Range": "Close",
     "Base Strength": 7,
     "Type": "Unit",
-    "Abilities": [""]
+    "Abilities": ["No ability"]
   },
   {
     "Faction": "Neutral",
@@ -93,7 +93,7 @@
     "Range": "Close",
     "Base Strength": 6,
     "Type": "Unit",
-    "Abilities": [""]
+    "Abilities": ["No ability"]
   },
   {
     "Faction": "Neutral",
@@ -120,6 +120,6 @@
     "Range": "Close",
     "Base Strength": 5,
     "Type": "Unit",
-    "Abilities": [""]
+    "Abilities": ["No ability"]
   }
 ]
