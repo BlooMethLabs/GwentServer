@@ -111,7 +111,7 @@
     "Range": "Ranged",
     "Base Strength": 7,
     "Type": "Unit",
-    "Abilities": ["Scorch"]
+    "Abilities": ["Medic"]
   },
   {
     "Faction": "Neutral",
