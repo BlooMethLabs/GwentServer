@@ -72,8 +72,18 @@ userSchema.methods.isCorrectPassword = function (password, callback) {
   });
 };
 
+const gameSchema = new mongoose.Schema({
+  gameState: { type: String },
+  redPlayer: userSchema,
+  bluePlayer: userSchema,
+  redDeck: deckSchema,
+  bluePlayer: deckSchema,
+  actions: [{ type: String }],
+});
+
 const Deck = mongoose.model('Deck', deckSchema);
 const User = mongoose.model('User', userSchema);
+const Game = mongoose.model('Game', gameSchema);
 
 var user = null;
 var userId = null;
@@ -204,6 +214,14 @@ function createNewGame(redDeck, blueDeck) {
   // TODO: Handle errors
   let newGameState = addon.createGameWithDecks(blueDeck, redDeck);
   let newGameStateObj = JSON.parse(newGameState);
+  let newGame = new Game({
+    gameState: JSON.stringify(newGameStateObj)
+  });
+  newGame.save(err => {
+    if (err) {
+      console.log("Failed to save game: " + err.message);
+    }
+  });
   console.log(newGameStateObj);
   game = newGameStateObj;
   gameId = 1;
@@ -269,7 +287,7 @@ app.get('/api/getGameState', function (req, res) {
   res.send(g);
 });
 
-app.post('/api/takeAction', function (req, res) {
+app.post('/api/takeAction', function (req, res, next) {
   console.log('Action req: ', req.body.Action);
   let action = JSON.stringify(req.body.Action);
   let gameStr = JSON.stringify(game);
@@ -281,9 +299,10 @@ app.post('/api/takeAction', function (req, res) {
   g = removeOtherPlayer(g, req.body.Action.Side);
   if ('Error' in newGameStateObj) {
     console.log('New game: ', newGameStateObj);
-    res.status(500, newGameStateObj.Error);
-    res.send(newGameStateObj);
-    return;
+    next({ status: 500, error: newGameStateObj.Error });
+    // res.status(500, newGameStateObj.Error);
+    // res.send(newGameStateObj);
+    // return;
   }
   game = newGameStateObj;
   res.send(g);
