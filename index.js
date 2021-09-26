@@ -51,14 +51,14 @@ userSchema.pre('save', function (next) {
     const document = this;
     bcrypt.hash(document.password, saltRounds, function (err, hashedPassword) {
       if (err) {
-        next({ status: 500, error: err });
+        return next({ status: 500, error: err });
       } else {
         document.password = hashedPassword;
-        next();
+        return next();
       }
     });
   } else {
-    next();
+    return next();
   }
 });
 
@@ -146,60 +146,62 @@ app.get('/api/checkToken', withAuth, function (req, res) {
   res.sendStatus(200);
 });
 
-app.post('/api/authenticate', function (req, res, next) {
-  const username = req.body.username;
-  const password = req.body.password;
-  User.findOne({ username }, function (err, user) {
-    if (err) {
-      console.error(err);
-      next({ status: 500, error: 'Internal error' });
-    } else if (!user) {
-      next({ status: 401, error: 'Incorrect username or password' });
-    } else {
-      user.isCorrectPassword(password, function (err, same) {
-        if (err) {
-          console.log(err);
-          next({ status: 500, error: 'Internal error please try again' });
-        } else if (!same) {
-          next({ status: 401, error: 'Incorrect username or password' });
-        } else {
-          // Issue token
-          const payload = { username };
-          const token = jwt.sign(payload, secret, {
-            expiresIn: '1d',
-          });
-          console.log('Logged in ', username);
-          res
-            .cookie('token', token, { httpOnly: true })
-            .send({ username: username, name: user.name });
-        }
-      });
-    }
-  });
-});
+// Not yet needed, used for checking if authed
+// app.post('/api/authenticate', async function (req, res, next) {
+//   console.log("Authenticate");
+//   const username = req.body.username;
+//   const password = req.body.password;
+//   User.findOne({ username }, function (err, user) {
+//     if (err) {
+//       console.error(err);
+//       next({ status: 500, error: 'Internal error' });
+//     } else if (!user) {
+//       next({ status: 401, error: 'Incorrect username or password' });
+//     } else {
+//       user.isCorrectPassword(password, function (err, same) {
+//         if (err) {
+//           console.log(err);
+//           next({ status: 500, error: 'Internal error please try again' });
+//         } else if (!same) {
+//           next({ status: 401, error: 'Incorrect username or password' });
+//         } else {
+//           // Issue token
+//           const payload = { username };
+//           const token = jwt.sign(payload, secret, {
+//             expiresIn: '1d',
+//           });
+//           console.log('Logged in ', username);
+//           res
+//             .cookie('token', token, { httpOnly: true })
+//             .send({ username: username, name: user.name });
+//         }
+//       });
+//     }
+//   });
+// });
 
-app.post('/api/register', function (req, res, next) {
-  const username = req.body.username;
-  const password = req.body.password;
-  console.log('Registering ', username);
-  const newUser = new User({
-    username: username,
-    password: password,
-  });
-  newUser.save(function (err) {
-    if (err) {
-      if (err.code === 11000) {
-        next({
-          status: 500,
-          error: 'A user with that username already exists.',
-        });
-      } else {
-        next({ status: 500, error: err.message });
-      }
+app.post('/api/register', async function (req, res, next) {
+  try {
+    const username = req.body.username;
+    const password = req.body.password;
+    console.log('Registering ', username);
+    const newUser = new User({
+      username: username,
+      password: password,
+    });
+    const ret = await newUser.save();
+    console.log(ret);
+    res.send(JSON.stringify({ message: 'Successfully created user.' }));
+  } catch (err) {
+    if (err.code === 11000) {
+      return next({
+        status: 500,
+        error: 'A user with that username already exists.',
+      });
     } else {
-      res.send(JSON.stringify({ message: 'Successfully created user.' }));
+      return next({ status: 500, error: err.message });
     }
-  });
+  }
 });
 
 function getDeckFromUser(deckId, user) {
@@ -228,12 +230,12 @@ function createNewGame(redDeck, blueDeck) {
   return 1;
 }
 
-app.post('/api/startGame', withAuth, function (req, res, next) {
-  let redDeck = null;
-  let blueDeck = null;
-  let redDeckId = req.body.RedDeckId
-  let blueDeckId = req.body.BlueDeckId
+app.post('/api/startGame', withAuth, async function (req, res, next) {
   try {
+    let redDeck = null;
+    let blueDeck = null;
+    let redDeckId = req.body.RedDeckId;
+    let blueDeckId = req.body.BlueDeckId;
     let redDeckName = getDeckName(redDeckId);
     let blueDeckName = getDeckName(blueDeckId);
 
@@ -249,30 +251,25 @@ app.post('/api/startGame', withAuth, function (req, res, next) {
       res.send({ GameId: newGameId });
       return;
     }
-  } catch (err) {
-    next({ status: 500, error: err });
-  }
 
-  User.findOne({ username: req.username }, (err, user) => {
-    try {
-      if (err) {
-        next({ status: 500, error: 'Failed to get decks from DB.' });
-      }
-      if (!user) {
-        next({ status: 500, error: `No user found with username ${username}` });
-      }
-      if (!redDeck) {
-        redDeck = getDeckFromUser(redDeckId, user);
-      }
-      if (!blueDeck) {
-        blueDeck = getDeckFromUser(blueDeckId, user);
-      }
-      let newGameId = createNewGame(redDeck, blueDeck);
-      res.send({ GameId: newGameId });
-    } catch (err) {
-      next({ status: 500, error: err });
+    let user = await User.findOne({ username: req.username });
+    if (!user) {
+      return next({
+        status: 500,
+        error: `No user found with username ${username}`,
+      });
     }
-  });
+    if (!redDeck) {
+      redDeck = getDeckFromUser(redDeckId, user);
+    }
+    if (!blueDeck) {
+      blueDeck = getDeckFromUser(blueDeckId, user);
+    }
+    let newGameId = createNewGame(redDeck, blueDeck);
+    res.send({ GameId: newGameId });
+  } catch(err) {
+    return next({ status: 500, error: err });
+  }
 });
 
 app.get('/api/getGameState', function (req, res) {
@@ -287,25 +284,26 @@ app.get('/api/getGameState', function (req, res) {
   res.send(g);
 });
 
-app.post('/api/takeAction', function (req, res, next) {
-  console.log('Action req: ', req.body.Action);
-  let action = JSON.stringify(req.body.Action);
-  let gameStr = JSON.stringify(game);
+app.post('/api/takeAction', async function (req, res, next) {
+  try {
+    console.log('Action req: ', req.body.Action);
+    let action = JSON.stringify(req.body.Action);
+    let gameStr = JSON.stringify(game);
 
-  let newGameState = null;
-  newGameState = addon.takeAction(gameStr, action);
-  let newGameStateObj = JSON.parse(newGameState);
-  let g = _.cloneDeep(newGameStateObj);
-  g = removeOtherPlayer(g, req.body.Action.Side);
-  if ('Error' in newGameStateObj) {
-    console.log('New game: ', newGameStateObj);
-    next({ status: 500, error: newGameStateObj.Error });
-    // res.status(500, newGameStateObj.Error);
-    // res.send(newGameStateObj);
-    // return;
+    let newGameState = null;
+    newGameState = addon.takeAction(gameStr, action);
+    let newGameStateObj = JSON.parse(newGameState);
+    let g = _.cloneDeep(newGameStateObj);
+    g = removeOtherPlayer(g, req.body.Action.Side);
+    if ('Error' in newGameStateObj) {
+      console.log('New game: ', newGameStateObj);
+      return next({ status: 500, error: newGameStateObj.Error });
+    }
+    game = newGameStateObj;
+    res.send(g);
+  } catch (err) {
+    return next({ status: 500, error: err });
   }
-  game = newGameStateObj;
-  res.send(g);
 });
 
 app.get('/api/getFactionCards', function (req, res) {
@@ -316,118 +314,108 @@ app.get('/api/getFactionCards', function (req, res) {
   res.send({ Cards: cards });
 });
 
-app.get('/api/getUserDecks', withAuth, function (req, res, next) {
+app.get('/api/getUserDecks', withAuth, async function (req, res, next) {
   // let request = JSON.parse(req.query.req);
   // console.log(request);
   // todo: get id from request and find decks from DB. Plus validation.
-  User.findOne({ username: req.username }, (err, p) => {
-    if (err) {
-      console.log(err);
-      next({ status: 500, error: 'Failed to get decks from DB.' });
-    } else {
-      if (p) {
-        console.log(p);
-        if (p.decks !== null) {
-          let decks = p.decks.map((d) => {
-            console.log(d);
-            return { id: d._id, name: d.name };
-          });
-          console.log(decks);
-          res.send({ Decks: decks });
-        } else {
-          console.log('sending empty');
-          res.send({ Decks: [] });
-        }
-      } else {
-        console.log('Error');
-        res.send({ error: `No user with ID ${userId} found` });
-      }
-    }
-  });
-});
-
-app.get('/api/getUserDeck', withAuth, function (req, res, next) {
-  if(!req.query.deckId) {
-    next({status: 400, error: 'No deck ID in query.'});
-  }
-  let deckId = req.query.deckId;
-  // let request = JSON.parse(req.query.req);
-  User.findOne({ username: req.username }, (err, p) => {
-    if (err) {
-      next({ status: 500, error: 'Failed to get decks from DB.' });
-    } else {
-      if (p) {
-        let deck = p.decks.find((d) => {
-          return d._id == deckId;
+  try {
+    let p = await User.findOne({ username: req.username });
+    if (p) {
+      console.log(p);
+      if (p.decks !== null) {
+        let decks = p.decks.map((d) => {
+          console.log(d);
+          return { id: d._id, name: d.name };
         });
-        try {
-          let convertedDeck = convertDeckFromDbFormat(deck);
-          res.send({ Deck: convertedDeck });
-        } catch (err) {
-          next({ status: 500, error: err });
-        }
+        console.log(decks);
+        res.send({ Decks: decks });
       } else {
-        next({ status: 500, error: `No user found with username ${username}` });
+        console.log('sending empty');
+        res.send({ Decks: [] });
       }
+    } else {
+      console.log('Error');
+      return next({status: 400,  error: `No user with ID ${userId} found` });
     }
-  });
+  } catch (err) {
+    console.log(err);
+    return next({ status: 500, error: 'Failed to get decks from DB.' });
+  }
 });
 
-app.post('/api/saveDeck', withAuth, function (req, res) {
-  if (!req.username || !req.body.name || !req.body.deck) {
-    next({status: 400, error: 'Incomplete request, requires username, deck name and deck'});
+app.get('/api/getUserDeck', withAuth, async function (req, res, next) {
+  try {
+    let deckId = req.query.deckId;
+    if (!deckId) {
+      return next({ status: 400, error: 'No deck ID in query.' });
+    }
+    let u = await User.findOne({ username: req.username });
+    if (u) {
+      let deck = u.decks.find((d) => {
+        return d._id == deckId;
+      });
+      if (!deck) {
+        return next({status: 400, error: `Couldn't find deck with ID ${deckId}.`});
+      }
+      let convertedDeck = convertDeckFromDbFormat(deck);
+      res.send({ Deck: convertedDeck });
+    } else {
+      return next({ status: 500, error: `No user found with username ${username}` });
+    }
+  } catch(err) {
+    console.log(err);
+    return next({ status: 500, error: 'Failed to get decks from DB.' });
   }
-  console.log(
-    'Username: ' +
-      req.username +
-      ' Name: ' +
-      req.body.name +
-      ' Deck: ' +
-      JSON.stringify(req.body.deck),
-  );
-  let username = req.username;
-  let deckId = req.body.deckId;
-  let deck = JSON.stringify(req.body.deck);
-  let valid = addon.isDeckValid(deck);
-  console.log('Deck: ' + valid);
-  if (!valid) {
-    next({status: 400, error: 'Deck not valid'});
-  }
-  let convertedDeck = convertDeckToDbFormat(req.body.name, req.body.deck);
-  let convertedDeckObject = new Deck(convertedDeck);
-  console.log("Converted deck: " + convertedDeckObject);
+});
 
-  User.findOneAndUpdate(
-    { username: username },
-    {
-      $push: { decks: convertedDeckObject },
-    },
-    function (err) {
-      if (err) {
-        console.log(err);
-        next({ status: 500, error: 'Failed to update decks' });
-      }
-      console.log('Updated');
-      if (deckId) {
-        User.findOneAndUpdate(
-          {username: username},
-          {
-            $pull: { decks: { _id: deckId } }
-          },
-          function (err) {
-            if (err) {
-              console.log(err);
-              next({ status: 500, error: 'Failed to remove old deck' });
-            }
-            console.log('Removed old');
-            res.send({ deckId: convertedDeckObject.id });
-          }
-        )
-      } else {
-        res.send({ deckId: convertedDeckObject.id});
-      }
-    },
-  );
+app.post('/api/saveDeck', withAuth, async function (req, res) {
+  try {
+    if (!req.username || !req.body.name || !req.body.deck) {
+      return next({
+        status: 400,
+        error: 'Incomplete request, requires username, deck name and deck',
+      });
+    }
+    console.log(
+      'Username: ' +
+        req.username +
+        ' Name: ' +
+        req.body.name +
+        ' Deck: ' +
+        JSON.stringify(req.body.deck),
+    );
+    let username = req.username;
+    let deckId = req.body.deckId;
+    let deck = JSON.stringify(req.body.deck);
+    let valid = addon.isDeckValid(deck);
+    console.log('Deck: ' + valid);
+    if (!valid) {
+      return next({ status: 400, error: 'Deck not valid' });
+    }
+    let convertedDeck = convertDeckToDbFormat(req.body.name, req.body.deck);
+    let convertedDeckObject = new Deck(convertedDeck);
+    console.log('Converted deck: ' + convertedDeckObject);
+
+    await User.findOneAndUpdate(
+      { username: username },
+      {
+        $push: { decks: convertedDeckObject },
+      },
+    );
+    console.log('Updated');
+    if (deckId) {
+      await User.findOneAndUpdate(
+        { username: username },
+        {
+          $pull: { decks: { _id: deckId } },
+        },
+      );
+      console.log('Removed old');
+    }
+    res.send({ deckId: convertedDeckObject.id });
+  } catch (err) {
+    return next({ status: 500, error: 'Failed to update decks' });
+  }
 });
 
 app.get('/api/test', function (req, res) {
