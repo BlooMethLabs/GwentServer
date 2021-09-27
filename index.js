@@ -146,39 +146,38 @@ app.get('/api/checkToken', withAuth, function (req, res) {
   res.sendStatus(200);
 });
 
-// Not yet needed, used for checking if authed
-// app.post('/api/authenticate', async function (req, res, next) {
-//   console.log("Authenticate");
-//   const username = req.body.username;
-//   const password = req.body.password;
-//   User.findOne({ username }, function (err, user) {
-//     if (err) {
-//       console.error(err);
-//       next({ status: 500, error: 'Internal error' });
-//     } else if (!user) {
-//       next({ status: 401, error: 'Incorrect username or password' });
-//     } else {
-//       user.isCorrectPassword(password, function (err, same) {
-//         if (err) {
-//           console.log(err);
-//           next({ status: 500, error: 'Internal error please try again' });
-//         } else if (!same) {
-//           next({ status: 401, error: 'Incorrect username or password' });
-//         } else {
-//           // Issue token
-//           const payload = { username };
-//           const token = jwt.sign(payload, secret, {
-//             expiresIn: '1d',
-//           });
-//           console.log('Logged in ', username);
-//           res
-//             .cookie('token', token, { httpOnly: true })
-//             .send({ username: username, name: user.name });
-//         }
-//       });
-//     }
-//   });
-// });
+app.post('/api/authenticate', async function (req, res, next) {
+  console.log("Authenticate");
+  const username = req.body.username;
+  const password = req.body.password;
+  User.findOne({ username }, function (err, user) {
+    if (err) {
+      console.error(err);
+      next({ status: 500, error: 'Internal error' });
+    } else if (!user) {
+      next({ status: 401, error: 'Incorrect username or password' });
+    } else {
+      user.isCorrectPassword(password, function (err, same) {
+        if (err) {
+          console.log(err);
+          next({ status: 500, error: 'Internal error please try again' });
+        } else if (!same) {
+          next({ status: 401, error: 'Incorrect username or password' });
+        } else {
+          // Issue token
+          const payload = { username };
+          const token = jwt.sign(payload, secret, {
+            expiresIn: '1d',
+          });
+          console.log('Logged in ', username);
+          res
+            .cookie('token', token, { httpOnly: true })
+            .send({ username: username, name: user.name });
+        }
+      });
+    }
+  });
+});
 
 app.post('/api/register', async function (req, res, next) {
   try {
@@ -212,17 +211,16 @@ function getDeckFromUser(deckId, user) {
   return JSON.stringify(convertDeckFromDbFormat(deck));
 }
 
-function createNewGame(redDeck, blueDeck) {
+async function createNewGame(redDeck, blueDeck) {
   // TODO: Handle errors
   let newGameState = addon.createGameWithDecks(blueDeck, redDeck);
   let newGameStateObj = JSON.parse(newGameState);
   let newGame = new Game({
     gameState: JSON.stringify(newGameStateObj)
   });
-  newGame.save(err => {
-    if (err) {
-      console.log("Failed to save game: " + err.message);
-    }
+  await newGame.save().catch(err => {
+    console.log(err);
+    return Promise.reject(`Error saving new game ${err}`);
   });
   console.log(newGameStateObj);
   game = newGameStateObj;
@@ -247,7 +245,10 @@ app.post('/api/startGame', withAuth, async function (req, res, next) {
     }
 
     if (redDeck && blueDeck) {
-      let newGameId = createNewGame(redDeck, blueDeck);
+      let newGameId = await createNewGame(redDeck, blueDeck).catch((err) => {
+        console.log(err);
+        return next({ status: 500, error: `Error while creating new game: ${err}` });
+      });
       res.send({ GameId: newGameId });
       return;
     }
@@ -265,9 +266,13 @@ app.post('/api/startGame', withAuth, async function (req, res, next) {
     if (!blueDeck) {
       blueDeck = getDeckFromUser(blueDeckId, user);
     }
-    let newGameId = createNewGame(redDeck, blueDeck);
+    let newGameId = await createNewGame(redDeck, blueDeck).catch(err => {
+      console.log(err);
+      return next({ status: 500, error: `Error while creating new game: ${err}` });
+    });
     res.send({ GameId: newGameId });
   } catch(err) {
+    console.log(err);
     return next({ status: 500, error: err });
   }
 });
