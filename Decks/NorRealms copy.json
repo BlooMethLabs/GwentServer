@@ -1,0 +1,442 @@
+{
+  "Cards": [
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 1,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Poor_Fucking_Infantry_5",
+      "Name": "Poor_Fucking_Infantry",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Poor_Fucking_Infantry",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_1_2",
+      "Name": "Trebuchet_1",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "ID": "Red_Biting_Frost_1",
+      "Name": "Biting_Frost",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 4,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Blue_Stripes_Commando_3",
+      "Name": "Blue_Stripes_Commando",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Blue_Stripes_Commando",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 8,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Catapult_1",
+      "Name": "Catapult",
+      "Range": "Siege",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Catapult",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Clear",
+      "Faction": "Neutral",
+      "ID": "Red_Clear_Weather_0",
+      "Name": "Clear_Weather",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Scorch",
+      "Faction": "Neutral",
+      "ID": "Red_Scorch_0",
+      "Name": "Scorch",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 8,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Catapult_2",
+      "Name": "Catapult",
+      "Range": "Siege",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Catapult",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 1,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Poor_Fucking_Infantry_2",
+      "Name": "Poor_Fucking_Infantry",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Poor_Fucking_Infantry",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 8,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Catapult_4",
+      "Name": "Catapult",
+      "Range": "Siege",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Catapult",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_0_3",
+      "Name": "Trebuchet_0",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 8,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Catapult_5",
+      "Name": "Catapult",
+      "Range": "Siege",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Catapult",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_0_2",
+      "Name": "Trebuchet_0",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Fog",
+      "Faction": "Neutral",
+      "ID": "Red_Impenetrable_Fog_0",
+      "Name": "Impenetrable_Fog",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_0_0",
+      "Name": "Trebuchet_0",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_0_5",
+      "Name": "Trebuchet_0",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_0_4",
+      "Name": "Trebuchet_0",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 4,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Blue_Stripes_Commando_4",
+      "Name": "Blue_Stripes_Commando",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Blue_Stripes_Commando",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 4,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Blue_Stripes_Commando_1",
+      "Name": "Blue_Stripes_Commando",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Blue_Stripes_Commando",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 1,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Poor_Fucking_Infantry_3",
+      "Name": "Poor_Fucking_Infantry",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Poor_Fucking_Infantry",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "ID": "Red_Decoy_0",
+      "Name": "Decoy",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Fog",
+      "Faction": "Neutral",
+      "ID": "Red_Impenetrable_Fog_1",
+      "Name": "Impenetrable_Fog",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 1,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Poor_Fucking_Infantry_0",
+      "Name": "Poor_Fucking_Infantry",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Poor_Fucking_Infantry",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Scorch",
+      "Faction": "Neutral",
+      "ID": "Red_Scorch_1",
+      "Name": "Scorch",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Rain",
+      "Faction": "Neutral",
+      "ID": "Red_Torrential_Rain_1",
+      "Name": "Torrential_Rain",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 8,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Catapult_0",
+      "Name": "Catapult",
+      "Range": "Siege",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Catapult",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_0_1",
+      "Name": "Trebuchet_0",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_1_0",
+      "Name": "Trebuchet_1",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_1_1",
+      "Name": "Trebuchet_1",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_1_4",
+      "Name": "Trebuchet_1",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_1_5",
+      "Name": "Trebuchet_1",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "ID": "Red_Biting_Frost_0",
+      "Name": "Biting_Frost",
+      "Side": "Red",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 1,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Poor_Fucking_Infantry_4",
+      "Name": "Poor_Fucking_Infantry",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Poor_Fucking_Infantry",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 8,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Catapult_3",
+      "Name": "Catapult",
+      "Range": "Siege",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Catapult",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 1,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Poor_Fucking_Infantry_1",
+      "Name": "Poor_Fucking_Infantry",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Poor_Fucking_Infantry",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 4,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Blue_Stripes_Commando_0",
+      "Name": "Blue_Stripes_Commando",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Blue_Stripes_Commando",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 4,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Blue_Stripes_Commando_2",
+      "Name": "Blue_Stripes_Commando",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Blue_Stripes_Commando",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Tight Bond"],
+      "Base Strength": 4,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Blue_Stripes_Commando_5",
+      "Name": "Blue_Stripes_Commando",
+      "Range": "Close",
+      "Side": "Red",
+      "Tight Bond Muster ID": "Blue_Stripes_Commando",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Northern Realms",
+      "Hero": false,
+      "ID": "Red_Trebuchet_1_3",
+      "Name": "Trebuchet_1",
+      "Range": "Siege",
+      "Side": "Red",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Rain",
+      "Faction": "Neutral",
+      "ID": "Red_Torrential_Rain_0",
+      "Name": "Torrential_Rain",
+      "Side": "Red",
+      "Type": "Special"
+    }
+  ],
+  "Faction": "Northern Realms",
+  "Leader": {
+    "Ability": "Discard 2 cards and draw 1",
+    "Faction": "Northern Realms",
+    "ID": "Red_leader_0",
+    "Name": "leader",
+    "Side": "Red",
+    "Type": "Leader",
+    "Used": false
+  }
+}

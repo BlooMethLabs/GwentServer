@@ -1,0 +1,288 @@
+{
+  "Cards": [
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "Name": "Biting_Frost",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Dol_Blathanna_Scout_0",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Dol_Blathanna_Scout_0",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Medic"],
+      "Base Strength": 0,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Havekar_Healer_0",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "Name": "Biting_Frost",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Dol_Blathanna_Scout_0",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "Name": "Biting_Frost",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Medic"],
+      "Base Strength": 0,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Havekar_Healer_0",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Dol_Blathanna_Scout_0",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Medic"],
+      "Base Strength": 0,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Havekar_Healer_0",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Dol_Blathanna_Scout_0",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Dol_Blathanna_Scout_0",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Dol_Blathanna_Scout_0",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Medic"],
+      "Base Strength": 0,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Havekar_Healer_0",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "Name": "Biting_Frost",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Barclay_Els",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Medic"],
+      "Base Strength": 0,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Havekar_Healer_0",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "Name": "Biting_Frost",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Barclay_Els",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "Name": "Biting_Frost",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Barclay_Els",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "Name": "Biting_Frost",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Barclay_Els",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Medic"],
+      "Base Strength": 0,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Havekar_Healer_0",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Barclay_Els",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "Name": "Biting_Frost",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Barclay_Els",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Barclay_Els",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Barclay_Els",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "Name": "Biting_Frost",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 6,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Dol_Blathanna_Scout_0",
+      "Range": "Agile",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Medic"],
+      "Base Strength": 0,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Havekar_Healer_0",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Medic"],
+      "Base Strength": 0,
+      "Faction": "Scoiatael",
+      "Hero": false,
+      "Name": "Havekar_Healer_0",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Frost",
+      "Faction": "Neutral",
+      "Name": "Biting_Frost",
+      "Type": "Special"
+    }
+  ],
+  "Faction": "Scoiatael",
+  "Leader": {
+    "Ability": "Scorch opponent's close row",
+    "Faction": "Scoiatael",
+    "Name": "Francesca_Findabair_Queen_of_Dol_Blathanna",
+    "Type": "Leader",
+    "Used": false
+  }
+}

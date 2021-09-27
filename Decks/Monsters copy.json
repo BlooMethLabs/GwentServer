@@ -1,0 +1,288 @@
+{
+  "Cards": [
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Vampire_Bruxa",
+      "Range": "Close",
+      "Tight Bond Muster ID": "Vampire",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Scorch"],
+      "Base Strength": 7,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Toad",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 6,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Crone_Weavess",
+      "Range": "Close",
+      "Tight Bond Muster ID": "Crone",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Arachas_2",
+      "Range": "Close",
+      "Tight Bond Muster ID": "Arachas",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Arachas_1",
+      "Range": "Close",
+      "Tight Bond Muster ID": "Arachas",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Botchling",
+      "Range": "Close",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Vampire_Garkain",
+      "Range": "Close",
+      "Tight Bond Muster ID": "Vampire",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Vampire_Ekimmara",
+      "Range": "Close",
+      "Tight Bond Muster ID": "Vampire",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 6,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Arachas_Behemoth",
+      "Range": "Siege",
+      "Tight Bond Muster ID": "(Arachas)(.*)",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 6,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Crone_Brewess",
+      "Range": "Close",
+      "Tight Bond Muster ID": "Crone",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 6,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Crone_Whispess",
+      "Range": "Close",
+      "Tight Bond Muster ID": "Crone",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Ability": "Decoy",
+      "Faction": "Neutral",
+      "Name": "Decoy",
+      "Type": "Special"
+    },
+    {
+      "Abilities": ["Muster"],
+      "Base Strength": 4,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Arachas_0",
+      "Range": "Close",
+      "Tight Bond Muster ID": "Arachas",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    },
+    {
+      "Abilities": ["No ability"],
+      "Base Strength": 2,
+      "Faction": "Monsters",
+      "Hero": false,
+      "Name": "Cockatrice",
+      "Range": "Ranged",
+      "Type": "Unit"
+    }
+  ],
+  "Faction": "Monsters",
+  "Leader": {
+    "Ability": "Discard 2 cards and draw 1",
+    "Faction": "Monsters",
+    "Name": "Eredin_Destroyer_of_Worlds",
+    "Type": "Leader"
+  }
+}

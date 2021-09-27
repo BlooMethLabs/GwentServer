@@ -74,9 +74,9 @@ userSchema.methods.isCorrectPassword = function (password, callback) {
 
 const gameSchema = new mongoose.Schema({
   gameState: { type: String },
-  redPlayer: userSchema,
+  redPlayer: {type: userSchema, required: true},
   bluePlayer: userSchema,
-  redDeck: deckSchema,
+  redDeck: {type: deckSchema, required:true},
   bluePlayer: deckSchema,
   actions: [{ type: String }],
 });
@@ -271,6 +271,57 @@ app.post('/api/startGame', withAuth, async function (req, res, next) {
       return next({ status: 500, error: `Error while creating new game: ${err}` });
     });
     res.send({ GameId: newGameId });
+  } catch(err) {
+    console.log(err);
+    return next({ status: 500, error: err });
+  }
+});
+
+app.post('/api/createNewGame', withAuth, async function (req, res, next) {
+  try {
+    let username = req.username;
+    let user = await User.findOne({ username: req.username });
+    if (!user) {
+      return next({
+        status: 500,
+        error: `No user found with username ${username}`,
+      });
+    }
+
+    let redDeck;
+    let redDeckId = req.body.RedDeckId;
+
+    // Try to get deck from the pre-made decks
+    let redDeckName = getDeckName(redDeckId);
+    if (redDeckName) {
+      console.log("parsing");
+      let d = JSON.parse(fs.readFileSync(redDeckName));
+      console.log("parsed");
+      console.log(d);
+      redDeck = new Deck({
+        faction: d.Faction,
+        leader: d.Leader,
+        cards: d.Cards,
+        name: redDeckName
+      });
+      await redDeck.save();
+    } else {
+      redDeck = user.decks.find((d) => {
+        console.log(d._id);
+        return d._id == redDeckId;
+      });
+    }
+
+    let newGame = new Game({
+      redPlayer: user,
+      redDeck: redDeck
+    });
+    await newGame.save().catch(err => {
+      console.log(err);
+      return next({ status: 500, error: err });
+    });
+
+    res.send({ GameId: newGame._id });
   } catch(err) {
     console.log(err);
     return next({ status: 500, error: err });
