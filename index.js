@@ -29,6 +29,7 @@ const app = express();
 mongoose.connect('mongodb://localhost:27017/gwentDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: true,
 });
 
 const deckSchema = new mongoose.Schema({
@@ -77,29 +78,13 @@ const gameSchema = new mongoose.Schema({
   redPlayer: {type: userSchema, required: true},
   bluePlayer: userSchema,
   redDeck: {type: deckSchema, required:true},
-  bluePlayer: deckSchema,
+  blueDeck: deckSchema,
   actions: [{ type: String }],
 });
 
 const Deck = mongoose.model('Deck', deckSchema);
 const User = mongoose.model('User', userSchema);
 const Game = mongoose.model('Game', gameSchema);
-
-var user = null;
-var userId = null;
-User.findOne({ username: 'Tester@test.com' }, (err, u) => {
-  if (err || !u) {
-    console.log('Creating tester user');
-    user = new User({
-      username: 'Tester@test.com',
-      password: 'test',
-    });
-    user.save();
-  } else {
-    user = u;
-  }
-  userId = user._id;
-});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -294,10 +279,7 @@ app.post('/api/createNewGame', withAuth, async function (req, res, next) {
     // Try to get deck from the pre-made decks
     let redDeckName = getDeckName(redDeckId);
     if (redDeckName) {
-      console.log("parsing");
       let d = JSON.parse(fs.readFileSync(redDeckName));
-      console.log("parsed");
-      console.log(d);
       redDeck = new Deck({
         faction: d.Faction,
         leader: d.Leader,
@@ -316,11 +298,7 @@ app.post('/api/createNewGame', withAuth, async function (req, res, next) {
       redPlayer: user,
       redDeck: redDeck
     });
-    await newGame.save().catch(err => {
-      console.log(err);
-      return next({ status: 500, error: err });
-    });
-
+    await newGame.save();
     res.send({ GameId: newGame._id });
   } catch(err) {
     console.log(err);
@@ -328,17 +306,90 @@ app.post('/api/createNewGame', withAuth, async function (req, res, next) {
   }
 });
 
-app.get('/api/getGameState', function (req, res) {
-  let request = JSON.parse(req.query.req);
-  let side = request.Side;
-  console.log(req.query);
-  console.log(side);
-  let g = _.cloneDeep(game);
-  if (side) {
-    g = removeOtherPlayer(g, side);
+app.get('/api/getGameState', withAuth, async function (req, res, next) {
+  try {
+    console.log(req.query);
+    console.log(req.username);
+    let gameId = req.query.gameId;
+    let side = req.query.side;
+
+    let game = await Game.findById(gameId);
+    // console.log(game);
+
+    let isRedPlayer = false;
+    if (side === 'Red' && req.username !== game.redPlayer.username) {
+      isRedPlayer = true;
+    }
+
+    if (!game.bluePlayer && isRedPlayer) {
+      res.send(JSON.stringify({ Status: 'Awaiting Blue Deck' }));
+      return;
+    }
+    if (!game.bluePlayer && !isRedPlayer) {
+      res.send(JSON.stringify({ Status: 'Game Joinable' }));
+      return;
+    }
+    if (
+      (side === 'Red' && req.username !== game.redPlayer.username) ||
+      (side === 'Blue' && game.bluePlayer && req.username !== game.bluePlayer.username)
+    ) {
+      console.log("Unauthed");
+      next({ status: 401, error: 'Unauthorised' });
+    }
+    // if (side) {
+    //   g = removeOtherPlayer(g, side);
+    // }
+    // res.send(g);
+  } catch (err) {
+    console.log(err);
+    next({ status: 500, error: `Error getting game state: ${err}` });
   }
-  res.send(g);
 });
+
+app.post('/api/joinGame', withAuth, async function (req, res, next) {
+  console.log(`Body: ${JSON.stringify(req.body)}`);
+  try {
+    if (!req.username || !req.body.gameId || !req.body.deckId) {
+      return next({
+        status: 400,
+        error: 'Incomplete request, requires username, game ID and deck ID',
+      });
+    }
+    let username = req.username;
+    let gameId = req.body.gameId;
+    let deckId = req.body.deckId;
+    console.log(`Username: ${username} game ID: ${gameId} deck ID: ${deckId}`);
+    // Get user from username
+    let user = await User.findOne({ username: req.username });
+    if (!user) {
+      return next({status: 400, error: `Couldn't find user with username ${username}.`});
+    }
+    console.log(user);
+    // Get deck from user
+    let deck = user.decks.find((d) => {
+      return d._id == deckId;
+    });
+    console.log(deck);
+    if (!deck) {
+      return next({status: 400, error: `Couldn't find deck with ID ${deckId}.`});
+    }
+    // Get game from game ID
+    let game = await Game.findById(gameId);
+    if (!game) {
+      return next({status: 400, error: `Couldn't find game with ID ${gameId}.`});
+    }
+    if (game.bluePlayer) {
+      return next({status: 400, error: `Blue player already exists`});
+    }
+    console.log(game);
+    // Add user and deck to game
+    await Game.findByIdAndUpdate(gameId, { blueDeck: deck, bluePlayer: user  });
+    // Return success
+    res.sendStatus(200);
+  } catch(err) {
+    next({ status: 500, error: `Error joining game: ${err}` });
+  }
+})
 
 app.post('/api/takeAction', async function (req, res, next) {
   try {
@@ -433,12 +484,9 @@ app.post('/api/saveDeck', withAuth, async function (req, res) {
       });
     }
     console.log(
-      'Username: ' +
-        req.username +
-        ' Name: ' +
-        req.body.name +
-        ' Deck: ' +
-        JSON.stringify(req.body.deck),
+      `Username: ${req.username} Name: ${req.body.name} Deck: ${JSON.stringify(
+        req.body.deck,
+      )}`,
     );
     let username = req.username;
     let deckId = req.body.deckId;
