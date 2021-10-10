@@ -314,10 +314,10 @@ app.get('/api/getGameState', withAuth, async function (req, res, next) {
     let side = req.query.side;
 
     let game = await Game.findById(gameId);
-    // console.log(game);
+    console.log(game);
 
     let isRedPlayer = false;
-    if (side === 'Red' && req.username !== game.redPlayer.username) {
+    if (side === 'Red' && req.username === game.redPlayer.username) {
       isRedPlayer = true;
     }
 
