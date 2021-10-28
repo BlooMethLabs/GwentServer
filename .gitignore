@@ -288,3 +288,4 @@ __pycache__/
 # Node API
 *.node
 NodeAddon/build/
+.env
