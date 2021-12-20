@@ -19,6 +19,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^5.13.2",
     "mongoose-encryption": "^2.1.0",
+    "mysql": "^2.18.1",
     "nodemon": "^2.0.12"
   }
 }

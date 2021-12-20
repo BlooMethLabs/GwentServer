@@ -16,7 +16,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const _ = require('lodash');
-const mongoose = require('mongoose');
+const mysql = require('mysql');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
@@ -26,65 +26,55 @@ const withAuth = require('./middleware');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/gwentDB', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: true,
-});
+// const deckSchema = new mongoose.Schema({
+//   name: String,
+//   faction: String,
+//   leader: String,
+//   cards: [String],
+// });
 
-const deckSchema = new mongoose.Schema({
-  name: String,
-  faction: String,
-  leader: String,
-  cards: [String],
-});
+// const userSchema = new mongoose.Schema({
+//   username: { type: String, required: true, unique: true },
+//   password: { type: String, required: true },
+//   decks: [deckSchema],
+// });
 
-const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  decks: [deckSchema],
-});
+// userSchema.pre('save', function (next) {
+//   // Check if document is new or a new password has been set
+//   if (this.isNew || this.isModified('password')) {
+//     // Saving reference to this because of changing scopes
+//     const document = this;
+//     bcrypt.hash(document.password, saltRounds, function (err, hashedPassword) {
+//       if (err) {
+//         return next({ status: 500, error: err });
+//       } else {
+//         document.password = hashedPassword;
+//         return next();
+//       }
+//     });
+//   } else {
+//     return next();
+//   }
+// });
 
-userSchema.pre('save', function (next) {
-  // Check if document is new or a new password has been set
-  if (this.isNew || this.isModified('password')) {
-    // Saving reference to this because of changing scopes
-    const document = this;
-    bcrypt.hash(document.password, saltRounds, function (err, hashedPassword) {
-      if (err) {
-        return next({ status: 500, error: err });
-      } else {
-        document.password = hashedPassword;
-        return next();
-      }
-    });
-  } else {
-    return next();
-  }
-});
+// userSchema.methods.isCorrectPassword = function (password, callback) {
+//   bcrypt.compare(password, this.password, function (err, same) {
+//     if (err) {
+//       callback(err);
+//     } else {
+//       callback(err, same);
+//     }
+//   });
+// };
 
-userSchema.methods.isCorrectPassword = function (password, callback) {
-  bcrypt.compare(password, this.password, function (err, same) {
-    if (err) {
-      callback(err);
-    } else {
-      callback(err, same);
-    }
-  });
-};
-
-const gameSchema = new mongoose.Schema({
-  gameState: { type: String },
-  redPlayer: {type: userSchema, required: true},
-  bluePlayer: userSchema,
-  redDeck: {type: deckSchema, required:true},
-  blueDeck: deckSchema,
-  actions: [{ type: String }],
-});
-
-const Deck = mongoose.model('Deck', deckSchema);
-const User = mongoose.model('User', userSchema);
-const Game = mongoose.model('Game', gameSchema);
+// const gameSchema = new mongoose.Schema({
+//   gameState: { type: String },
+//   redPlayer: {type: userSchema, required: true},
+//   bluePlayer: userSchema,
+//   redDeck: {type: deckSchema, required:true},
+//   blueDeck: deckSchema,
+//   actions: [{ type: String }],
+// });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
