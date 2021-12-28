@@ -13,6 +13,7 @@ const {
 
 const addon = require('./GwentAddon');
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const _ = require('lodash');
@@ -23,8 +24,13 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const secret = process.env.SECRET;
 const withAuth = require('./middleware');
+const {authJwt} = require('./App/Middleware');
 
 const app = express();
+
+var corsOptions = {
+  origin: 'https://localhost:8081'
+};
 
 // const deckSchema = new mongoose.Schema({
 //   name: String,
@@ -78,41 +84,61 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+const db = require('./App/Models');
+db.sequelize.sync();
+// db.sequelize.sync({force: true}).then(() => {
+// const Role = db.role;
+// db.sequelize.sync({force: true}).then(() => {
+//   console.log('Drop and resync DB');
+//   initial();
+// })
 
-app.use(function (req, res, next) {
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  // res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
+// function initial() {
+// // TODO: Add commands to run when initialising DB in testing mode
+// }
 
-  // Request methods you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-  );
+// app.use(cookieParser());
 
-  // Request headers you wish to allow
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-Requested-With,content-type',
-  );
+// app.use(function (req, res, next) {
+//   // Website you wish to allow to connect
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   // res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
 
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
+//   // Request methods you wish to allow
+//   res.setHeader(
+//     'Access-Control-Allow-Methods',
+//     'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+//   );
 
-  // Pass to next layer of middleware
-  next();
-});
+//   // Request headers you wish to allow
+//   res.setHeader(
+//     'Access-Control-Allow-Headers',
+//     'X-Requested-With,content-type',
+//   );
+
+//   // Set to true if you need the website to include cookies in the requests sent
+//   // to the API (e.g. in case you use sessions)
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+
+//   // Pass to next layer of middleware
+//   next();
+// });
 
 let game = null;
 let gameId = null;
+
+// routes
+require('./App/Routes/Api/auth.routes')(app);
+// require('./app/routes/user.routes')(app);
 
 app.get('/api/home', function (req, res) {
   res.send('Welcome!');
 });
 
-app.get('/api/secret', withAuth, function (req, res) {
+app.get('/api/secret', authJwt.verifyToken, function (req, res) {
   console.log('secret');
   res.send('The password is potato');
 });
