@@ -19,6 +19,7 @@ verifyToken = (req, res, next) => {
       });
     }
     req.userId = decoded.id;
+    // TODO: check if user exists
     next();
   });
 };

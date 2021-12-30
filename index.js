@@ -8,7 +8,7 @@ const {
   isDeckValid,
   convertDeckToDbFormat,
   convertDeckFromDbFormat,
-} = require('./Game/Utils');
+} = require('./App/Game/Utils');
 // const removeOtherPlayer = require("./Game/Utils");
 
 const addon = require('./GwentAddon');
@@ -32,47 +32,6 @@ var corsOptions = {
   origin: 'https://localhost:8081'
 };
 
-// const deckSchema = new mongoose.Schema({
-//   name: String,
-//   faction: String,
-//   leader: String,
-//   cards: [String],
-// });
-
-// const userSchema = new mongoose.Schema({
-//   username: { type: String, required: true, unique: true },
-//   password: { type: String, required: true },
-//   decks: [deckSchema],
-// });
-
-// userSchema.pre('save', function (next) {
-//   // Check if document is new or a new password has been set
-//   if (this.isNew || this.isModified('password')) {
-//     // Saving reference to this because of changing scopes
-//     const document = this;
-//     bcrypt.hash(document.password, saltRounds, function (err, hashedPassword) {
-//       if (err) {
-//         return next({ status: 500, error: err });
-//       } else {
-//         document.password = hashedPassword;
-//         return next();
-//       }
-//     });
-//   } else {
-//     return next();
-//   }
-// });
-
-// userSchema.methods.isCorrectPassword = function (password, callback) {
-//   bcrypt.compare(password, this.password, function (err, same) {
-//     if (err) {
-//       callback(err);
-//     } else {
-//       callback(err, same);
-//     }
-//   });
-// };
-
 // const gameSchema = new mongoose.Schema({
 //   gameState: { type: String },
 //   redPlayer: {type: userSchema, required: true},
@@ -90,48 +49,20 @@ app.use(express.urlencoded({extended: true}));
 const db = require('./App/Models');
 db.sequelize.sync();
 // db.sequelize.sync({force: true}).then(() => {
-// const Role = db.role;
-// db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and resync DB');
 //   initial();
-// })
-
-// function initial() {
-// // TODO: Add commands to run when initialising DB in testing mode
-// }
-
-// app.use(cookieParser());
-
-// app.use(function (req, res, next) {
-//   // Website you wish to allow to connect
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   // res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
-
-//   // Request methods you wish to allow
-//   res.setHeader(
-//     'Access-Control-Allow-Methods',
-//     'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-//   );
-
-//   // Request headers you wish to allow
-//   res.setHeader(
-//     'Access-Control-Allow-Headers',
-//     'X-Requested-With,content-type',
-//   );
-
-//   // Set to true if you need the website to include cookies in the requests sent
-//   // to the API (e.g. in case you use sessions)
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-
-//   // Pass to next layer of middleware
-//   next();
 // });
+
+function initial() {
+// TODO: Add commands to run when initialising DB in testing mode
+}
 
 let game = null;
 let gameId = null;
 
 // routes
 require('./App/Routes/Api/auth.routes')(app);
+require('./App/Routes/Api/deck.routes')(app);
 // require('./app/routes/user.routes')(app);
 
 app.get('/api/home', function (req, res) {
@@ -140,6 +71,12 @@ app.get('/api/home', function (req, res) {
 
 app.get('/api/secret', authJwt.verifyToken, function (req, res) {
   console.log('secret');
+  res.send('The password is potato');
+});
+
+app.post('/api/secret2', authJwt.verifyToken, function (req, res) {
+  console.log('secret2');
+  console.log(req.body);
   res.send('The password is potato');
 });
 
@@ -204,13 +141,13 @@ app.post('/api/register', async function (req, res, next) {
   }
 });
 
-function getDeckFromUser(deckId, user) {
-  let deck = user.decks.find((d) => {
-    console.log(d._id);
-    return d._id == deckId;
-  });
-  return JSON.stringify(convertDeckFromDbFormat(deck));
-}
+// function getDeckFromUser(deckId, user) {
+//   let deck = user.decks.find((d) => {
+//     console.log(d._id);
+//     return d._id == deckId;
+//   });
+//   return JSON.stringify(convertDeckFromDbFormat(deck));
+// }
 
 async function createNewGame(redDeck, blueDeck) {
   // TODO: Handle errors
@@ -426,115 +363,6 @@ app.post('/api/takeAction', async function (req, res, next) {
     res.send(g);
   } catch (err) {
     return next({ status: 500, error: err });
-  }
-});
-
-app.get('/api/getFactionCards', function (req, res) {
-  let request = JSON.parse(req.query.req);
-  let faction = parseInt(request.Faction);
-  console.log(faction);
-  let cards = getFactionCards(faction);
-  res.send({ Cards: cards });
-});
-
-app.get('/api/getUserDecks', withAuth, async function (req, res, next) {
-  // let request = JSON.parse(req.query.req);
-  // console.log(request);
-  // todo: get id from request and find decks from DB. Plus validation.
-  try {
-    let p = await User.findOne({ username: req.username });
-    if (p) {
-      console.log(p);
-      if (p.decks !== null) {
-        let decks = p.decks.map((d) => {
-          console.log(d);
-          return { id: d._id, name: d.name };
-        });
-        console.log(decks);
-        res.send({ Decks: decks });
-      } else {
-        console.log('sending empty');
-        res.send({ Decks: [] });
-      }
-    } else {
-      console.log('Error');
-      return next({status: 400,  error: `No user with ID ${userId} found` });
-    }
-  } catch (err) {
-    console.log(err);
-    return next({ status: 500, error: 'Failed to get decks from DB.' });
-  }
-});
-
-app.get('/api/getUserDeck', withAuth, async function (req, res, next) {
-  try {
-    let deckId = req.query.deckId;
-    if (!deckId) {
-      return next({ status: 400, error: 'No deck ID in query.' });
-    }
-    let u = await User.findOne({ username: req.username });
-    if (u) {
-      let deck = u.decks.find((d) => {
-        return d._id == deckId;
-      });
-      if (!deck) {
-        return next({status: 400, error: `Couldn't find deck with ID ${deckId}.`});
-      }
-      let convertedDeck = convertDeckFromDbFormat(deck);
-      res.send({ Deck: convertedDeck });
-    } else {
-      return next({ status: 500, error: `No user found with username ${username}` });
-    }
-  } catch(err) {
-    console.log(err);
-    return next({ status: 500, error: 'Failed to get decks from DB.' });
-  }
-});
-
-app.post('/api/saveDeck', withAuth, async function (req, res) {
-  try {
-    if (!req.username || !req.body.name || !req.body.deck) {
-      return next({
-        status: 400,
-        error: 'Incomplete request, requires username, deck name and deck',
-      });
-    }
-    console.log(
-      `Username: ${req.username} Name: ${req.body.name} Deck: ${JSON.stringify(
-        req.body.deck,
-      )}`,
-    );
-    let username = req.username;
-    let deckId = req.body.deckId;
-    let deck = JSON.stringify(req.body.deck);
-    let valid = addon.isDeckValid(deck);
-    console.log('Deck: ' + valid);
-    if (!valid) {
-      return next({ status: 400, error: 'Deck not valid' });
-    }
-    let convertedDeck = convertDeckToDbFormat(req.body.name, req.body.deck);
-    let convertedDeckObject = new Deck(convertedDeck);
-    console.log('Converted deck: ' + convertedDeckObject);
-
-    await User.findOneAndUpdate(
-      { username: username },
-      {
-        $push: { decks: convertedDeckObject },
-      },
-    );
-    console.log('Updated');
-    if (deckId) {
-      await User.findOneAndUpdate(
-        { username: username },
-        {
-          $pull: { decks: { _id: deckId } },
-        },
-      );
-      console.log('Removed old');
-    }
-    res.send({ deckId: convertedDeckObject.id });
-  } catch (err) {
-    return next({ status: 500, error: 'Failed to update decks' });
   }
 });
 
