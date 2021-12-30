@@ -21,7 +21,7 @@ exports.getFactionCards = (req, res) => {
   res.send({ Cards: cards });
 };
 
-exports.getUserDecks = async (req, res) => {
+exports.getUserDecks = async (req, res, next) => {
   // let request = JSON.parse(req.query.req);
   try {
     console.log(`Get user decks ${req.userId}`);
@@ -47,10 +47,35 @@ exports.getUserDecks = async (req, res) => {
   }
 }
 
-exports.getUserDeck = (req, res) => {
+exports.getUserDeck = async (req, res, next) => {
+  try {
+    let deckId = req.query.deckId;
+    if (!deckId) {
+      return next({ status: 400, error: 'No deck ID in query.' });
+    }
+    console.log(deckId);
+
+    let user = await User.findByPk(req.userId, { include: ['decks'] })
+      // TODO remove .then?
+      .then((user) => {
+        return user
+      })
+      .catch((err) => {
+        console.log('Could not find user', err);
+      });
+
+    let deck = user.decks.find((d) => d.id == deckId);
+    console.log(`Deck id: ${deck.id} name: ${deck.name} faction: ${deck.faction} leader: ${deck.leader} cards: ${deck.cards}`);
+    let convertedDeck = convertDeckFromDbFormat(deck);
+    console.log(convertedDeck);
+    res.send({Deck: convertedDeck});
+  } catch(err) {
+    console.log(err);
+    return next({ status: 500, error: 'Failed to get deck.' });
+  }
 }
 
-exports.saveDeck = (req, res) => {
+exports.saveDeck = (req, res, next) => {
   console.log('Save deck');
   try {
     console.log(req.body);

@@ -66,15 +66,15 @@ function convertDeckToDbFormat(name, deck, userId) {
 function convertDeckFromDbFormat(deck) {
   // let convertedDeck = {name: name, faction: deck.Faction, leader: deck.Leader.Name};
   // let cards = deck.Cards.map(card => card.Name);
-  let neutralCards = JSON.parse(fs.readFileSync('Decks/Creation/Neutral.json'));
+  let neutralCards = JSON.parse(fs.readFileSync('App/Game/Decks/NeutralCards.json'));
   console.log(neutralCards);
   let factionCards = null;
-  console.log(deck.faction);
   if (deck.faction === 'Monsters') {
-    factionCards = JSON.parse(fs.readFileSync('Decks/Creation/Monsters.json'));
-    console.log(factionCards);
+    factionCards = JSON.parse(fs.readFileSync('App/Game/Decks/MonstersCards.json'));
   }
   let availableCards = [...factionCards, ...neutralCards];
+
+  deck.cards = JSON.parse(deck.cards);
   let convertedDeck = { Faction: deck.faction };
   convertedDeck.Cards = deck.cards.map((card) =>
     availableCards.find((c) => c.Name === card),
