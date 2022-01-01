@@ -5,19 +5,19 @@ const Op = db.Sequelize.Op;
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 
-exports.signup = (req, res) => {
+exports.signup = (req, res, next) => {
   console.log('Signing up');
   // Save User to Database
   User.create({
     username: req.body.username,
-    // TODO salt?
     password: bcrypt.hashSync(req.body.password, 8),
   })
     .then((user) => {
       res.send({ message: 'User was registered successfully!' });
     })
     .catch((err) => {
-      res.status(500).send({ message: err.message });
+      console.log(`Caught exception: ${err}`)
+      return next({ status: 500, error: 'Failed to register user.' });
     });
 };
 
@@ -30,7 +30,7 @@ exports.signin = (req, res) => {
   })
     .then((user) => {
       if (!user) {
-        return res.status(404).send({ message: 'User Not found.' });
+        return next({ status: 500, error: 'User Not found.' });
       }
 
       var passwordIsValid = bcrypt.compareSync(
@@ -56,6 +56,7 @@ exports.signin = (req, res) => {
       });
     })
     .catch((err) => {
-      res.status(500).send({ message: err.message });
+      console.log(`Caught exception: ${err}`)
+      return next({ status: 500, error: 'Failed to sign in.'});
     });
 };

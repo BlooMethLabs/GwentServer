@@ -371,6 +371,8 @@ app.get('/api/test', function (req, res) {
 });
 
 app.use(function (err, req, res, next) {
+  console.log('error handler');
+  console.log(err);
   res.status(err.status).send({ error: err.error });
 });
 

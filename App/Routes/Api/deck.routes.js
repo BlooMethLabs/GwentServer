@@ -23,5 +23,13 @@ module.exports = function (app) {
     controller.getUserDeck,
   );
 
-  app.post('/api/deck/saveDeck', authJwt.verifyToken, controller.saveDeck);
+  app.post(
+    '/api/deck/saveDeck',
+    authJwt.verifyToken,
+    controller.checkSaveDeckParams,
+    controller.checkDeckValid,
+    controller.encodeDeck,
+    controller.confirmDeckBelongsToUser,
+    controller.saveDeck,
+  );
 };

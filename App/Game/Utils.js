@@ -50,7 +50,7 @@ function isDeckValid(deck) {
   return true;
 }
 
-function convertDeckToDbFormat(name, deck, userId) {
+function encodeDeck(name, deck, userId) {
   let convertedDeck = {
     name: name,
     faction: deck.Faction,
@@ -90,6 +90,6 @@ module.exports = {
   getDeckName,
   getFactionCards,
   isDeckValid,
-  convertDeckToDbFormat,
+  encodeDeck,
   convertDeckFromDbFormat,
 };

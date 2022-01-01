@@ -1,5 +1,4 @@
 const addon = require('../../GwentAddon');
-const { application } = require('express');
 const db = require('../Models');
 const Deck = db.deck;
 const User = db.user;
@@ -7,9 +6,10 @@ const {
   getDeckName,
   getFactionCards,
   isDeckValid,
-  convertDeckToDbFormat,
+  encodeDeck,
   convertDeckFromDbFormat,
 } = require('../Game/Utils');
+const userController = require('./user.controller');
 
 exports.getFactionCards = (req, res) => {
   console.log('Get faction cards');
@@ -22,30 +22,24 @@ exports.getFactionCards = (req, res) => {
 };
 
 exports.getUserDecks = async (req, res, next) => {
-  // let request = JSON.parse(req.query.req);
   try {
-    console.log(`Get user decks ${req.userId}`);
-    let user = await User.findByPk(req.userId, { include: ['decks'] })
-      .then((user) => {
-        return user
-      })
-      .catch((err) => {
-        console.log('Could not find user', err);
-      });
-    console.log(JSON.stringify(user.decks, null, 2));
+    console.log(`Get user decks for ${req.userId}`);
+    let user = await userController.getUserIncludingDecks(req.userId);
 
     let decks = [];
     if (user.decks) {
-      decks = user.decks.map((d) => {return {id: d.id, "name": d.name};});
+      decks = user.decks.map((d) => {
+        return { id: d.id, name: d.name };
+      });
     }
-
     console.log(decks);
 
     res.send({ Decks: decks });
-  } catch(err) {
-    return next({ status: 500, error: 'Failed to update decks' });
+  } catch (err) {
+    console.log(`Caught exception trying to get decks for user ${req.userId}: ${err}`);
+    return next({ status: 500, error: 'Failed to get decks' });
   }
-}
+};
 
 exports.getUserDeck = async (req, res, next) => {
   try {
@@ -58,54 +52,98 @@ exports.getUserDeck = async (req, res, next) => {
     let user = await User.findByPk(req.userId, { include: ['decks'] })
       // TODO remove .then?
       .then((user) => {
-        return user
+        return user;
       })
       .catch((err) => {
         console.log('Could not find user', err);
       });
 
     let deck = user.decks.find((d) => d.id == deckId);
-    console.log(`Deck id: ${deck.id} name: ${deck.name} faction: ${deck.faction} leader: ${deck.leader} cards: ${deck.cards}`);
+    console.log(
+      `Deck id: ${deck.id} name: ${deck.name} faction: ${deck.faction} leader: ${deck.leader} cards: ${deck.cards}`,
+    );
     let convertedDeck = convertDeckFromDbFormat(deck);
     console.log(convertedDeck);
-    res.send({Deck: convertedDeck});
-  } catch(err) {
+    res.send({ Deck: convertedDeck });
+  } catch (err) {
     console.log(err);
     return next({ status: 500, error: 'Failed to get deck.' });
   }
-}
+};
 
-exports.saveDeck = (req, res, next) => {
-  console.log('Save deck');
+exports.checkSaveDeckParams = (req, res, next) => {
+  if (!req || !req.body || !req.body.name || !req.body.deck) {
+    return next({
+      status: 400,
+      error: 'Username or password param missing.',
+    });
+  }
+  next();
+};
+
+exports.checkDeckValid = (req, res, next) => {
   try {
-    console.log(req.body);
-    if (!req.userId || !req.body.name || !req.body.deck) {
-      return next({
-        status: 400,
-        error: 'Incomplete request, requires username, deck name and deck',
-      });
-    }
-    console.log(
-      `userId: ${req.userId} Name: ${
-        req.body.name
-      } Deck: ${JSON.stringify(req.body.deck)}`,
-    );
-    let userId = req.userId;
-    let deckId = req.body.deckId;
     let deck = JSON.stringify(req.body.deck);
-    console.log('Checking deck is valid');
     let valid = addon.isDeckValid(deck);
-    console.log('Deck: ' + valid);
     if (!valid) {
       return next({ status: 400, error: 'Deck not valid' });
     }
-    let convertedDeck = convertDeckToDbFormat(req.body.name, req.body.deck, userId);
-    console.log('Converted deck: ' + JSON.stringify(convertedDeck));
-    // let convertedDeckObject = new Deck(convertedDeck);
+    next();
+  } catch (err) {
+    return next({ status: 500, error: 'Failed to check if deck is valid.' });
+  }
+};
 
-    Deck.create(convertedDeck);
-    res.send({ deckId: 1 });
+exports.encodeDeck = (req, res, next) => {
+  try {
+    let userId = req.userId;
+    let encodedDeck = encodeDeck(req.body.name, req.body.deck, userId);
+    console.log('Converted deck: ' + JSON.stringify(encodedDeck));
+    req.encodedDeck = encodedDeck;
+    next();
+  } catch (err) {
+    return next({ status: 500, error: 'Failed to encode deck.' });
+  }
+};
+
+exports.confirmDeckBelongsToUser = async (req, res, next) => {
+  console.log('confirm');
+  try {
+    console.log(req.body);
+    if (!req.body.deckId) {
+      next();
+    }
+    console.log('here');
+    let user = await userController.getUserIncludingDecks(req.userId);
+    console.log(`user: ${user}`);
+    let deck = user.decks.find((d) => d.id == req.body.deckId);
+    if (!deck) {
+      return next({ status: 401, error: 'Deck does not belong to user.' });
+    }
+    req.existingDeck = deck;
+    next();
+  } catch(err) {
+    return next({ status: 500, error: 'Failed to confirm deck belonged to user.' });
+  }
+}
+
+exports.saveDeck = async (req, res, next) => {
+  console.log('Save deck');
+  try {
+    console.log(
+      `userId: ${req.userId} Name: ${req.body.name} Deck: ${JSON.stringify(
+        req.body.deck,
+      )}`,
+    );
+
+    if (req.existingDeck) {
+      await req.existingDeck.destroy();
+    }
+
+    let newDeck = await Deck.create(req.encodedDeck);
+    console.log(newDeck.id);
+    res.send({ deckId: newDeck.id });
   } catch (err) {
     return next({ status: 500, error: 'Failed to update decks' });
   }
-}
+};
