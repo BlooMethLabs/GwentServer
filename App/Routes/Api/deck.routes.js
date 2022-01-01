@@ -20,6 +20,7 @@ module.exports = function (app) {
   app.get(
     '/api/deck/getUserDeck',
     authJwt.verifyToken,
+    controller.checkGetUserDeckParams,
     controller.getUserDeck,
   );
 
