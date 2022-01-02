@@ -1,19 +1,18 @@
 module.exports = (sequelize, Sequelize) => {
-  const Deck = sequelize.define("decks", {
+  const Deck = sequelize.define('decks', {
     name: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     faction: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     leader: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     cards: {
-      type: Sequelize.STRING(10000)
+      type: Sequelize.BLOB,
     },
   });
 
   return Deck;
 };
-

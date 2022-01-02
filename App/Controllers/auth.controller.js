@@ -16,12 +16,12 @@ exports.signup = (req, res, next) => {
       res.send({ message: 'User was registered successfully!' });
     })
     .catch((err) => {
-      console.log(`Caught exception: ${err}`)
+      console.log(`Caught exception: ${err}`);
       return next({ status: 500, error: 'Failed to register user.' });
     });
 };
 
-exports.signin = (req, res) => {
+exports.signin = (req, res, next) => {
   console.log('Signing in');
   User.findOne({
     where: {
@@ -39,10 +39,7 @@ exports.signin = (req, res) => {
       );
 
       if (!passwordIsValid) {
-        return res.status(401).send({
-          accessToken: null,
-          message: 'Invalid Password!',
-        });
+        return next({ status: 401, error: 'Invalid password!' });
       }
 
       var token = jwt.sign({ id: user.id }, config.secret, {
@@ -56,7 +53,7 @@ exports.signin = (req, res) => {
       });
     })
     .catch((err) => {
-      console.log(`Caught exception: ${err}`)
-      return next({ status: 500, error: 'Failed to sign in.'});
+      console.log(`Caught exception: ${err}`);
+      return next({ status: 500, error: 'Failed to sign in.' });
     });
 };

@@ -6,8 +6,7 @@ module.exports = function (app) {
   app.post(
     '/api/game/createNewGame',
     authJwt.verifyToken,
-    controller.checkCreateNewGameParams,
-    controller.
+    // controller.checkCreateNewGameParams,
     // controller.checkSaveDeckParams,
     // controller.checkDeckValid,
     // controller.encodeDeck,
