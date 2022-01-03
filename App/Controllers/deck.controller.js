@@ -78,7 +78,7 @@ exports.getFactionCards = (req, res) => {
     console.log('Get faction cards');
     let faction = parseInt(req.query.Faction);
     let cards = getFactionCards(faction);
-    res.send({ Cards: cards });
+    res.send({ cards: cards });
   } catch (err) {
     console.log(`Caught exception trying to get faction cards: ${err}`);
     return next({ status: 500, error: 'Failed to get faction cards.' });
@@ -88,22 +88,24 @@ exports.getFactionCards = (req, res) => {
 exports.getUserDecks = async (req, res, next) => {
   try {
     console.log(`Get user decks for ${req.userId}`);
-    let user = await userController.getUserIncludingDecks(req.userId);
-
     let decks = [];
-    if (user.decks) {
-      decks = user.decks.map((d) => {
+    if (req.user.decks) {
+      decks = req.user.decks.map((d) => {
         return { id: d.id, name: d.name };
       });
     }
-
-    res.send({ Decks: decks });
+    req.decks = decks;
+    return next();
   } catch (err) {
     console.log(
       `Caught exception trying to get decks for user ${req.userId}: ${err}`,
     );
     return next({ status: 500, error: 'Failed to get decks' });
   }
+};
+
+exports.sendDecks = (req, res) => {
+  res.send({ decks: req.decks });
 };
 
 exports.checkGetUserDeckParams = (req, res, next) => {
@@ -116,23 +118,27 @@ exports.checkGetUserDeckParams = (req, res, next) => {
 exports.getUserDeck = async (req, res, next) => {
   try {
     let deckId = req.query.deckId;
+    if (!deckId) {
+      deckId = req.body.deckId;
+    }
     console.log(`Get deck: ${deckId}`);
 
-    let user = await userController.getUserIncludingDecks(req.userId);
-
-    let deck = user.decks.find((d) => d.id == deckId);
+    let deck = req.user.decks.find((d) => d.id == deckId);
     console.log(
       `Deck id: ${deck.id} name: ${deck.name} faction: ${deck.faction} leader: ${deck.leader} cards: ${deck.cards}`,
     );
-    let convertedDeck = decodeDeck(deck);
-    console.log(convertedDeck);
-    res.send({ Deck: convertedDeck });
+    req.deck = deck;
+    return next();
   } catch (err) {
     console.log(
       `Caught exception trying to get deck for user ${req.userId}: ${err}`,
     );
     return next({ status: 500, error: 'Failed to get deck.' });
   }
+};
+
+exports.sendDeck = (req, res) => {
+  res.send({ deck: req.decodedDeck });
 };
 
 exports.checkSaveDeckParams = (req, res, next) => {
@@ -172,15 +178,25 @@ exports.encodeDeck = (req, res, next) => {
   }
 };
 
+exports.decodeDeck = (req, res, next) => {
+  try {
+    let decodedDeck = decodeDeck(req.deck);
+    console.log(decodedDeck);
+    req.decodedDeck = decodedDeck;
+    return next();
+  } catch (err) {
+    console.log(`Caught exception while decoding deck: ${err}`);
+    return next({ status: 500, error: 'Failed to decode deck.' });
+  }
+};
+
 exports.confirmDeckBelongsToUser = async (req, res, next) => {
   console.log('confirm');
   try {
-    console.log(req.body);
     if (!req.body.deckId) {
       return next();
     }
-    console.log('here');
-    let user = await userController.getUserIncludingDecks(req.userId);
+    let user = req.user;
     console.log(`user: ${user}`);
     let deck = user.decks.find((d) => d.id == req.body.deckId);
     if (!deck) {
@@ -214,9 +230,14 @@ exports.saveDeck = async (req, res, next) => {
 
     let newDeck = await Deck.create(req.encodedDeck);
     console.log(newDeck.id);
-    res.send({ deckId: newDeck.id });
+    req.newDeckId = newDeck.id;
+    return next();
   } catch (err) {
     console.log(`Caught exception while saving deck: ${err}`);
     return next({ status: 500, error: 'Failed to update decks' });
   }
+};
+
+exports.sendDeckId = (req, res) => {
+  res.send({ deckId: req.newDeckId });
 };

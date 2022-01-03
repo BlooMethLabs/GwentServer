@@ -3,23 +3,27 @@ const config = require('../Config/auth.config');
 const User = db.user;
 const Op = db.Sequelize.Op;
 
-exports.getUser = async (userId) => {
+exports.getUser = async (req, res, next) => {
   try {
     let user = await User.findByPk(userId);
-    return user;
-  } catch(err) {
-    console.log(`Caught exception: ${err}`)
-    return false;
+    req.user = user;
+    next();
+  } catch (err) {
+    console.log(`Caught exception trying to get user ${req.userId}: ${err}`);
+    return next({ status: 500, error: 'Failed to get user.' });
   }
-}
+};
 
-exports.getUserIncludingDecks = async (userId) => {
-  console.log('get user');
+exports.getUserIncludingDecks = async (req, res, next) => {
+  console.log('get user inc decks');
   try {
-    let user = await User.findByPk(userId, { include: ['decks'] })
-    return user;
-  } catch(err) {
-    console.log(`Caught exception: ${err}`)
-    return false;
+    let user = await User.findByPk(req.userId, { include: ['decks'] });
+    req.user = user;
+    next();
+  } catch (err) {
+    console.log(
+      `Caught exception trying to get user including decks ${req.userId}: ${err}`,
+    );
+    return next({ status: 500, error: 'Failed to get user.' });
   }
-}
+};

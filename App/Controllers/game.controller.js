@@ -3,8 +3,39 @@ const fs = require('fs');
 const db = require('../Models');
 const Deck = db.deck;
 const User = db.user;
+const Game = db.game;
 const userController = require('./user.controller');
 const deckController = require('./deck.controller');
+const { user } = require('../Models');
+
+exports.checkCreateNewGameParams = (req, res, next) => {
+  if (!req || !req.body || !req.body.deckId) {
+    return next({
+      status: 401,
+      error: 'Incorrect params for create new game.',
+    });
+  }
+  return next();
+};
+
+exports.createNewGame = async (req, res, next) => {
+  try {
+    let newGame = await Game.create({
+      redPlayer: req.userId,
+      redDeck: req.deck,
+    });
+    req.newGame = newGame;
+    return next();
+  } catch (err) {
+    console.log(`Caught exception trying to create new game: ${err}`);
+    return next({ status: 500, error: 'Failed to create new game.' });
+  }
+};
+
+exports.sendNewGameId = (req, res) => {
+  res.send({ newGameId: req.newGame.id });
+};
+
 /*
 async function createNewGame(redDeck, blueDeck) {
   // TODO: Handle errors
