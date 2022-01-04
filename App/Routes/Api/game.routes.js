@@ -9,6 +9,7 @@ module.exports = function (app) {
     authJwt.verifyToken,
     controller.checkCreateNewGameParams,
     // Should check if deck valid?
+    // deckController.getDefaultDeck,
     userController.getUserIncludingDecks,
     // get deck from example deck
     deckController.getUserDeck,

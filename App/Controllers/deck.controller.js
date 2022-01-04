@@ -5,11 +5,11 @@ const Deck = db.deck;
 const User = db.user;
 const userController = require('./user.controller');
 
-const deckNames = {
-  1: 'App/Game/Decks/MonstersDeck.json',
-  2: 'App/Game/Decks/ScoiataelDeck.json',
-  3: 'App/Game/Decks/NilfgaardDeck.json',
-  4: 'App/Game/Decks/NorRealmsDeck.json',
+const defaultDecks = {
+  1: JSON.parse(fs.readFileSync('App/Game/Decks/MonstersDeck.json')),
+  2: JSON.parse(fs.readFileSync('App/Game/Decks/ScoiataelDeck.json')),
+  3: JSON.parse(fs.readFileSync('App/Game/Decks/NilfgaardDeck.json')),
+  4: JSON.parse(fs.readFileSync('App/Game/Decks/NorRealmsDeck.json')),
 };
 
 const monsterCards = JSON.parse(
@@ -21,13 +21,7 @@ const neutralCards = JSON.parse(
 console.log(`Monster cards: ${JSON.stringify(monsterCards)}`);
 console.log(`Neutral cards: ${JSON.stringify(neutralCards)}`);
 
-function getDeckName(id) {
-  if (!(id > 0 && id < 5)) return null;
-  return deckNames[id];
-}
-
 function getFactionCards(faction) {
-  console.log('getFactionCards');
   switch (faction) {
     case 1:
       return [...monsterCards, ...neutralCards];
@@ -59,7 +53,7 @@ function decodeDeck(deck) {
   }
   let availableCards = [...factionCards, ...neutralCards];
 
-  deck.cards = JSON.parse(deck.cards);
+  console.log(deck);
   let convertedDeck = { Faction: deck.faction };
   convertedDeck.Cards = deck.cards.map((card) => {
     let c = availableCards.find((c) => c.Name === card);
@@ -108,15 +102,27 @@ exports.sendDecks = (req, res) => {
   res.send({ decks: req.decks });
 };
 
-exports.checkGetUserDeckParams = (req, res, next) => {
+exports.checkGetDeckParams = (req, res, next) => {
   if (!req || !req.query || !req.query.deckId) {
     return next({ status: 401, error: 'Incorrect params for get user deck' });
   }
   return next();
 };
 
+exports.getDefaultDeck = async (req, res, next) => {
+  try {
+    if (!req.query.default) return next();
+    req.deck = defaultDecks[req.query.deckId];
+    return next();
+  } catch (err) {
+    console.log(`Caught exception trying to get default deck: ${err}`);
+    return next({ status: 500, error: 'Failed to get default deck' });
+  }
+};
+
 exports.getUserDeck = async (req, res, next) => {
   try {
+    if (req.deck) return next();
     let deckId = req.query.deckId;
     if (!deckId) {
       deckId = req.body.deckId;
@@ -124,6 +130,7 @@ exports.getUserDeck = async (req, res, next) => {
     console.log(`Get deck: ${deckId}`);
 
     let deck = req.user.decks.find((d) => d.id == deckId);
+    deck.cards = JSON.parse(deck.cards);
     console.log(
       `Deck id: ${deck.id} name: ${deck.name} faction: ${deck.faction} leader: ${deck.leader} cards: ${deck.cards}`,
     );
@@ -180,8 +187,9 @@ exports.encodeDeck = (req, res, next) => {
 
 exports.decodeDeck = (req, res, next) => {
   try {
+    console.log(`Deck: ${JSON.stringify(req.deck)}`);
     let decodedDeck = decodeDeck(req.deck);
-    console.log(decodedDeck);
+    // console.log(decodedDeck);
     req.decodedDeck = decodedDeck;
     return next();
   } catch (err) {

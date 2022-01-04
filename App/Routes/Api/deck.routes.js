@@ -14,9 +14,10 @@ module.exports = function (app) {
   );
 
   app.get(
-    '/api/deck/getUserDeck',
+    '/api/deck/getDeck',
     authJwt.verifyToken,
-    controller.checkGetUserDeckParams,
+    controller.checkGetDeckParams,
+    controller.getDefaultDeck,
     userController.getUserIncludingDecks,
     controller.getUserDeck,
     controller.decodeDeck,
