@@ -16,6 +16,31 @@ module.exports = function (app) {
     controller.createNewGame,
     controller.sendNewGameId,
     // create new game with user and deck
-    // return game ID
+  );
+
+  app.get(
+    '/api/game/getGameState',
+    authJwt.verifyToken,
+    controller.checkGetGameStateParams,
+    controller.getGame,
+    controller.hasGameStarted,
+    // controller.findPlayer,
+    // controller.removeOtherPlayerCards,
+    // controller.sendGameState,
+  );
+
+  app.post(
+    '/api/game/joinGame',
+    authJwt.verifyToken,
+    controller.checkJoinGameParams,
+    controller.getGame,
+    deckController.getDefaultDeck,
+    userController.getUserIncludingDecks,
+    deckController.getUserDeck,
+    deckController.decodeDeck,
+    // controller.addUserToGame,
+    // controller.addDeckToGame,
+    // controller.updateGameState,
+    // controller.sendJoinGameResponse,
   );
 };

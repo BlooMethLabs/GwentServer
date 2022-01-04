@@ -36,6 +36,47 @@ exports.sendNewGameId = (req, res) => {
   res.send({ newGameId: req.newGame.id });
 };
 
+exports.checkGetGameStateParams = (req, res, next) => {
+  console.log('check');
+  if (!req || !req.query || !req.query.gameId || !req.query.side) {
+    return next({ status: 401, error: 'Incorrect params for get game state' });
+  }
+  return next();
+};
+
+exports.getGame = async (req, res, next) => {
+  console.log('get game');
+  try {
+    let game = await Game.findByPk(req.query.gameId);
+    console.log(game);
+    req.game = game;
+    next();
+  } catch (err) {
+    console.log(`Caught exception trying to get game: ${err}`);
+    return next({ status: 500, error: 'Failed to get game.' });
+  }
+};
+
+exports.hasGameStarted = async (req, res, next) => {
+  try {
+    if (!req.game.bluePlayer) {
+      return res.send({ status: 'Awaiting Blue Deck' });
+    }
+    next();
+  } catch (err) {
+    console.log(`Caught exception trying to find if game has started: ${err}`);
+    return next({ status: 500, error: 'Failed to find if game has started.' });
+  }
+};
+
+exports.checkJoinGameParams = (req, res, next) => {
+  console.log('check');
+  if (!req || !req.body || !req.body.gameId || !req.body.deckId) {
+    return next({ status: 401, error: 'Incorrect params for join game' });
+  }
+  return next();
+};
+
 /*
 async function createNewGame(redDeck, blueDeck) {
   // TODO: Handle errors
