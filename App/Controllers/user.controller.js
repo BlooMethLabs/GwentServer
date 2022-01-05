@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 
 exports.getUser = async (req, res, next) => {
   try {
-    let user = await User.findByPk(userId);
+    let user = await User.findByPk(req.userId);
     req.user = user;
     next();
   } catch (err) {

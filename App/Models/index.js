@@ -29,7 +29,15 @@ db.deck.belongsTo(db.user, {
   as: 'user',
 });
 
-db.user.belongsToMany(db.game, { through: 'user_games' });
-db.game.belongsToMany(db.user, { through: 'user_games' });
+db.user.belongsToMany(db.game, {
+  through: 'user_games',
+  as: 'games',
+  foreign_key: 'game_id',
+});
+db.game.belongsToMany(db.user, {
+  through: 'user_games',
+  as: 'users',
+  foreign_key: 'game_id',
+});
 
 module.exports = db;

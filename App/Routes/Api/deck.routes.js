@@ -16,7 +16,7 @@ module.exports = function (app) {
   app.get(
     '/api/deck/getDeck',
     authJwt.verifyToken,
-    controller.checkGetDeckParams,
+    controller.handleGetDeckParams,
     controller.getDefaultDeck,
     userController.getUserIncludingDecks,
     controller.getUserDeck,
@@ -27,7 +27,7 @@ module.exports = function (app) {
   app.post(
     '/api/deck/saveDeck',
     authJwt.verifyToken,
-    controller.checkSaveDeckParams,
+    controller.handleSaveDeckParams,
     controller.checkDeckValid,
     controller.encodeDeck,
     userController.getUserIncludingDecks,

@@ -8,23 +8,29 @@ const userController = require('./user.controller');
 const deckController = require('./deck.controller');
 const { user } = require('../Models');
 
-exports.checkCreateNewGameParams = (req, res, next) => {
+exports.handleCreateNewGameParams = (req, res, next) => {
+  console.log(req);
+  console.log('Handle create new game params.');
   if (!req || !req.body || !req.body.deckId) {
     return next({
       status: 401,
       error: 'Incorrect params for create new game.',
     });
   }
+  req.gwent = { deckId: req.body.deckId };
+  console.log(`Create new game params: ${JSON.stringify(req.gwent)}`);
   return next();
 };
 
 exports.createNewGame = async (req, res, next) => {
+  console.log('Create new game');
   try {
     let newGame = await Game.create({
       redPlayer: req.userId,
       redDeck: req.deck,
     });
-    req.newGame = newGame;
+    console.log(`New game: ${newGame}`);
+    req.game = newGame;
     return next();
   } catch (err) {
     console.log(`Caught exception trying to create new game: ${err}`);
@@ -32,24 +38,39 @@ exports.createNewGame = async (req, res, next) => {
   }
 };
 
-exports.sendNewGameId = (req, res) => {
-  res.send({ newGameId: req.newGame.id });
+exports.addGameToUser = (req, res, next) => {
+  console.log('Add game to user.');
+  try {
+    req.user.addGame(req.game);
+    console.log(`Added game[${req.game.id}] to user [${req.user.id}]`);
+    next();
+  } catch (err) {
+    console.log(`Caught exception trying to add game to user: ${err}`);
+    return next({ status: 500, error: 'Failed to add game to user.' });
+  }
 };
 
-exports.checkGetGameStateParams = (req, res, next) => {
-  console.log('check');
+exports.sendNewGameId = (req, res) => {
+  console.log('Send new game ID');
+  res.send({ newGameId: req.game.id });
+};
+
+exports.handleGetGameStateParams = (req, res, next) => {
+  console.log('Handle get game state params.');
   if (!req || !req.query || !req.query.gameId || !req.query.side) {
     return next({ status: 401, error: 'Incorrect params for get game state' });
   }
+  req.gwent = { gameId: req.query.gameId, side: req.query.side };
+  console.log(`Get game state params: ${JSON.stringify(req.gwent)}`);
   return next();
 };
 
 exports.getGame = async (req, res, next) => {
-  console.log('get game');
+  console.log('Get game');
   try {
-    let game = await Game.findByPk(req.query.gameId);
-    console.log(game);
+    let game = await Game.findByPk(req.gwent.gameId);
     req.game = game;
+    console.log(`Got game with ID [${req.gwent.gameId}]: ${game}`);
     next();
   } catch (err) {
     console.log(`Caught exception trying to get game: ${err}`);
@@ -58,8 +79,10 @@ exports.getGame = async (req, res, next) => {
 };
 
 exports.hasGameStarted = async (req, res, next) => {
+  console.log('Has game started');
   try {
     if (!req.game.bluePlayer) {
+      console.log('Awaiting Blue Deck');
       return res.send({ status: 'Awaiting Blue Deck' });
     }
     next();
@@ -69,11 +92,18 @@ exports.hasGameStarted = async (req, res, next) => {
   }
 };
 
-exports.checkJoinGameParams = (req, res, next) => {
-  console.log('check');
+exports.handleJoinGameParams = (req, res, next) => {
+  console.log('Handle join game params');
   if (!req || !req.body || !req.body.gameId || !req.body.deckId) {
     return next({ status: 401, error: 'Incorrect params for join game' });
   }
+  req.gwent = {
+    gameId: req.body.gameId,
+    side: req.body.deckId,
+    default: req.body.default,
+    deckId: req.body.deckId,
+  };
+  console.log(`Join game params: ${JSON.stringify(req.gwent)}`);
   return next();
 };
 

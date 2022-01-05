@@ -34,7 +34,7 @@ function getFactionCards(faction) {
 }
 
 function encodeDeck(name, deck, userId) {
-  let convertedDeck = {
+  let encodedDeck = {
     name: name,
     faction: deck.Faction,
     leader: deck.Leader.Name,
@@ -42,8 +42,8 @@ function encodeDeck(name, deck, userId) {
   };
   let cards = deck.Cards.map((card) => card.Name);
   // console.log(`Cards: ${JSON.stringify(cards)}`)
-  convertedDeck.cards = JSON.stringify(cards);
-  return convertedDeck;
+  encodedDeck.cards = JSON.stringify(cards);
+  return encodedDeck;
 }
 
 function decodeDeck(deck) {
@@ -52,22 +52,22 @@ function decodeDeck(deck) {
     factionCards = monsterCards;
   }
   let availableCards = [...factionCards, ...neutralCards];
-
-  console.log(deck);
-  let convertedDeck = { Faction: deck.faction };
-  convertedDeck.Cards = deck.cards.map((card) => {
+  let decodedDeck = { Faction: deck.faction };
+  decodedDeck.Cards = deck.cards.map((card) => {
     let c = availableCards.find((c) => c.Name === card);
     if (!c) {
       throw new Error(`Card ${card} not found in available cards.`);
     }
     return c;
   });
-  convertedDeck.Leader = availableCards.find((c) => c.Name === deck.leader);
+  decodedDeck.Leader = availableCards.find((c) => c.Name === deck.leader);
+  console.log(`Decoded deck: ${decodedDeck}`);
 
-  return convertedDeck;
+  return decodedDeck;
 }
 
 exports.getFactionCards = (req, res) => {
+  console.log('Get faction cards.');
   try {
     console.log('Get faction cards');
     let faction = parseInt(req.query.Faction);
@@ -80,12 +80,13 @@ exports.getFactionCards = (req, res) => {
 };
 
 exports.getUserDecks = async (req, res, next) => {
+  console.log('Get user decks.');
   try {
     console.log(`Get user decks for ${req.userId}`);
     let decks = [];
     if (req.user.decks) {
       decks = req.user.decks.map((d) => {
-        return { id: d.id, name: d.name };
+        return { id: d.id, name: d.name, default: false };
       });
     }
     req.decks = decks;
@@ -99,20 +100,29 @@ exports.getUserDecks = async (req, res, next) => {
 };
 
 exports.sendDecks = (req, res) => {
+  console.log('Send decks');
   res.send({ decks: req.decks });
 };
 
-exports.checkGetDeckParams = (req, res, next) => {
-  if (!req || !req.query || !req.query.deckId) {
+exports.handleGetDeckParams = (req, res, next) => {
+  console.log('Handle get deck params');
+  if ((!req || !req.query || !req.query.deckId, !!!req.query.default)) {
     return next({ status: 401, error: 'Incorrect params for get user deck' });
   }
+  req.gwent = {
+    deckId: req.query.deckId,
+    default: req.query.default === 'true',
+  };
+  console.log(`Get deck params: ${JSON.stringify(req.gwent)}`);
   return next();
 };
 
 exports.getDefaultDeck = async (req, res, next) => {
+  console.log('Get default deck.');
   try {
-    if (!req.query.default) return next();
-    req.deck = defaultDecks[req.query.deckId];
+    if (req.gwent.default) {
+      req.deck = defaultDecks[req.gwent.deckId];
+    }
     return next();
   } catch (err) {
     console.log(`Caught exception trying to get default deck: ${err}`);
@@ -121,12 +131,10 @@ exports.getDefaultDeck = async (req, res, next) => {
 };
 
 exports.getUserDeck = async (req, res, next) => {
+  console.log('Get user deck');
   try {
     if (req.deck) return next();
-    let deckId = req.query.deckId;
-    if (!deckId) {
-      deckId = req.body.deckId;
-    }
+    let deckId = req.gwent.deckId;
     console.log(`Get deck: ${deckId}`);
 
     let deck = req.user.decks.find((d) => d.id == deckId);
@@ -145,22 +153,27 @@ exports.getUserDeck = async (req, res, next) => {
 };
 
 exports.sendDeck = (req, res) => {
+  console.log('Send deck');
   res.send({ deck: req.decodedDeck });
 };
 
-exports.checkSaveDeckParams = (req, res, next) => {
+exports.handleSaveDeckParams = (req, res, next) => {
+  console.log('Handle save deck params');
   if (!req || !req.body || !req.body.name || !req.body.deck) {
     return next({
       status: 400,
       error: 'Username or password param missing.',
     });
   }
+  req.gwent = { name: req.body.name, deck: req.body.deck };
+  console.log(`Save deck params: ${JSON.stringify(req.gwent)}`);
   return next();
 };
 
 exports.checkDeckValid = (req, res, next) => {
+  console.log('Check deck valid');
   try {
-    let deck = JSON.stringify(req.body.deck);
+    let deck = JSON.stringify(req.gwent.deck);
     let valid = addon.isDeckValid(deck);
     if (!valid) {
       return next({ status: 400, error: 'Deck not valid' });
@@ -173,9 +186,10 @@ exports.checkDeckValid = (req, res, next) => {
 };
 
 exports.encodeDeck = (req, res, next) => {
+  console.log('Encode deck');
   try {
     let userId = req.userId;
-    let encodedDeck = encodeDeck(req.body.name, req.body.deck, userId);
+    let encodedDeck = encodeDeck(req.gwent.name, req.gwent.deck, userId);
     console.log('Converted deck: ' + JSON.stringify(encodedDeck));
     req.encodedDeck = encodedDeck;
     return next();
@@ -186,6 +200,7 @@ exports.encodeDeck = (req, res, next) => {
 };
 
 exports.decodeDeck = (req, res, next) => {
+  console.log('Decode deck');
   try {
     console.log(`Deck: ${JSON.stringify(req.deck)}`);
     let decodedDeck = decodeDeck(req.deck);
@@ -199,14 +214,14 @@ exports.decodeDeck = (req, res, next) => {
 };
 
 exports.confirmDeckBelongsToUser = async (req, res, next) => {
-  console.log('confirm');
+  console.log('Confirm deck belongs to user');
   try {
-    if (!req.body.deckId) {
+    if (!req.gwent.deckId) {
       return next();
     }
     let user = req.user;
     console.log(`user: ${user}`);
-    let deck = user.decks.find((d) => d.id == req.body.deckId);
+    let deck = user.decks.find((d) => d.id == req.gwent.deckId);
     if (!deck) {
       return next({ status: 401, error: 'Deck does not belong to user.' });
     }
@@ -227,8 +242,8 @@ exports.saveDeck = async (req, res, next) => {
   console.log('Save deck');
   try {
     console.log(
-      `userId: ${req.userId} Name: ${req.body.name} Deck: ${JSON.stringify(
-        req.body.deck,
+      `userId: ${req.userId} Name: ${req.gwent.name} Deck: ${JSON.stringify(
+        req.gwent.deck,
       )}`,
     );
 
@@ -247,5 +262,6 @@ exports.saveDeck = async (req, res, next) => {
 };
 
 exports.sendDeckId = (req, res) => {
+  console.log('Send deck ID');
   res.send({ deckId: req.newDeckId });
 };

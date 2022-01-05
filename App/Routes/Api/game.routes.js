@@ -7,13 +7,14 @@ module.exports = function (app) {
   app.post(
     '/api/game/createNewGame',
     authJwt.verifyToken,
-    controller.checkCreateNewGameParams,
+    controller.handleCreateNewGameParams,
     // Should check if deck valid?
-    // deckController.getDefaultDeck,
+    deckController.getDefaultDeck,
     userController.getUserIncludingDecks,
     // get deck from example deck
     deckController.getUserDeck,
     controller.createNewGame,
+    controller.addGameToUser,
     controller.sendNewGameId,
     // create new game with user and deck
   );
@@ -21,7 +22,7 @@ module.exports = function (app) {
   app.get(
     '/api/game/getGameState',
     authJwt.verifyToken,
-    controller.checkGetGameStateParams,
+    controller.handleGetGameStateParams,
     controller.getGame,
     controller.hasGameStarted,
     // controller.findPlayer,
@@ -32,14 +33,16 @@ module.exports = function (app) {
   app.post(
     '/api/game/joinGame',
     authJwt.verifyToken,
-    controller.checkJoinGameParams,
+    controller.handleJoinGameParams,
     controller.getGame,
     deckController.getDefaultDeck,
     userController.getUserIncludingDecks,
     deckController.getUserDeck,
     deckController.decodeDeck,
+    controller.addGameToUser,
     // controller.addUserToGame,
     // controller.addDeckToGame,
+    // controller.sendJoinGameRes,
     // controller.updateGameState,
     // controller.sendJoinGameResponse,
   );
