@@ -38,12 +38,9 @@ module.exports = function (app) {
     deckController.getDefaultDeck,
     userController.getUserIncludingDecks,
     deckController.getUserDeck,
-    deckController.decodeDeck,
     controller.addGameToUser,
-    // controller.addUserToGame,
-    // controller.addDeckToGame,
-    // controller.sendJoinGameRes,
+    controller.addBluePlayerToGame,
     // controller.updateGameState,
-    // controller.sendJoinGameResponse,
+    // controller.sendJoinGameRes,
   );
 };

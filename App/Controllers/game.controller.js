@@ -17,7 +17,7 @@ exports.handleCreateNewGameParams = (req, res, next) => {
       error: 'Incorrect params for create new game.',
     });
   }
-  req.gwent = { deckId: req.body.deckId };
+  req.gwent = { deckId: req.body.deckId, default: req.body.default };
   console.log(`Create new game params: ${JSON.stringify(req.gwent)}`);
   return next();
 };
@@ -43,6 +43,20 @@ exports.addGameToUser = (req, res, next) => {
   try {
     req.user.addGame(req.game);
     console.log(`Added game[${req.game.id}] to user [${req.user.id}]`);
+    next();
+  } catch (err) {
+    console.log(`Caught exception trying to add game to user: ${err}`);
+    return next({ status: 500, error: 'Failed to add game to user.' });
+  }
+};
+
+exports.addBluePlayerToGame = async (req, res, next) => {
+  console.log('Add blue player to game.');
+  try {
+    req.game.bluePlayer = req.user.id;
+    req.game.blueDeck = req.deck;
+    req.game.save();
+    console.log(`Added user [${req.user.id}] to game[${req.game.id}]`);
     next();
   } catch (err) {
     console.log(`Caught exception trying to add game to user: ${err}`);
