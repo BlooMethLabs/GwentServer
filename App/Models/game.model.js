@@ -9,8 +9,8 @@ module.exports = (sequelize, Sequelize) => {
   // });
 
   const Game = sequelize.define('game', {
-    gameState: {
-      type: Sequelize.BLOB,
+    state: {
+      type: Sequelize.STRING,
     },
     redPlayer: {
       type: Sequelize.INTEGER,

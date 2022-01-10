@@ -24,7 +24,7 @@ module.exports = function (app) {
     authJwt.verifyToken,
     controller.handleGetGameStateParams,
     controller.getGame,
-    controller.hasGameStarted,
+    controller.sendGameState,
     // controller.findPlayer,
     // controller.removeOtherPlayerCards,
     // controller.sendGameState,

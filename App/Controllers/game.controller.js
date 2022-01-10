@@ -7,6 +7,7 @@ const Game = db.game;
 const userController = require('./user.controller');
 const deckController = require('./deck.controller');
 const { user } = require('../Models');
+const gameConfig = require('../Config/game.config.js');
 
 exports.handleCreateNewGameParams = (req, res, next) => {
   console.log('Handle create new game params.');
@@ -16,7 +17,10 @@ exports.handleCreateNewGameParams = (req, res, next) => {
       error: 'Incorrect params for create new game.',
     });
   }
-  req.gwent = { deckId: req.body.deckId, default: req.body.default };
+  req.gwent = {
+    deckId: req.body.deckId,
+    default: req.body.default,
+  };
   console.log(`Create new game params: ${JSON.stringify(req.gwent)}`);
   return next();
 };
@@ -27,6 +31,7 @@ exports.createNewGame = async (req, res, next) => {
     let newGame = await Game.create({
       redPlayer: req.userId,
       redDeck: req.deck,
+      state: gameConfig.states[1],
     });
     console.log(`New game: ${newGame}`);
     req.game = newGame;
@@ -54,6 +59,7 @@ exports.addBluePlayerToGame = async (req, res, next) => {
   try {
     req.game.bluePlayer = req.user.id;
     req.game.blueDeck = req.deck;
+    req.game.state = gameConfig.states[2];
     req.game.save();
     console.log(`Added user [${req.user.id}] to game[${req.game.id}]`);
     next();
@@ -91,17 +97,28 @@ exports.getGame = async (req, res, next) => {
   }
 };
 
-exports.hasGameStarted = async (req, res, next) => {
+exports.checkGameHasStarted = async (req, res, next) => {
   console.log('Has game started');
   try {
-    if (!req.game.bluePlayer) {
-      console.log('Awaiting Blue Deck');
-      return res.send({ status: 'Awaiting Blue Deck' });
+    if (!req.game.state === gameConfig.states[1]) {
+      return next({ status: 500, error: 'Game has not started' });
     }
     next();
   } catch (err) {
     console.log(`Caught exception trying to find if game has started: ${err}`);
     return next({ status: 500, error: 'Failed to find if game has started.' });
+  }
+};
+
+exports.sendGameState = async (req, res, next) => {
+  console.log('Send game state');
+  try {
+    let state = req.game.state;
+    console.log(`Game state: ${state}`);
+    res.send({ status: state });
+  } catch (err) {
+    console.log(`Caught exception trying to find game state: ${err}`);
+    return next({ status: 500, error: 'Failed to find game state.' });
   }
 };
 
