@@ -9,7 +9,6 @@ const deckController = require('./deck.controller');
 const { user } = require('../Models');
 
 exports.handleCreateNewGameParams = (req, res, next) => {
-  console.log(req);
   console.log('Handle create new game params.');
   if (!req || !req.body || !req.body.deckId) {
     return next({

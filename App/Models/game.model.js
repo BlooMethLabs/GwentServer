@@ -22,9 +22,21 @@ module.exports = (sequelize, Sequelize) => {
     redDeck: {
       type: Sequelize.BLOB,
       allowNull: false,
+      get() {
+        return JSON.parse(this.getDataValue('redDeck'));
+      },
+      set(value) {
+        this.setDataValue('redDeck', JSON.stringify(value));
+      },
     },
     blueDeck: {
       type: Sequelize.BLOB,
+      get() {
+        return JSON.parse(this.getDataValue('blueDeck'));
+      },
+      set(value) {
+        this.setDataValue('blueDeck', JSON.stringify(value));
+      },
     },
     // TODO: list of actions taken
   });

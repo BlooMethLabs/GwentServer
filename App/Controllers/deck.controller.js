@@ -243,7 +243,7 @@ exports.saveDeck = async (req, res, next) => {
   try {
     console.log(
       `userId: ${req.userId} Name: ${req.gwent.name} Deck: ${JSON.stringify(
-        req.gwent.deck,
+        req.encodedDeck,
       )}`,
     );
 
@@ -252,7 +252,7 @@ exports.saveDeck = async (req, res, next) => {
     }
 
     let newDeck = await Deck.create(req.encodedDeck);
-    console.log(newDeck.id);
+    console.log(`Saved new deck with deck ID: ${newDeck.id}`);
     req.newDeckId = newDeck.id;
     return next();
   } catch (err) {
