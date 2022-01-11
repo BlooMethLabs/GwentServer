@@ -9,8 +9,17 @@ module.exports = (sequelize, Sequelize) => {
   // });
 
   const Game = sequelize.define('game', {
-    state: {
+    status: {
       type: Sequelize.STRING,
+    },
+    state: {
+      type: Sequelize.BLOB,
+      get() {
+        return JSON.parse(this.getDataValue('state'));
+      },
+      set(value) {
+        this.setDataValue('state', JSON.stringify(value));
+      },
     },
     redPlayer: {
       type: Sequelize.INTEGER,

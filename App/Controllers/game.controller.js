@@ -31,7 +31,7 @@ exports.createNewGame = async (req, res, next) => {
     let newGame = await Game.create({
       redPlayer: req.userId,
       redDeck: req.deck,
-      state: gameConfig.states[1],
+      status: gameConfig.statuses[1],
     });
     console.log(`New game: ${newGame}`);
     req.game = newGame;
@@ -59,8 +59,8 @@ exports.addBluePlayerToGame = async (req, res, next) => {
   try {
     req.game.bluePlayer = req.user.id;
     req.game.blueDeck = req.deck;
-    req.game.state = gameConfig.states[2];
-    req.game.save();
+    req.game.status = gameConfig.statuses[2];
+    await req.game.save();
     console.log(`Added user [${req.user.id}] to game[${req.game.id}]`);
     next();
   } catch (err) {
@@ -74,13 +74,13 @@ exports.sendNewGameId = (req, res) => {
   res.send({ newGameId: req.game.id });
 };
 
-exports.handleGetGameStateParams = (req, res, next) => {
-  console.log('Handle get game state params.');
+exports.handleGetGameStatusParams = (req, res, next) => {
+  console.log('Handle get game status params.');
   if (!req || !req.query || !req.query.gameId || !req.query.side) {
-    return next({ status: 401, error: 'Incorrect params for get game state' });
+    return next({ status: 401, error: 'Incorrect params for get game status' });
   }
   req.gwent = { gameId: req.query.gameId, side: req.query.side };
-  console.log(`Get game state params: ${JSON.stringify(req.gwent)}`);
+  console.log(`Get game status params: ${JSON.stringify(req.gwent)}`);
   return next();
 };
 
@@ -100,7 +100,7 @@ exports.getGame = async (req, res, next) => {
 exports.checkGameHasStarted = async (req, res, next) => {
   console.log('Has game started');
   try {
-    if (!req.game.state === gameConfig.states[1]) {
+    if (!req.game.status === gameConfig.statuses[1]) {
       return next({ status: 500, error: 'Game has not started' });
     }
     next();
@@ -110,15 +110,15 @@ exports.checkGameHasStarted = async (req, res, next) => {
   }
 };
 
-exports.sendGameState = async (req, res, next) => {
-  console.log('Send game state');
+exports.sendGameStatus = async (req, res, next) => {
+  console.log('Send game status');
   try {
-    let state = req.game.state;
-    console.log(`Game state: ${state}`);
-    res.send({ status: state });
+    let status = req.game.status;
+    console.log(`Game status: ${status}`);
+    res.send({ status: status });
   } catch (err) {
-    console.log(`Caught exception trying to find game state: ${err}`);
-    return next({ status: 500, error: 'Failed to find game state.' });
+    console.log(`Caught exception trying to find game status: ${err}`);
+    return next({ status: 500, error: 'Failed to find game status.' });
   }
 };
 
@@ -137,7 +137,24 @@ exports.handleJoinGameParams = (req, res, next) => {
   return next();
 };
 
+exports.startGame = async (req, res, next) => {
+  console.log('Start game')
+  try {
+    let redDeck = req.decodedRedDeck;
+    let blueDeck = req.decodedBlueDeck;
+    let newGameState = addon.createGameWithDecks(JSON.stringify(blueDeck), JSON.stringify(redDeck));
+    console.log(newGameState);
+    req.game.state = newGameState;
+    await req.game.save();
+    return res.send({ GameId: req.game.id });
+  } catch (err) {
+    console.log(`Caught exception trying to start game: ${err}`);
+    return next({ status: 500, error: 'Failed to start game.' });
+  }
+};
+
 /*
+
 async function createNewGame(redDeck, blueDeck) {
   // TODO: Handle errors
   let newGameState = addon.createGameWithDecks(blueDeck, redDeck);

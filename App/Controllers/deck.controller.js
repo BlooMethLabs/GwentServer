@@ -213,6 +213,20 @@ exports.decodeDeck = (req, res, next) => {
   }
 };
 
+exports.getAndDecodeRedAndBlueDecks = (req, res, next) => {
+  console.log('Get red and blue decks');
+  try {
+    req.decodedRedDeck = decodeDeck(req.game.redDeck);
+    req.decodedBlueDeck = decodeDeck(req.game.blueDeck);
+    console.log(`Red deck: ${JSON.stringify(req.decodedRedDeck)}.`)
+    console.log(`Blue deck: ${JSON.stringify(req.decodedBlueDeck)}.`)
+    return next();
+  } catch (err) {
+    console.log(`Caught exception trying to find game state: ${err}`);
+    return next({ status: 500, error: 'Failed to find game state.' });
+  }
+};
+
 exports.confirmDeckBelongsToUser = async (req, res, next) => {
   console.log('Confirm deck belongs to user');
   try {

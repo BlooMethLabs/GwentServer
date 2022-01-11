@@ -20,11 +20,11 @@ module.exports = function (app) {
   );
 
   app.get(
-    '/api/game/getGameState',
+    '/api/game/getGameStatus',
     authJwt.verifyToken,
-    controller.handleGetGameStateParams,
+    controller.handleGetGameStatusParams,
     controller.getGame,
-    controller.sendGameState,
+    controller.sendGameStatus,
     // controller.findPlayer,
     // controller.removeOtherPlayerCards,
     // controller.sendGameState,
@@ -40,7 +40,8 @@ module.exports = function (app) {
     deckController.getUserDeck,
     controller.addGameToUser,
     controller.addBluePlayerToGame,
-    // controller.updateGameState,
+    deckController.getAndDecodeRedAndBlueDecks,
+    controller.startGame,
     // controller.sendJoinGameRes,
   );
 };
