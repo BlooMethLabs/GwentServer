@@ -25,9 +25,16 @@ module.exports = function (app) {
     controller.handleGetGameStatusParams,
     controller.getGame,
     controller.sendGameStatus,
-    // controller.findPlayer,
-    // controller.removeOtherPlayerCards,
-    // controller.sendGameState,
+  );
+
+  app.get(
+    '/api/game/getGameState',
+    authJwt.verifyToken,
+    controller.handleGetGameStateParams,
+    controller.getGame,
+    // TODO: confirm game belongs to user
+    // TODO: remove other player
+    controller.sendGameState,
   );
 
   app.post(

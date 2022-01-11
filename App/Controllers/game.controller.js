@@ -84,6 +84,16 @@ exports.handleGetGameStatusParams = (req, res, next) => {
   return next();
 };
 
+exports.handleGetGameStateParams = (req, res, next) => {
+  console.log('Handle get game state params.');
+  if (!req || !req.query || !req.query.gameId || !req.query.side) {
+    return next({ state: 401, error: 'Incorrect params for get game state' });
+  }
+  req.gwent = { gameId: req.query.gameId, side: req.query.side };
+  console.log(`Get game state params: ${JSON.stringify(req.gwent)}`);
+  return next();
+};
+
 exports.getGame = async (req, res, next) => {
   console.log('Get game');
   try {
@@ -119,6 +129,18 @@ exports.sendGameStatus = async (req, res, next) => {
   } catch (err) {
     console.log(`Caught exception trying to find game status: ${err}`);
     return next({ status: 500, error: 'Failed to find game status.' });
+  }
+};
+
+exports.sendGameState = async (req, res, next) => {
+  console.log('Send game state');
+  try {
+    let state = req.game.state;
+    console.log(`Game state: ${state}`);
+    res.send({ state: state });
+  } catch (err) {
+    console.log(`Caught exception trying to find game state: ${err}`);
+    return next({ state: 500, error: 'Failed to find game state.' });
   }
 };
 
