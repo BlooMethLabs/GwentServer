@@ -8,6 +8,7 @@ const userController = require('./user.controller');
 const deckController = require('./deck.controller');
 const { user } = require('../Models');
 const gameConfig = require('../Config/game.config.js');
+const _ = require('lodash');
 
 exports.handleCreateNewGameParams = (req, res, next) => {
   console.log('Handle create new game params.');
@@ -99,7 +100,9 @@ exports.getGame = async (req, res, next) => {
   try {
     let game = await Game.findByPk(req.gwent.gameId);
     req.game = game;
-    console.log(`Got game with ID [${req.gwent.gameId}]: ${game}`);
+    console.log(
+      `Got game with ID [${req.gwent.gameId}]: ${JSON.stringify(game)}`,
+    );
     next();
   } catch (err) {
     console.log(`Caught exception trying to get game: ${err}`);
@@ -151,7 +154,6 @@ exports.handleJoinGameParams = (req, res, next) => {
   }
   req.gwent = {
     gameId: req.body.gameId,
-    side: req.body.deckId,
     default: req.body.default,
     deckId: req.body.deckId,
   };
@@ -160,11 +162,14 @@ exports.handleJoinGameParams = (req, res, next) => {
 };
 
 exports.startGame = async (req, res, next) => {
-  console.log('Start game')
+  console.log('Start game');
   try {
     let redDeck = req.decodedRedDeck;
     let blueDeck = req.decodedBlueDeck;
-    let newGameState = addon.createGameWithDecks(JSON.stringify(blueDeck), JSON.stringify(redDeck));
+    let newGameState = addon.createGameWithDecks(
+      JSON.stringify(blueDeck),
+      JSON.stringify(redDeck),
+    );
     console.log(newGameState);
     req.game.state = newGameState;
     await req.game.save();
@@ -172,6 +177,73 @@ exports.startGame = async (req, res, next) => {
   } catch (err) {
     console.log(`Caught exception trying to start game: ${err}`);
     return next({ status: 500, error: 'Failed to start game.' });
+  }
+};
+
+exports.handleTakeActionParams = (req, res, next) => {
+  console.log('Handle take action params');
+  console.log(req.body);
+  if (!req || !req.body || !req.body.gameId || !req.body.action) {
+    return next({ status: 401, error: 'Incorrect params for take action' });
+  }
+  req.gwent = {
+    gameId: req.body.gameId,
+    action: req.body.action,
+  };
+  console.log(`Take action params: ${JSON.stringify(req.gwent)}`);
+  return next();
+};
+
+exports.takeAction = async (req, res, next) => {
+  console.log('Take action');
+  try {
+    let action = JSON.stringify(req.gwent.action);
+    let gameState = req.game.state;
+
+    let newGameState = addon.takeAction(JSON.stringify(gameState), action);
+    console.log(`New game state: ${newGameState}`);
+    newGameState = JSON.parse(newGameState);
+    if ('Error' in newGameState) {
+      console.log('Error: New game: ', newGameState);
+      return next({ status: 500, error: newGameState.Error });
+    }
+    req.newGameState = newGameState;
+    req.game.state = newGameState;
+    await req.game.save();
+    return next();
+  } catch (err) {
+    console.log(`Caught exception trying to take action: ${err}`);
+    return next({ status: 500, error: 'Failed to take action.' });
+  }
+};
+
+exports.removeOtherPlayer = async (req, res, next) => {
+  console.log('Remove other player');
+  try {
+    let game = req.newGameState;
+    let remSide = _.toLower(req.gwent.action.Side) === 'red' ? 'Blue' : 'Red';
+    console.log(game[remSide + ' Player'].Hand.Cards.length);
+    game[remSide + ' Player'].Hand.Size =
+      game[remSide + ' Player'].Hand.Cards.length;
+    game[remSide + ' Player'].Hand.Cards = [];
+    game[remSide + ' Player'].Deck.Size =
+      game[remSide + ' Player'].Deck.Cards.length;
+    game[remSide + ' Player'].Deck.Cards = [];
+    req.newGameState = game;
+    return next();
+  } catch (err) {
+    console.log(`Caught exception trying to remove other player: ${err}`);
+    return next({ status: 500, error: 'Failed to remove other player.' });
+  }
+};
+
+exports.sendTakeActionRes = async (req, res, next) => {
+  console.log('Send take action res');
+  try {
+    return res.send({ newGameState: req.newGameState });
+  } catch (err) {
+    console.log(`Caught exception trying to send take action res: ${err}`);
+    return next({ status: 500, error: 'Failed to send take action res.' });
   }
 };
 

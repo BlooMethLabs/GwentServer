@@ -51,4 +51,15 @@ module.exports = function (app) {
     controller.startGame,
     // controller.sendJoinGameRes,
   );
+
+  app.post(
+    '/api/game/takeAction',
+    authJwt.verifyToken,
+    controller.handleTakeActionParams,
+    controller.getGame,
+    // TODO: Check user has permission to make move
+    controller.takeAction,
+    controller.removeOtherPlayer,
+    controller.sendTakeActionRes,
+  );
 };
