@@ -139,6 +139,9 @@ exports.sendGameState = async (req, res, next) => {
   console.log('Send game state');
   try {
     let state = req.game.state;
+    if (typeof state !== "string") {
+      state = JSON.stringify(state);
+    }
     console.log(`Game state: ${state}`);
     res.send({ state: state });
   } catch (err) {
@@ -190,6 +193,9 @@ exports.handleTakeActionParams = (req, res, next) => {
     gameId: req.body.gameId,
     action: req.body.action,
   };
+  if (typeof req.gwent.action !== "object") {
+    req.gwent.action = JSON.parse(action);
+  }
   console.log(`Take action params: ${JSON.stringify(req.gwent)}`);
   return next();
 };
@@ -197,10 +203,15 @@ exports.handleTakeActionParams = (req, res, next) => {
 exports.takeAction = async (req, res, next) => {
   console.log('Take action');
   try {
-    let action = JSON.stringify(req.gwent.action);
+    let action = req.gwent.action;
+    if (typeof action !== "string") {
+      action = JSON.stringify(action);
+    }
     let gameState = req.game.state;
-
-    let newGameState = addon.takeAction(JSON.stringify(gameState), action);
+    if (typeof gameState !== "string") {
+      gameState = JSON.stringify(gameState);
+    }
+    let newGameState = addon.takeAction(gameState, action);
     console.log(`New game state: ${newGameState}`);
     newGameState = JSON.parse(newGameState);
     if ('Error' in newGameState) {
