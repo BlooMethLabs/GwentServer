@@ -95,6 +95,21 @@ exports.handleGetGameStateParams = (req, res, next) => {
   return next();
 };
 
+exports.checkAuth = (req, res, next) => {
+  console.log('Check user authorised.');
+  try {
+    let requestSide = _.toLower(req.gwent.side) === 'red' ? 'redPlayer' : 'bluePlayer';
+    let userId = req.userId;
+    if (userId !== req.game[requestSide]) {
+      return next({ status: 402, error: `User with ID ${userId} not authorised to access game with ID ${req.game.id} and side ${req.gwent.side}.` });
+    }
+    next();
+  } catch (err) {
+    console.log(`Caught exception trying to confirm authorisation: ${err}`);
+    return next({ status: 500, error: 'Failed to authorise.' });
+  }
+};
+
 exports.getGame = async (req, res, next) => {
   console.log('Get game');
   try {

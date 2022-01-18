@@ -32,8 +32,8 @@ module.exports = function (app) {
     authJwt.verifyToken,
     controller.handleGetGameStateParams,
     controller.getGame,
+    controller.checkAuth,
     controller.getGameState,
-    // TODO: confirm game belongs to user
     controller.removeOtherPlayerFromState,
     controller.sendGameState,
   );
@@ -58,7 +58,7 @@ module.exports = function (app) {
     authJwt.verifyToken,
     controller.handleTakeActionParams,
     controller.getGame,
-    // TODO: Check user has permission to make move
+    controller.checkAuth,
     controller.takeAction,
     controller.removeOtherPlayerFromState,
     controller.sendTakeActionRes,
