@@ -110,6 +110,17 @@ exports.getGame = async (req, res, next) => {
   }
 };
 
+exports.getGameState = async (req, res, next) => {
+  console.log('Get game state');
+  try {
+    req.gameState = req.game.state;
+    next();
+  } catch (err) {
+    console.log(`Caught exception trying to get game state: ${err}`);
+    return next({ status: 500, error: 'Failed to get game state.' });
+  }
+};
+
 exports.checkGameHasStarted = async (req, res, next) => {
   console.log('Has game started');
   try {
@@ -138,7 +149,7 @@ exports.sendGameStatus = async (req, res, next) => {
 exports.sendGameState = async (req, res, next) => {
   console.log('Send game state');
   try {
-    let state = req.game.state;
+    let state = req.gameState;
     if (typeof state !== "string") {
       state = JSON.stringify(state);
     }
@@ -192,6 +203,7 @@ exports.handleTakeActionParams = (req, res, next) => {
   req.gwent = {
     gameId: req.body.gameId,
     action: req.body.action,
+    side: req.body.action.Side,
   };
   if (typeof req.gwent.action !== "object") {
     req.gwent.action = JSON.parse(action);
@@ -218,7 +230,7 @@ exports.takeAction = async (req, res, next) => {
       console.log('Error: New game: ', newGameState);
       return next({ status: 500, error: newGameState.Error });
     }
-    req.newGameState = newGameState;
+    req.gameState = newGameState;
     req.game.state = newGameState;
     await req.game.save();
     return next();
@@ -228,11 +240,11 @@ exports.takeAction = async (req, res, next) => {
   }
 };
 
-exports.removeOtherPlayer = async (req, res, next) => {
+exports.removeOtherPlayerFromState = async (req, res, next) => {
   console.log('Remove other player');
   try {
-    let game = req.newGameState;
-    let remSide = _.toLower(req.gwent.action.Side) === 'red' ? 'Blue' : 'Red';
+    let game = req.gameState;
+    let remSide = _.toLower(req.gwent.side) === 'red' ? 'Blue' : 'Red';
     console.log(game[remSide + ' Player'].Hand.Cards.length);
     game[remSide + ' Player'].Hand.Size =
       game[remSide + ' Player'].Hand.Cards.length;
@@ -240,7 +252,7 @@ exports.removeOtherPlayer = async (req, res, next) => {
     game[remSide + ' Player'].Deck.Size =
       game[remSide + ' Player'].Deck.Cards.length;
     game[remSide + ' Player'].Deck.Cards = [];
-    req.newGameState = game;
+    req.gameState = game;
     return next();
   } catch (err) {
     console.log(`Caught exception trying to remove other player: ${err}`);
@@ -251,7 +263,7 @@ exports.removeOtherPlayer = async (req, res, next) => {
 exports.sendTakeActionRes = async (req, res, next) => {
   console.log('Send take action res');
   try {
-    return res.send({ newGameState: req.newGameState });
+    return res.send({ newGameState: req.gameState });
   } catch (err) {
     console.log(`Caught exception trying to send take action res: ${err}`);
     return next({ status: 500, error: 'Failed to send take action res.' });
