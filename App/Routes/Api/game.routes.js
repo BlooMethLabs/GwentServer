@@ -32,8 +32,9 @@ module.exports = function (app) {
     authJwt.verifyToken,
     controller.handleGetGameStateParams,
     controller.getGame,
+    controller.getGameState,
     // TODO: confirm game belongs to user
-    // TODO: remove other player
+    controller.removeOtherPlayerFromState,
     controller.sendGameState,
   );
 
@@ -59,7 +60,7 @@ module.exports = function (app) {
     controller.getGame,
     // TODO: Check user has permission to make move
     controller.takeAction,
-    controller.removeOtherPlayer,
+    controller.removeOtherPlayerFromState,
     controller.sendTakeActionRes,
   );
 };
