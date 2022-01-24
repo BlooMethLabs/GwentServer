@@ -10,13 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     cards: {
-      type: Sequelize.BLOB,
-      get() {
-        return JSON.parse(this.getDataValue('cards'));
-      },
-      set(value) {
-        this.setDataValue('cards', JSON.stringify(value));
-      },
+      type: Sequelize.JSON,
     },
   });
 

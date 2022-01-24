@@ -43,10 +43,10 @@ exports.createNewGame = async (req, res, next) => {
   }
 };
 
-exports.addGameToUser = (req, res, next) => {
+exports.addGameToUser = async (req, res, next) => {
   console.log('Add game to user.');
   try {
-    req.user.addGame(req.game);
+    await req.user.addGame(req.game);
     console.log(`Added game[${req.game.id}] to user [${req.user.id}]`);
     next();
   } catch (err) {
@@ -60,7 +60,6 @@ exports.addBluePlayerToGame = async (req, res, next) => {
   try {
     req.game.bluePlayer = req.user.id;
     req.game.blueDeck = req.deck;
-    req.game.status = gameConfig.statuses[2];
     await req.game.save();
     console.log(`Added user [${req.user.id}] to game[${req.game.id}]`);
     next();
@@ -200,7 +199,8 @@ exports.startGame = async (req, res, next) => {
       JSON.stringify(redDeck),
     );
     console.log(newGameState);
-    req.game.state = newGameState;
+    req.game.state = JSON.parse(newGameState);
+    req.game.status = gameConfig.statuses[2];
     await req.game.save();
     return res.send({ GameId: req.game.id });
   } catch (err) {
@@ -259,14 +259,17 @@ exports.removeOtherPlayerFromState = async (req, res, next) => {
   console.log('Remove other player');
   try {
     let game = req.gameState;
-    let remSide = _.toLower(req.gwent.side) === 'red' ? 'Blue' : 'Red';
-    console.log(game[remSide + ' Player'].Hand.Cards.length);
-    game[remSide + ' Player'].Hand.Size =
-      game[remSide + ' Player'].Hand.Cards.length;
-    game[remSide + ' Player'].Hand.Cards = [];
-    game[remSide + ' Player'].Deck.Size =
-      game[remSide + ' Player'].Deck.Cards.length;
-    game[remSide + ' Player'].Deck.Cards = [];
+    let remSide = _.toLower(req.gwent.side) === 'red' ? 'Blue Player' : 'Red Player';
+    console.log(typeof game);
+    console.log(`Side to remove: ${remSide}`);
+    console.log(game["Red Player"]);
+    console.log(game[remSide].Hand.Cards.length);
+    game[remSide].Hand.Size =
+      game[remSide].Hand.Cards.length;
+    game[remSide].Hand.Cards = [];
+    game[remSide].Deck.Size =
+      game[remSide].Deck.Cards.length;
+    game[remSide].Deck.Cards = [];
     req.gameState = game;
     return next();
   } catch (err) {

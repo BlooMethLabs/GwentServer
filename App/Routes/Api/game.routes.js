@@ -48,7 +48,7 @@ module.exports = function (app) {
     deckController.getUserDeck,
     controller.addGameToUser,
     controller.addBluePlayerToGame,
-    deckController.getAndDecodeRedAndBlueDecks,
+    deckController.decodeRedAndBlueDecks,
     controller.startGame,
     // controller.sendJoinGameRes,
   );
