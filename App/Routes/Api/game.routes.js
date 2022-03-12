@@ -20,6 +20,14 @@ module.exports = function (app) {
   );
 
   app.get(
+    '/api/game/getUserGames',
+    authJwt.verifyToken,
+    userController.getUserIncludingGames,
+    controller.getUserGamesDetails,
+    controller.sendUserGames,
+  );
+
+  app.get(
     '/api/game/getGameStatus',
     authJwt.verifyToken,
     controller.handleGetGameStatusParams,

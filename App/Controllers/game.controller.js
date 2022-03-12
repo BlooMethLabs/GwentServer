@@ -74,6 +74,34 @@ exports.sendNewGameId = (req, res) => {
   res.send({ newGameId: req.game.id });
 };
 
+exports.getUserGamesDetails = async (req, res, next) => {
+  try {
+    req.games = req.user.games.map((game) => {
+      return {
+        id: game.id,
+        status: game.status,
+        redPlayerId: game.redPlayer,
+        bluePlayer: game.bluePlayer,
+        winner: game.state && game.state.Winner ? game.state.Winner : null,
+      };
+    });
+    next();
+  } catch (err) {
+    console.log(`Caught exception trying to send user games: ${err}`);
+    return next({ status: 500, error: 'Failed to retrieve user games.' });
+  }
+};
+
+exports.sendUserGames = async (req, res, next) => {
+  try {
+    const games = req.games;
+    res.send({ games: games });
+  } catch (err) {
+    console.log(`Caught exception trying to send user games: ${err}`);
+    return next({ status: 500, error: 'Failed to retrieve user games.' });
+  }
+};
+
 exports.handleGetGameStatusParams = (req, res, next) => {
   console.log('Handle get game status params.');
   if (!req || !req.query || !req.query.gameId || !req.query.side) {
@@ -97,10 +125,14 @@ exports.handleGetGameStateParams = (req, res, next) => {
 exports.checkAuth = (req, res, next) => {
   console.log('Check user authorised.');
   try {
-    let requestSide = _.toLower(req.gwent.side) === 'red' ? 'redPlayer' : 'bluePlayer';
+    let requestSide =
+      _.toLower(req.gwent.side) === 'red' ? 'redPlayer' : 'bluePlayer';
     let userId = req.userId;
     if (userId !== req.game[requestSide]) {
-      return next({ status: 402, error: `User with ID ${userId} not authorised to access game with ID ${req.game.id} and side ${req.gwent.side}.` });
+      return next({
+        status: 402,
+        error: `User with ID ${userId} not authorised to access game with ID ${req.game.id} and side ${req.gwent.side}.`,
+      });
     }
     next();
   } catch (err) {
@@ -164,7 +196,7 @@ exports.sendGameState = async (req, res, next) => {
   console.log('Send game state');
   try {
     let state = req.gameState;
-    if (typeof state !== "string") {
+    if (typeof state !== 'string') {
       state = JSON.stringify(state);
     }
     console.log(`Game state: ${state}`);
@@ -220,7 +252,7 @@ exports.handleTakeActionParams = (req, res, next) => {
     action: req.body.action,
     side: req.body.action.Side,
   };
-  if (typeof req.gwent.action !== "object") {
+  if (typeof req.gwent.action !== 'object') {
     req.gwent.action = JSON.parse(action);
   }
   console.log(`Take action params: ${JSON.stringify(req.gwent)}`);
@@ -231,11 +263,11 @@ exports.takeAction = async (req, res, next) => {
   console.log('Take action');
   try {
     let action = req.gwent.action;
-    if (typeof action !== "string") {
+    if (typeof action !== 'string') {
       action = JSON.stringify(action);
     }
     let gameState = req.game.state;
-    if (typeof gameState !== "string") {
+    if (typeof gameState !== 'string') {
       gameState = JSON.stringify(gameState);
     }
     let newGameState = addon.takeAction(gameState, action);
@@ -247,6 +279,9 @@ exports.takeAction = async (req, res, next) => {
     }
     req.gameState = newGameState;
     req.game.state = newGameState;
+    if (newGameState['Game Over']) {
+      req.game.status = 'gameOver';
+    }
     await req.game.save();
     return next();
   } catch (err) {
@@ -259,16 +294,15 @@ exports.removeOtherPlayerFromState = async (req, res, next) => {
   console.log('Remove other player');
   try {
     let game = req.gameState;
-    let remSide = _.toLower(req.gwent.side) === 'red' ? 'Blue Player' : 'Red Player';
+    let remSide =
+      _.toLower(req.gwent.side) === 'red' ? 'Blue Player' : 'Red Player';
     console.log(typeof game);
     console.log(`Side to remove: ${remSide}`);
-    console.log(game["Red Player"]);
+    console.log(game['Red Player']);
     console.log(game[remSide].Hand.Cards.length);
-    game[remSide].Hand.Size =
-      game[remSide].Hand.Cards.length;
+    game[remSide].Hand.Size = game[remSide].Hand.Cards.length;
     game[remSide].Hand.Cards = [];
-    game[remSide].Deck.Size =
-      game[remSide].Deck.Cards.length;
+    game[remSide].Deck.Size = game[remSide].Deck.Cards.length;
     game[remSide].Deck.Cards = [];
     req.gameState = game;
     return next();
