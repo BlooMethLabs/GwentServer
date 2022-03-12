@@ -76,18 +76,27 @@ exports.sendNewGameId = (req, res) => {
 
 exports.getUserGamesDetails = async (req, res, next) => {
   try {
-    req.games = req.user.games.map((game) => {
-      return {
-        id: game.id,
-        status: game.status,
-        redPlayerId: game.redPlayer,
-        bluePlayer: game.bluePlayer,
-        winner: game.state && game.state.Winner ? game.state.Winner : null,
-      };
-    });
+    req.games = await Promise.all(
+      req.user.games.map(async (game) => {
+        const redPlayerName = await userController.getUserName(game.redPlayer);
+        const bluePlayerName = await userController.getUserName(
+          game.bluePlayer,
+        );
+
+        return {
+          id: game.id,
+          status: game.status,
+          redPlayerId: game.redPlayer,
+          bluePlayer: game.bluePlayer,
+          redPlayerName: redPlayerName,
+          bluePlayerName: bluePlayerName,
+          winner: game.state && game.state.Winner ? game.state.Winner : null,
+        };
+      }),
+    );
     next();
   } catch (err) {
-    console.log(`Caught exception trying to send user games: ${err}`);
+    console.log(`Caught exception trying to get user details: ${err}`);
     return next({ status: 500, error: 'Failed to retrieve user games.' });
   }
 };

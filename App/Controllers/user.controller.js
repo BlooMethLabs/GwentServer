@@ -14,6 +14,16 @@ exports.getUser = async (req, res, next) => {
   }
 };
 
+exports.getUserName = async (userId) => {
+  try {
+    if (!userId) return null;
+    let user = await User.findByPk(userId);
+    return user.username;
+  } catch (err) {
+    throw `Exception caught trying to get username: ${err}`;
+  }
+};
+
 exports.getUserIncludingDecks = async (req, res, next) => {
   console.log('get user inc decks');
   try {
