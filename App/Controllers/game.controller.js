@@ -83,6 +83,9 @@ exports.getUserGamesDetails = async (req, res, next) => {
           game.bluePlayer,
         );
 
+        const redFaction = game.redDeck.faction;
+        const blueFaction = game.blueDeck ? game.blueDeck.faction : null;
+
         return {
           id: game.id,
           status: game.status,
@@ -90,6 +93,8 @@ exports.getUserGamesDetails = async (req, res, next) => {
           bluePlayer: game.bluePlayer,
           redPlayerName: redPlayerName,
           bluePlayerName: bluePlayerName,
+          redFaction: redFaction,
+          blueFaction: blueFaction,
           winner: game.state && game.state.Winner ? game.state.Winner : null,
         };
       }),
