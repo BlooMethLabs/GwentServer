@@ -1,6 +1,6 @@
 {
-  "Name": "Northern Realms Starter",
-  "Cards": [
+  "name": "Northern Realms Starter",
+  "cards": [
     "Poor_Fucking_Infantry",
     "Trebuchet_1",
     "Biting_Frost",
@@ -42,6 +42,6 @@
     "Trebuchet_1",
     "Torrential_Rain"
   ],
-  "Faction": "Northern Realms",
-  "Leader": "Foltest_the_Siegemaster"
+  "faction": "Northern Realms",
+  "leader": "Foltest_the_Siegemaster"
 }

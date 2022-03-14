@@ -1,6 +1,6 @@
 {
-  "Name": "Nilfgaard Starter",
-  "Cards": [
+  "name": "Nilfgaard Starter",
+  "cards": [
     "Dandelion",
     "Decoy",
     "Shilard_Fitz_Oesterlen",
@@ -34,6 +34,6 @@
     "Shilard_Fitz_Oesterlen",
     "Dandelion"
   ],
-  "Faction": "Nilfgaard",
-  "Leader": "Emhyr_var_Emreis_the_White_Flame"
+  "faction": "Nilfgaard",
+  "leader": "Emhyr_var_Emreis_the_White_Flame"
 }

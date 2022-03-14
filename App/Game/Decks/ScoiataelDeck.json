@@ -1,6 +1,6 @@
 {
-  "Name": "Scoiatael Starter",
-  "Cards": [
+  "name": "Scoiatael Starter",
+  "cards": [
     "Biting_Frost",
     "Dol_Blathanna_Scout_0",
     "Dol_Blathanna_Scout_0",
@@ -36,6 +36,6 @@
     "Havekar_Healer_0",
     "Biting_Frost"
   ],
-  "Faction": "Scoiatael",
-  "Leader": "Francesca_Findabair_Queen_of_Dol_Blathanna"
+  "faction": "Scoiatael",
+  "leader": "Francesca_Findabair_Queen_of_Dol_Blathanna"
 }
