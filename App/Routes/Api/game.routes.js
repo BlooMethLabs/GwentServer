@@ -61,6 +61,14 @@ module.exports = function (app) {
     // controller.sendJoinGameRes,
   );
 
+  app.get(
+    '/api/game/getGameUserSide',
+    authJwt.verifyToken,
+    controller.handleGetGameUserSideParams,
+    controller.getGame,
+    controller.sendGetGameUserSideRes
+  );
+
   app.post(
     '/api/game/takeAction',
     authJwt.verifyToken,

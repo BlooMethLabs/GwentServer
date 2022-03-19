@@ -255,6 +255,19 @@ exports.startGame = async (req, res, next) => {
   }
 };
 
+exports.handleGetGameUserSideParams = (req, res, next) => {
+  console.log('Handle get game user side params');
+  console.log(req.body);
+  if (!req || !req.query || !req.query.gameId) {
+    return next({ status: 401, error: 'Incorrect params for get game user side' });
+  }
+  req.gwent = {
+    gameId: req.query.gameId,
+  };
+  console.log(`Get game user side params: ${JSON.stringify(req.gwent)}`);
+  return next();
+};
+
 exports.handleTakeActionParams = (req, res, next) => {
   console.log('Handle take action params');
   console.log(req.body);
@@ -271,6 +284,27 @@ exports.handleTakeActionParams = (req, res, next) => {
   }
   console.log(`Take action params: ${JSON.stringify(req.gwent)}`);
   return next();
+};
+
+exports.sendGetGameUserSideRes = async (req, res, next) => {
+  console.log('Send get game user side res');
+  try {
+    let side;
+    if (req.game.redPlayer === req.userId) {
+      side = "Red";
+    } else if (req.game.bluePlayer === req.userId) {
+      side = "Blue";
+    } else {
+      return next({
+        status: 402,
+        error: `User with ID ${req.userId} not authorised to access game with ID ${req.game.id}.`,
+      });
+    }
+    return res.send({ side: side });
+  } catch (err) {
+    console.log(`Caught exception trying to send user side res: ${err}`);
+    return next({ status: 500, error: 'Failed to send get game user side res.' });
+  }
 };
 
 exports.takeAction = async (req, res, next) => {
