@@ -118,7 +118,7 @@ exports.sendUserGames = async (req, res, next) => {
 
 exports.handleGetGameStatusParams = (req, res, next) => {
   console.log('Handle get game status params.');
-  if (!req || !req.query || !req.query.gameId || !req.query.side) {
+  if (!req || !req.query || !req.query.gameId) {
     return next({ status: 401, error: 'Incorrect params for get game status' });
   }
   req.gwent = { gameId: req.query.gameId, side: req.query.side };
@@ -259,7 +259,10 @@ exports.handleGetGameUserSideParams = (req, res, next) => {
   console.log('Handle get game user side params');
   console.log(req.body);
   if (!req || !req.query || !req.query.gameId) {
-    return next({ status: 401, error: 'Incorrect params for get game user side' });
+    return next({
+      status: 401,
+      error: 'Incorrect params for get game user side',
+    });
   }
   req.gwent = {
     gameId: req.query.gameId,
@@ -291,9 +294,9 @@ exports.sendGetGameUserSideRes = async (req, res, next) => {
   try {
     let side;
     if (req.game.redPlayer === req.userId) {
-      side = "Red";
+      side = 'Red';
     } else if (req.game.bluePlayer === req.userId) {
-      side = "Blue";
+      side = 'Blue';
     } else {
       return next({
         status: 402,
@@ -303,7 +306,10 @@ exports.sendGetGameUserSideRes = async (req, res, next) => {
     return res.send({ side: side });
   } catch (err) {
     console.log(`Caught exception trying to send user side res: ${err}`);
-    return next({ status: 500, error: 'Failed to send get game user side res.' });
+    return next({
+      status: 500,
+      error: 'Failed to send get game user side res.',
+    });
   }
 };
 

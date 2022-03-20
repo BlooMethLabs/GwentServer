@@ -220,8 +220,8 @@ exports.decodeRedAndBlueDecks = (req, res, next) => {
     let blueDeck = req.game.blueDeck;
     req.decodedRedDeck = decodeDeck(redDeck);
     req.decodedBlueDeck = decodeDeck(blueDeck);
-    console.log(`Red deck: ${JSON.stringify(req.decodedRedDeck)}.`)
-    console.log(`Blue deck: ${JSON.stringify(req.decodedBlueDeck)}.`)
+    console.log(`Red deck: ${JSON.stringify(req.decodedRedDeck)}.`);
+    console.log(`Blue deck: ${JSON.stringify(req.decodedBlueDeck)}.`);
     return next();
   } catch (err) {
     console.log(`Caught exception trying to decode decks: ${err}`);
