@@ -7,13 +7,16 @@ const userController = require('./user.controller');
 
 const defaultDecks = {
   1: JSON.parse(fs.readFileSync('App/Game/Decks/MonstersDeck.json')),
-  2: JSON.parse(fs.readFileSync('App/Game/Decks/ScoiataelDeck.json')),
-  3: JSON.parse(fs.readFileSync('App/Game/Decks/NilfgaardDeck.json')),
-  4: JSON.parse(fs.readFileSync('App/Game/Decks/NorRealmsDeck.json')),
+  2: JSON.parse(fs.readFileSync('App/Game/Decks/NilfgaardDeck.json')),
+  3: JSON.parse(fs.readFileSync('App/Game/Decks/NorRealmsDeck.json')),
+  4: JSON.parse(fs.readFileSync('App/Game/Decks/ScoiataelDeck.json')),
 };
 
 const monsterCards = JSON.parse(
   fs.readFileSync('App/Game/Decks/MonstersCards.json'),
+);
+const norRealmsCards = JSON.parse(
+  fs.readFileSync('App/Game/Decks/NorRealmsCards.json'),
 );
 const neutralCards = JSON.parse(
   fs.readFileSync('App/Game/Decks/NeutralCards.json'),
@@ -25,11 +28,14 @@ function getFactionCards(faction) {
   switch (faction) {
     case 1:
       return [...monsterCards, ...neutralCards];
+    case 3:
+      return [...norRealmsCards, ...neutralCards];
     // case 2:
     //   console.log("sco");
     //   return JSON.parse(fs.readFileSync("../Decks/Creation/Monsters.json"));
     default:
-      return { error: 'No collection with that ID.' };
+      console.log(`No collection with ID ${faction}.`);
+      return { error: `No collection with ID ${faction}.` };
   }
 }
 
@@ -50,6 +56,8 @@ function decodeDeck(deck) {
   let factionCards = null;
   if (deck.faction === 'Monsters') {
     factionCards = monsterCards;
+  } else if (deck.faction === 'Northern Realms') {
+    factionCards = norRealmsCards;
   }
   let availableCards = [...factionCards, ...neutralCards];
   let decodedDeck = { Faction: deck.faction };
@@ -218,9 +226,10 @@ exports.decodeRedAndBlueDecks = (req, res, next) => {
   try {
     let redDeck = req.game.redDeck;
     let blueDeck = req.game.blueDeck;
+    console.log(`Red deck: ${JSON.stringify(redDeck)}`);
     req.decodedRedDeck = decodeDeck(redDeck);
-    req.decodedBlueDeck = decodeDeck(blueDeck);
     console.log(`Red deck: ${JSON.stringify(req.decodedRedDeck)}.`);
+    req.decodedBlueDeck = decodeDeck(blueDeck);
     console.log(`Blue deck: ${JSON.stringify(req.decodedBlueDeck)}.`);
     return next();
   } catch (err) {

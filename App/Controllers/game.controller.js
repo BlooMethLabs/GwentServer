@@ -246,6 +246,9 @@ exports.startGame = async (req, res, next) => {
     );
     console.log(newGameState);
     req.game.state = JSON.parse(newGameState);
+    if (req.game.state['Error']) {
+      throw req.game.state['Error'];
+    }
     req.game.status = gameConfig.statuses[2];
     await req.game.save();
     return res.send({ GameId: req.game.id });
