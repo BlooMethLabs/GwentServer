@@ -53,6 +53,7 @@ function encodeDeck(name, deck, userId) {
 }
 
 function decodeDeck(deck) {
+  console.log(`Decoding deck: ${JSON.stringify(deck)}`);
   let factionCards = null;
   if (deck.faction === 'Monsters') {
     factionCards = monsterCards;
@@ -60,6 +61,9 @@ function decodeDeck(deck) {
     factionCards = norRealmsCards;
   }
   let availableCards = [...factionCards, ...neutralCards];
+  console.log(
+    `Decode Deck: Available cards: ${JSON.stringify(availableCards)}`,
+  );
   let decodedDeck = { Faction: deck.faction };
   decodedDeck.Cards = deck.cards.map((card) => {
     let c = availableCards.find((c) => c.Name === card);
@@ -126,9 +130,10 @@ exports.handleGetDeckParams = (req, res, next) => {
 };
 
 exports.getDefaultDeck = async (req, res, next) => {
-  console.log('Get default deck.');
+  console.log(`Get default deck.`);
   try {
     if (req.gwent.default) {
+      console.log(`Get default deck with ID ${req.gwent.deckId}`);
       req.deck = defaultDecks[req.gwent.deckId];
     }
     return next();
