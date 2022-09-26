@@ -1,6 +1,6 @@
 {
-  "Name": "Monsters Starter Deck",
-  "Cards": [
+  "name": "Monsters Starter Deck",
+  "cards": [
     "Vampire_Bruxa",
     "Toad",
     "Crone_Weavess",
@@ -36,6 +36,6 @@
     "Cockatrice",
     "Eredin_Destroyer_of_Worlds"
   ],
-  "Faction": "Monsters",
-  "Leader": "Eredin_Destroyer_of_Worlds"
+  "faction": "Monsters",
+  "leader": "Eredin_Destroyer_of_Worlds"
 }

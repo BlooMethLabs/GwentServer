@@ -1,0 +1,330 @@
+[
+  {
+    "Faction": "Northern Realms",
+    "Name": "Foltest_King_of_Temeria",
+    "Type": "Leader",
+    "Ability": "Play fog card from your deck"
+  },
+  {
+    "Faction": "Northern Realms",
+    "Name": "Foltest_Lord_Commander_of_the_North",
+    "Type": "Leader",
+    "Ability": "Clear weather"
+  },
+  {
+    "Faction": "Northern Realms",
+    "Name": "Foltest_the_Siegemaster",
+    "Type": "Leader",
+    "Ability": "Double the strength of your siege row"
+  },
+  {
+    "Faction": "Northern Realms",
+    "Name": "Foltest_the_Steel_Forged",
+    "Type": "Leader",
+    "Ability": "Scorch opponent's siege row"
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Ballista_0",
+    "Range": "Siege",
+    "Base Strength": 6,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Ballista_1",
+    "Range": "Siege",
+    "Base Strength": 6,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Blue_Stripes_Commando",
+    "Range": "Close",
+    "Base Strength": 4,
+    "Type": "Unit",
+    "Abilities": ["Tight Bond"],
+    "Tight Bond Muster ID": "Blue_Stripes_Commando",
+    "Max Number": 3
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Catapult",
+    "Range": "Siege",
+    "Base Strength": 8,
+    "Type": "Unit",
+    "Abilities": ["Tight Bond"],
+    "Tight Bond Muster ID": "Catapult",
+    "Max Number": 2
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Crinfrid_Reavers_Dragon_Hunter",
+    "Range": "Ranged",
+    "Base Strength": 5,
+    "Type": "Unit",
+    "Abilities": ["Tight Bond"],
+    "Tight Bond Muster ID": "Crinfrid_Reavers_Dragon_Hunter",
+    "Max Number": 2
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Dethmold",
+    "Range": "Ranged",
+    "Base Strength": 6,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Dun_Banner_Medic",
+    "Range": "Siege",
+    "Base Strength": 5,
+    "Type": "Siege",
+    "Abilities": ["Medic"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": true,
+    "Name": "Esterad_Thyssen",
+    "Range": "Close",
+    "Base Strength": 10,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": true,
+    "Name": "John_Natalis",
+    "Range": "Close",
+    "Base Strength": 10,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Kaedweni_Siege_Expert_0",
+    "Range": "Siege",
+    "Base Strength": 1,
+    "Type": "Unit",
+    "Abilities": ["Morale Boost"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Kaedweni_Siege_Expert_1",
+    "Range": "Siege",
+    "Base Strength": 1,
+    "Type": "Unit",
+    "Abilities": ["Morale Boost"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Kaedweni_Siege_Expert_2",
+    "Range": "Siege",
+    "Base Strength": 1,
+    "Type": "Unit",
+    "Abilities": ["Morale Boost"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Kiera_Metz",
+    "Range": "Ranged",
+    "Base Strength": 5,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": true,
+    "Name": "Philippa_Eilhart",
+    "Range": "Ranged",
+    "Base Strength": 10,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Poor_Fucking_Infantry",
+    "Range": "Close",
+    "Base Strength": 1,
+    "Type": "Unit",
+    "Abilities": ["Tight Bond"],
+    "Tight Bond Muster ID": "Poor_Fucking_Infantry",
+    "Max Number": 3
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Prince_Stennis",
+    "Range": "Close",
+    "Base Strength": 5,
+    "Type": "Unit",
+    "Abilities": ["Spy"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Redanian_Foot_Soldier_0",
+    "Range": "Close",
+    "Base Strength": 1,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Redanian_Foot_Soldier_1",
+    "Range": "Close",
+    "Base Strength": 1,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Sabrina_Glevissig",
+    "Range": "Ranged",
+    "Base Strength": 4,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Sheldon_Skaggs",
+    "Range": "Ranged",
+    "Base Strength": 4,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Siege_Tower",
+    "Range": "Ranged",
+    "Base Strength": 6,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 2
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Siegfried_of_Denesle",
+    "Range": "Close",
+    "Base Strength": 5,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Sigismund_Dijkstra",
+    "Range": "Close",
+    "Base Strength": 4,
+    "Type": "Unit",
+    "Abilities": ["Spy"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Sile_de_Tansarville",
+    "Range": "Ranged",
+    "Base Strength": 5,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Thaler",
+    "Range": "Siege",
+    "Base Strength": 1,
+    "Type": "Unit",
+    "Abilities": ["Spy"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Trebuchet_0",
+    "Range": "Siege",
+    "Base Strength": 6,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Trebuchet_1",
+    "Range": "Siege",
+    "Base Strength": 6,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Vernon_Roche",
+    "Range": "Close",
+    "Base Strength": 10,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Ves",
+    "Range": "Close",
+    "Base Strength": 5,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  },
+  {
+    "Faction": "Northern Realms",
+    "Hero": false,
+    "Name": "Yarpen_Zigrin",
+    "Range": "Close",
+    "Base Strength": 2,
+    "Type": "Unit",
+    "Abilities": ["No ability"],
+    "Max Number": 1
+  }
+]
